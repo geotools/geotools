@@ -29,6 +29,7 @@ import org.geotools.api.style.Displacement;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.util.Converters;
@@ -76,6 +77,22 @@ public class MBObjectParser {
     final FilterFactory ff;
     final StyleFactory sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
+
+    /** Reduces every list literal in a data-driven font expression to its first font. */
+    private static final DuplicatingFilterVisitor FONT_STACK_PRIMARY = new DuplicatingFilterVisitor() {
+        @Override
+        public Object visit(Literal expression, Object extraData) {
+            if (expression.getValue() instanceof List<?> stack && !stack.isEmpty()) {
+                if (stack.size() > 1) {
+                    LOGGER.warning("Data-driven text-font stack " + stack + ": using the primary font "
+                            + stack.get(0) + " and dropping the fallbacks " + stack.subList(1, stack.size())
+                            + " (a data-driven font branch can carry only one font)");
+                }
+                return getFactory(extraData).literal(stack.get(0));
+            }
+            return super.visit(expression, extraData);
+        }
+    };
 
     /**
      * Parser used to in the provided context.
@@ -905,7 +922,9 @@ public class MBObjectParser {
         }
         if (obj instanceof JSONArray array) {
             if (array.get(0) instanceof String) {
-                return MBExpression.transformExpression(array);
+                Expression expression = MBExpression.transformExpression(array);
+                // a data-driven branch carries one font name only: keep the first font of each stack
+                return (Expression) expression.accept(FONT_STACK_PRIMARY, null);
             } else {
                 throw new MBFormatException(context + " font from JSONArray not supported");
             }
@@ -1191,7 +1210,7 @@ public class MBObjectParser {
             return function.color();
         } else if (obj instanceof JSONArray array) {
             if (array.get(0) instanceof String) {
-                return MBExpression.transformExpression(array);
+                return convertColorLiterals(MBExpression.transformExpression(array));
             } else {
                 throw new MBFormatException(context + " color from JSONArray not supported");
             }
@@ -1201,6 +1220,35 @@ public class MBObjectParser {
                     + " limited to String or JSONObject but was "
                     + obj.getClass().getSimpleName());
         }
+    }
+
+    /**
+     * Turns rgb(), rgba(), hsl() and hsla() strings in a color expression into Color literals.
+     *
+     * <p>The renderer reads a color string without the {@link Hints#COLOR_DEFINITION} "CSS" hint, so it parses hex
+     * only. Color names stay strings: match keys such as "grassland" are string literals too.
+     */
+    private Expression convertColorLiterals(Expression expression) {
+        DuplicatingFilterVisitor converter = new DuplicatingFilterVisitor() {
+            @Override
+            public Object visit(Literal literal, Object extraData) {
+                if (literal.getValue() instanceof String value && isFunctionalColor(value)) {
+                    Color color = convertToColor(value);
+                    if (color != null) {
+                        return ff.literal(color);
+                    }
+                }
+                return super.visit(literal, extraData);
+            }
+        };
+        return (Expression) expression.accept(converter, null);
+    }
+
+    private static boolean isFunctionalColor(String value) {
+        return value.startsWith("rgb(")
+                || value.startsWith("rgba(")
+                || value.startsWith("hsl(")
+                || value.startsWith("hsla(");
     }
 
     /**

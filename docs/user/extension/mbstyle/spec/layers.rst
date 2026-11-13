@@ -910,6 +910,8 @@ Specifies the lengths of the alternating dashes and gaps that form the
 dash pattern. The lengths are later scaled by the line width. To convert
 a dash length to pixels, multiply the length by the current line width.
 
+GeoTools supports an expression, such as a zoom ``step`` or a ``match``, whose outputs are ``["literal", [...]]`` arrays. When the outputs have different lengths, the last one is used as a fixed pattern. Functions are not supported.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -924,7 +926,7 @@ a dash length to pixels, multiply the length by the current line width.
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - >= 17.1
+     - >= 35.3
      - >= 2.4.0
 
 line-pattern
@@ -1001,6 +1003,9 @@ symbol-spacing
 
 Distance between two symbol anchors.
 
+GeoTools also drops a line label closer than half this distance to another label of the same layer with the
+same text, as Mapbox does.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1016,6 +1021,33 @@ Distance between two symbol anchors.
    * - data-driven styling
      - Not yet supported
      - Not yet supported
+     - Not yet supported
+
+
+symbol-sort-key
+"""""""""""""""
+
+*Optional* :ref:`types-number`.
+
+Sorts features in ascending order based on this value. Features with lower sort keys are placed first, so they
+win label conflicts. The key orders labels inside their layer only: the labels of a layer are always placed before
+those of the layers below it. A feature without a value sorts as 0.
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.53.0
+     - >= 35.3
+     - Not yet supported
+   * - data-driven styling
+     - >= 0.53.0
+     - >= 35.3
      - Not yet supported
 
 
@@ -1153,6 +1185,9 @@ auto
     ``viewport``. When ``symbol-placement`` is set to ``line``, this is
     equivalent to ``map``.
 
+GeoTools draws line icons upright at each anchor when the alignment is ``viewport``. When the layer
+also has a ``text-field``, ``text-rotation-alignment`` decides for both.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1163,7 +1198,7 @@ auto
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - ``auto`` value
      - >= 0.25.0
@@ -1339,11 +1374,11 @@ detecting symbol collisions.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 icon-keep-upright
@@ -1463,6 +1498,9 @@ auto
     ``viewport``. When ``symbol-placement`` is set to ``line``, this is
     equivalent to ``map``.
 
+GeoTools draws line labels upright at each anchor when the alignment is ``viewport``, as for road
+shields. It also decides for the icon of the same layer.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1473,7 +1511,7 @@ auto
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - ``auto`` value
      - >= 0.25.0
@@ -1518,7 +1556,9 @@ text-font
 
 *Optional* :ref:`types-array`. *Defaults to* Open Sans Regular, Arial Unicode MS Regular. *Requires* text-field.
 
-Font stack to use for displaying text.
+Font stack to use for displaying text. When ``text-font`` is set by an expression, GeoTools uses only the first font of each stack.
+
+GeoTools first looks for the exact face named, such as ``Arial Black``. It falls back to the family name without the weight and style words, here ``Arial``, when that face is not installed. Bold, ExtraBold, Black and Heavy then render bold, Italic and Oblique render italic, and other weights such as Medium and SemiBold render regular.
 
 .. list-table::
    :widths: 19, 27, 27, 27
@@ -1534,7 +1574,7 @@ Font stack to use for displaying text.
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - >= 2.4.0
 
 text-size
@@ -1568,7 +1608,7 @@ Font size.
 text-max-width
 """"""""""""""
 
-*Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 10. *Requires* text-field.
+*Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 10. *Requires* text-field.
 
 
 
@@ -1585,11 +1625,11 @@ The maximum line width for text wrapping.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - >= 2.4.0
 
 text-line-height
@@ -1640,11 +1680,11 @@ Text tracking amount.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 text-justify
@@ -1801,7 +1841,8 @@ text-padding
 
 
 Size of the additional area around the text bounding box used for
-detecting symbol collisions.
+detecting symbol collisions. With text-variable-anchor, the label also moves away from its point
+by this distance, as in Mapbox.
 
 
 .. list-table::
@@ -1814,11 +1855,11 @@ detecting symbol collisions.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 
@@ -1911,6 +1952,63 @@ and down, while negative values indicate left and up.
      - >= 0.35.0
      - 22.2
      - >= 2.4.0
+
+text-radial-offset
+""""""""""""""""""
+
+*Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 0. *Requires* text-field.
+
+Radial offset of text, in the direction of the symbol's anchor. Useful in combination with
+text-variable-anchor, which defaults to using the two-dimensional text-offset if present.
+
+With a text-anchor expression the radial offset is ignored.
+
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
+   * - data-driven styling
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
+
+text-variable-anchor
+""""""""""""""""""""
+
+*Optional* :ref:`types-array`. *One of* center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right.
+*Requires* text-field, symbol-placement = point.
+
+To increase the chance of placing high-priority labels on the map, you can provide an array of
+text-anchor locations: the renderer will attempt to place the label at each location, in order,
+before moving onto the next label. To apply an offset, use the text-radial-offset or the
+two-dimensional text-offset.
+
+GeoTools places the label at the first anchor, and moves it to the other anchors only when it
+collides with another label. A zoom expression is accepted: the first anchor follows the zoom,
+while the anchors tried on collision are those of all the zoom stops together.
+
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
 
 text-allow-overlap
 """"""""""""""""""

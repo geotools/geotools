@@ -100,7 +100,7 @@ public class QGISMarkFactory implements MarkFactory {
         diamondPath.transform(at);
 
         diamond = new ExplicitBoundsShape(diamondPath);
-        ((ExplicitBoundsShape) diamond).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) diamond).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         // Pentagon
         GeneralPath pentagonPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
@@ -115,7 +115,7 @@ public class QGISMarkFactory implements MarkFactory {
         pentagonPath.transform(at);
 
         pentagon = new ExplicitBoundsShape(pentagonPath);
-        ((ExplicitBoundsShape) pentagon).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) pentagon).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
     }
 
     @Override
@@ -298,7 +298,7 @@ public class QGISMarkFactory implements MarkFactory {
         arrowPath.transform(at);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(arrowPath);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -318,7 +318,7 @@ public class QGISMarkFactory implements MarkFactory {
         starPath.lineTo(0f, 0.5f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(starPath);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -358,7 +358,7 @@ public class QGISMarkFactory implements MarkFactory {
         trianglePath.transform(at);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(trianglePath);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -382,7 +382,7 @@ public class QGISMarkFactory implements MarkFactory {
         path.lineTo(-.5f, -0.1f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -397,7 +397,7 @@ public class QGISMarkFactory implements MarkFactory {
         path.lineTo(-.5f, -.5f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -415,7 +415,7 @@ public class QGISMarkFactory implements MarkFactory {
         path.lineTo(-0.4330f, -0.25f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -429,7 +429,7 @@ public class QGISMarkFactory implements MarkFactory {
         path.lineTo(0f, -.5f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -443,7 +443,7 @@ public class QGISMarkFactory implements MarkFactory {
         path.lineTo(0f, -.5f);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -453,7 +453,7 @@ public class QGISMarkFactory implements MarkFactory {
         Shape d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180, 90, Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -463,7 +463,7 @@ public class QGISMarkFactory implements MarkFactory {
         Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -473,7 +473,7 @@ public class QGISMarkFactory implements MarkFactory {
         Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }
@@ -493,7 +493,7 @@ public class QGISMarkFactory implements MarkFactory {
         Shape s = new Double(-.5, 0, .5, .5);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(s);
-        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         return shape;
     }

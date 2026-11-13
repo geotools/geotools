@@ -9,6 +9,7 @@
  */
 package org.geotools.api.style;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
@@ -66,6 +67,11 @@ public interface TextSymbolizer extends Symbolizer {
     /** If in case of grouping all resulting lines have to be labelled */
     boolean DEFAULT_LABEL_ALL_GROUP = false;
     /**
+     * Controls how the priority of a group of labels comes from the priorities of its features, see
+     * {@link GroupPriority}. Only applies when {@link #GROUP_KEY} is true and the priority is not a literal.
+     */
+    String GROUP_PRIORITY_KEY = "groupPriority";
+    /**
      * When false does not allow labels on lines to get beyond the beginning/end of the line. By default a partial
      * overrun is tolerated, set to false to disallow it.
      */
@@ -108,6 +114,13 @@ public interface TextSymbolizer extends Symbolizer {
     String AUTO_WRAP_KEY = "autoWrap";
     /** Auto wrapping long labels default */
     int DEFAULT_AUTO_WRAP = 0;
+    /**
+     * When true, autoWrap splits a label into lines of about the same width, even if a line then goes past the autoWrap
+     * width. When false, each line takes as many words as fit in the autoWrap width.
+     */
+    String AUTO_WRAP_BALANCED_KEY = "autoWrapBalanced";
+    /** Balanced auto wrapping default */
+    boolean DEFAULT_AUTO_WRAP_BALANCED = false;
     /**
      * When true forces labels to a readable orientation, when false they make follow the line orientation even if that
      * means the label will look upside down (useful when using TTF symbol fonts to add direction markers along a line)
@@ -169,6 +182,10 @@ public interface TextSymbolizer extends Symbolizer {
      * {@link DisplacementMode}
      */
     String DISPLACEMENT_MODE_KEY = "displacementMode";
+    /** Which label anchors the displacementMode search tries, see {@link DisplacementAnchor} */
+    String DISPLACEMENT_ANCHOR_KEY = "displacementAnchor";
+    /** Default displacement anchor */
+    DisplacementAnchor DEFAULT_DISPLACEMENT_ANCHOR = DisplacementAnchor.ANY;
     /** Placement of the graphic element, see GraphicPlacement enumeration for possible value */
     String GRAPHIC_PLACEMENT_KEY = "graphicPlacement";
 
@@ -323,6 +340,14 @@ public interface TextSymbolizer extends Symbolizer {
         }
     }
 
+    /** Label anchors tried by the displacementMode search for the N, S, E and W directions */
+    public static enum DisplacementAnchor {
+        /** Centered on the displaced position first, then the other anchors; the label may cover the point */
+        ANY,
+        /** Only the anchor that keeps the whole label on the side it moves to, so it never covers the point */
+        OUTSIDE
+    }
+
     /** GraphicPlacemnts controls the position of the Graphic associated with the label */
     public static enum GraphicPlacement {
         /**
@@ -336,5 +361,29 @@ public interface TextSymbolizer extends Symbolizer {
          * the label
          */
         INDEPENDENT
+    }
+
+    /** Ways to compute the priority of a group of labels from the priorities of its features. */
+    public static enum GroupPriority {
+        /**
+         * Adds up the feature priorities, so bigger groups win, e.g. with a priority based on area or length (default
+         * for backward compatibility)
+         */
+        SUM {
+            @Override
+            public double priority(DoubleSummaryStatistics priorities) {
+                return priorities.getSum();
+            }
+        },
+        /** Takes the highest feature priority, for priorities that rank features, e.g. a road class */
+        MAX {
+            @Override
+            public double priority(DoubleSummaryStatistics priorities) {
+                return priorities.getMax();
+            }
+        };
+
+        /** Returns the group priority, given the priorities of all the features in the group */
+        public abstract double priority(DoubleSummaryStatistics priorities);
     }
 }

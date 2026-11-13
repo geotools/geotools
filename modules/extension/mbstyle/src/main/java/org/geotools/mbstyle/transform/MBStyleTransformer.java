@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.StyleFactory;
@@ -220,6 +221,22 @@ public class MBStyleTransformer {
                     + "')");
             return fallback;
         }
+    }
+
+    /**
+     * Renders an expression bound for a scalar vendor option: a {@link Literal} becomes its plain string value, any
+     * other expression becomes a {@code ${cql}} placeholder the renderer evaluates per feature, so zoom/data-driven
+     * values survive instead of collapsing to a static default.
+     */
+    public static String vendorOptionExpression(Expression expression) {
+        // a product of literals, such as an ems value times a constant text-size, becomes a plain number
+        boolean literalProduct = expression instanceof Multiply m
+                && m.getExpression1() instanceof Literal
+                && m.getExpression2() instanceof Literal;
+        if (expression instanceof Literal || literalProduct) {
+            return String.valueOf(expression.evaluate(null));
+        }
+        return "${" + ECQL.toCQL(expression) + "}";
     }
 
     /** @return The list of default font names */

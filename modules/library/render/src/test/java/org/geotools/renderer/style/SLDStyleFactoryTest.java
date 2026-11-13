@@ -19,6 +19,7 @@ package org.geotools.renderer.style;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -108,6 +109,7 @@ public class SLDStyleFactoryTest {
         ftb.add("geom", Point.class);
         ftb.add("symb", String.class);
         ftb.add("icon", String.class);
+        ftb.add("spacing", Integer.class);
 
         featureType = ftb.buildFeatureType();
 
@@ -115,6 +117,7 @@ public class SLDStyleFactoryTest {
         fb.set("geom", new GeometryFactory().createPoint(new Coordinate(0, 0)));
         fb.set("symb", "0xF054");
         fb.set("icon", "draw.png");
+        fb.set("spacing", 5);
         feature = fb.buildFeature(null);
     }
 
@@ -522,6 +525,27 @@ public class SLDStyleFactoryTest {
         Assert.assertNull(kerningValue);
     }
 
+    /** Each feature gets its own character spacing. The font tracking is the spacing divided by the size. */
+    @Test
+    public void testCharSpacingFromAttribute() throws Exception {
+        TextSymbolizer ts = sf.createTextSymbolizer();
+        ts.setFill(sf.createFill(null));
+        ts.setFont(sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20)));
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, "${spacing}");
+        SimpleFeature wider = SimpleFeatureBuilder.copy(feature);
+        wider.setAttribute("spacing", 10);
+
+        assertEquals(0.25, tracking(sld.createStyle(feature, ts, range)), 1e-6);
+        assertEquals(0.5, tracking(sld.createStyle(wider, ts, range)), 1e-6);
+    }
+
+    private double tracking(Style2D style) {
+        Map<TextAttribute, ?> attributes = ((TextStyle2D) style).getFont().getAttributes();
+        Number tracking = (Number) attributes.get(TextAttribute.TRACKING);
+        assertNotNull(tracking);
+        return tracking.doubleValue();
+    }
+
     /**
      * A very large symbol can cause an Integer overflow in the renderer. The SLDFactory should give a warning instead
      * and try again with out meta tiling.
@@ -632,6 +656,33 @@ public class SLDStyleFactoryTest {
         assertThat(ls2d.getStroke(), CoreMatchers.instanceOf(BasicStroke.class));
         BasicStroke bs = (BasicStroke) ls2d.getStroke();
         Assert.assertNull(bs.getDashArray());
+    }
+
+    /** A sub-pixel dash pattern cannot be seen, the line is drawn solid instead of with millions of dashes. */
+    @Test
+    public void testDashArraySubPixel() throws Exception {
+        BasicStroke bs = dashedStroke(0.05, 0.05);
+        Assert.assertNull(bs.getDashArray());
+    }
+
+    /** One visible value is enough to keep the pattern, tiny values included. */
+    @Test
+    public void testDashArrayVisible() throws Exception {
+        BasicStroke bs = dashedStroke(0.05, 0.2);
+        Assert.assertArrayEquals(new float[] {0.05f, 0.2f}, bs.getDashArray(), 0f);
+    }
+
+    private BasicStroke dashedStroke(double... dashes) {
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        Stroke stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
+        List<Expression> values = new ArrayList<>();
+        for (double dash : dashes) {
+            values.add(ff.literal(dash));
+        }
+        stroke.setDashArray(values);
+        ls.setStroke(stroke);
+        LineStyle2D ls2d = (LineStyle2D) sld.createLineStyle(feature, ls, range);
+        return (BasicStroke) ls2d.getStroke();
     }
 
     @Test

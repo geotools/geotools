@@ -78,7 +78,7 @@ public abstract class MBExpression extends FunctionImpl {
 
     static {
         decisions = Collections.unmodifiableList(
-                Arrays.asList("!", "!=", "<", "<=", "==", ">", ">=", "all", "any", "case", "coalesce", "match"));
+                Arrays.asList("!", "!=", "<", "<=", "==", ">", ">=", "all", "any", "in", "case", "coalesce", "match"));
     }
 
     /* A list of feature data expression names */
@@ -95,6 +95,9 @@ public abstract class MBExpression extends FunctionImpl {
         heatMap = Collections.unmodifiableList(Arrays.asList("heatmap-density"));
     }
 
+    /* A list of format expression names */
+    public static final List format = Collections.unmodifiableList(Arrays.asList("format"));
+
     /* A list of lookup expression names */
     public static final List lookUp = Arrays.asList("at", "length", "has", "get");
 
@@ -107,7 +110,7 @@ public abstract class MBExpression extends FunctionImpl {
     public static final List ramps = Arrays.asList("interpolate", "step");
 
     /* A list of string expression names */
-    public static final List string = Arrays.asList("concat", "downcase", "upcase");
+    public static final List string = Arrays.asList("concat", "downcase", "upcase", "is-supported-script");
 
     /* A list of types expression names */
     public static final List types = Arrays.asList(
@@ -148,6 +151,8 @@ public abstract class MBExpression extends FunctionImpl {
                 return new MBFeatureData(json);
             } else if (heatMap.contains(name)) {
                 return new MBHeatmap(json);
+            } else if (format.contains(name)) {
+                return new MBFormat(json);
             } else if (lookUp.contains(name)) {
                 return new MBLookup(json);
             } else if (math.contains(name)) {
@@ -178,6 +183,7 @@ public abstract class MBExpression extends FunctionImpl {
                         || decisions.contains(name)
                         || featureData.contains(name)
                         || heatMap.contains(name)
+                        || format.contains(name)
                         || lookUp.contains(name)
                         || math.contains(name)
                         || ramps.contains(name)

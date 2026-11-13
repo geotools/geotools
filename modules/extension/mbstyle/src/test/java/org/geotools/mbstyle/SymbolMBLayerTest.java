@@ -19,10 +19,13 @@ package org.geotools.mbstyle;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -33,7 +36,10 @@ import org.geotools.api.style.PointPlacement;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
 import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
@@ -41,10 +47,12 @@ import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.hamcrest.Matchers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -94,6 +102,11 @@ public class SymbolMBLayerTest {
         featureTypeDefaults = testLayerDefault.transformInternal(defaultStyle);
     }
 
+    @After
+    public void clearZoom() {
+        EnvFunction.clearLocalValues();
+    }
+
     @Test
     public void testTextAnchorEnum() {
         // cannot use valueOf directly
@@ -130,6 +143,93 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .getOptions()
                         .get("autoWrap"));
+    }
+
+    /** The wrap width is text-max-width ems at the text size of each feature: 8 * 15 = 120 pixels. */
+    @Test
+    public void testTextMaxWidthFromAttribute() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": ["get", "size"],
+                  "text-max-width": 8
+                }""");
+        assertEquals(120, evaluateOption(text, TextSymbolizer.AUTO_WRAP_KEY, labelFeature(15, 0)), 1e-9);
+    }
+
+    /** Point labels wrap at the 10 ems default when text-max-width is missing: 10 * 12 = 120 pixels. */
+    @Test
+    public void testTextMaxWidthDefault() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 12
+                }""");
+        assertEquals("120.0", text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+        assertEquals("true", text.getOptions().get(TextSymbolizer.AUTO_WRAP_BALANCED_KEY));
+    }
+
+    /** Line labels never wrap, even with text-max-width set. */
+    @Test
+    public void testTextMaxWidthLine() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-placement": "line",
+                  "text-max-width": 8
+                }""");
+        assertNull(text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+        assertNull(text.getOptions().get(TextSymbolizer.AUTO_WRAP_BALANCED_KEY));
+    }
+
+    /** The character spacing is text-letter-spacing ems at the text size: 0.2 * 10 = 2 pixels. */
+    @Test
+    public void testTextLetterSpacing() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-letter-spacing": 0.2
+                }""");
+        assertEquals("2.0", text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    @Test
+    public void testTextLetterSpacingFromAttribute() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-letter-spacing": ["get", "spacing"]
+                }""");
+        assertEquals(2, evaluateOption(text, TextSymbolizer.CHAR_SPACING_KEY, labelFeature(10, 0.2)), 1e-9);
+    }
+
+    @Test
+    public void testTextLetterSpacingDefault() throws Exception {
+        TextSymbolizer text = symbolizer("{\"text-field\": \"{name}\"}");
+        assertNull(text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    @Test
+    public void testTextLetterSpacingZero() throws Exception {
+        TextSymbolizer text = symbolizer("{\"text-field\": \"{name}\", \"text-letter-spacing\": 0}");
+        assertNull(text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    private double evaluateOption(TextSymbolizer text, String key, SimpleFeature feature) {
+        return ExpressionExtractor.extractCqlExpressions(text.getOptions().get(key))
+                .evaluate(feature, Double.class);
+    }
+
+    private SimpleFeature labelFeature(double size, double spacing) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,size:Double,spacing:Double");
+        return SimpleFeatureBuilder.build(type, new Object[] {"label", size, spacing}, null);
     }
 
     @Test
@@ -198,7 +298,7 @@ public class SymbolMBLayerTest {
         // defaults to 2.0
         assertEquals(2.0, testLayerDefault.getTextPadding());
         assertEquals(
-                "20.0",
+                "40.0",
                 featureTypePoint
                         .get(0)
                         .rules()
@@ -209,13 +309,353 @@ public class SymbolMBLayerTest {
                         .get("spaceAround"));
     }
 
+    /**
+     * Lower sort keys get higher priorities, all inside the (1000, 2000) band of the only layer, and keys in the
+     * millions that differ by one still get distinct priorities.
+     */
+    @Test
+    public void testSymbolSortKeyPriority() throws Exception {
+        TextSymbolizer text = sortKeySymbolizer();
+
+        assertEquals(1999, priority(text, -1e20), 1e-9);
+        assertEquals(1599.81, priority(text, -1000), 0.01);
+        assertEquals(1510.01, priority(text, -1), 0.01);
+        assertEquals(1500, priority(text, 0), 1e-9);
+        assertEquals(1489.99, priority(text, 1), 0.01);
+        assertEquals(1476.75, priority(text, 4), 0.01);
+        assertEquals(1400.19, priority(text, 1000), 0.01);
+        assertThat(priority(text, 1172604), Matchers.greaterThan(priority(text, 1172605)));
+        assertEquals(1001, priority(text, 1e20), 1e-9);
+    }
+
+    /** A feature without the sort key sorts as 0, in the middle of the layer band. */
+    @Test
+    public void testSymbolSortKeyMissing() throws Exception {
+        TextSymbolizer text = sortKeySymbolizer();
+
+        assertEquals(1500, priority(text, null), 1e-9);
+    }
+
+    /**
+     * Line labels are grouped by road name, the group takes the highest priority of its segments, so the sort key still
+     * applies and stays inside the layer band however many segments the road has.
+     */
+    @Test
+    public void testSymbolSortKeyLinePlacement() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-placement": "line",
+                  "symbol-sort-key": ["get", "rank"]
+                }""");
+
+        assertEquals("true", text.getOptions().get(TextSymbolizer.GROUP_KEY));
+        assertEquals("MAX", text.getOptions().get(TextSymbolizer.GROUP_PRIORITY_KEY));
+        assertEquals(1476.75, priority(text, 4), 0.01);
+    }
+
+    /** Variable anchors that change with zoom move the label away from the first anchor of the current stop. */
+    @Test
+    public void testRadialOffsetZoomVariableAnchor() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 0.5,
+                  "text-padding": 0,
+                  "text-variable-anchor": [
+                    "step", ["zoom"], ["literal", ["bottom", "left"]], 8, ["literal", ["center"]]
+                  ]
+                }""");
+
+        // below zoom 8: label above the point, 0.5 em up
+        EnvFunction.setLocalValue("wms_scale_denominator", 1e7);
+        assertPlacement(placement, null, 0.5, 0, 0, 5);
+
+        // from zoom 8: label centered on the point
+        EnvFunction.setLocalValue("wms_scale_denominator", 1e5);
+        assertPlacement(placement, null, 0.5, 0.5, 0, 0);
+    }
+
+    /** A corner anchor moves the label by the offset along the diagonal. */
+    @Test
+    public void testRadialOffsetCorner() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["top-right", "left"]
+                }""");
+        double d = 10 * Math.sqrt(0.5);
+        assertPlacement(placement, null, 1, 1, -d, -d);
+    }
+
+    /** Each anchor moves the label away from the point: sides by the offset, corners along the diagonal. */
+    @Test
+    public void testRadialOffsetDirections() throws Exception {
+        double d = 10 * Math.sqrt(0.5);
+        assertPlacement(radialPlacement("bottom"), null, 0.5, 0, 0, 10);
+        assertPlacement(radialPlacement("top"), null, 0.5, 1, 0, -10);
+        assertPlacement(radialPlacement("left"), null, 0, 0.5, 10, 0);
+        assertPlacement(radialPlacement("right"), null, 1, 0.5, -10, 0);
+        assertPlacement(radialPlacement("bottom-left"), null, 0, 0, d, d);
+        assertPlacement(radialPlacement("bottom-right"), null, 1, 0, -d, d);
+        assertPlacement(radialPlacement("top-left"), null, 0, 1, d, -d);
+        assertPlacement(radialPlacement("top-right"), null, 1, 1, -d, -d);
+        assertPlacement(radialPlacement("center"), null, 0.5, 0.5, 0, 0);
+    }
+
+    /** Placement of a 10px label with a 1 em radial offset away from the given variable anchor. */
+    private PointPlacement radialPlacement(String anchor) throws Exception {
+        return pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["literal", ["%s"]]
+                }"""
+                        .formatted(anchor));
+    }
+
+    /**
+     * The radial offset wins over text-offset, also for the displacement search that flips the label to the other
+     * variable anchors.
+     */
+    @Test
+    public void testRadialOffsetWinsOverTextOffset() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [5, 5],
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["left", "right"]
+                }""");
+        assertPlacement((PointPlacement) text.getLabelPlacement(), null, 0, 0.5, 10, 0);
+        assertEquals(11, maxDisplacement(text), 1e-9);
+    }
+
+    /** A zero radial offset leaves the label to text-anchor and text-offset. */
+    @Test
+    public void testRadialOffsetZero() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [1, 0],
+                  "text-radial-offset": 0,
+                  "text-anchor": "left"
+                }""");
+        assertPlacement(placement, null, 0, 0.5, 10, 0);
+    }
+
+    /**
+     * With variable anchors, Mapbox lays out the label on its collision box grown by the text padding, so the label
+     * also moves away from the point by the padding, on each axis the anchor points along.
+     */
+    @Test
+    public void testVariableAnchorPaddingRadial() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 3,
+                  "text-variable-anchor": ["top-right", "left"]
+                }""");
+        double d = 10 * Math.sqrt(0.5) + 3;
+        assertPlacement((PointPlacement) text.getLabelPlacement(), null, 1, 1, -d, -d);
+        // offset plus the padding along the diagonal, rounded up, plus one: ceil(10 + 4.24) + 1
+        assertEquals(16, maxDisplacement(text), 1e-9);
+    }
+
+    /** Without offsets, variable anchors still set the anchor point and move the label by the padding. */
+    @Test
+    public void testVariableAnchorPaddingDirections() throws Exception {
+        assertPlacement(paddingPlacement("bottom"), null, 0.5, 0, 0, 3);
+        assertPlacement(paddingPlacement("top"), null, 0.5, 1, 0, -3);
+        assertPlacement(paddingPlacement("left"), null, 0, 0.5, 3, 0);
+        assertPlacement(paddingPlacement("right"), null, 1, 0.5, -3, 0);
+        assertPlacement(paddingPlacement("bottom-left"), null, 0, 0, 3, 3);
+        assertPlacement(paddingPlacement("bottom-right"), null, 1, 0, -3, 3);
+        assertPlacement(paddingPlacement("top-left"), null, 0, 1, 3, -3);
+        assertPlacement(paddingPlacement("top-right"), null, 1, 1, -3, -3);
+        assertPlacement(paddingPlacement("center"), null, 0.5, 0.5, 0, 0);
+    }
+
+    /** Placement of a label with a 3px text padding and the given single variable anchor, no offset. */
+    private PointPlacement paddingPlacement(String anchor) throws Exception {
+        return pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-padding": 3,
+                  "text-variable-anchor": ["%s"]
+                }"""
+                        .formatted(anchor));
+    }
+
+    /**
+     * Zoom driven text size and padding make the displacement change with zoom: maxDisplacement follows it, so the
+     * search for the other anchors still runs.
+     */
+    @Test
+    public void testVariableAnchorMaxDisplacementFollowsZoom() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": ["interpolate", ["linear"], ["zoom"], 5, 10, 12, 20],
+                  "text-padding": ["interpolate", ["linear"], ["zoom"], 5, 3, 12, 11],
+                  "text-radial-offset": 0.3,
+                  "text-variable-anchor": ["bottom", "left"]
+                }""");
+        PointPlacement placement = (PointPlacement) text.getLabelPlacement();
+        for (double scale : new double[] {1e7, 1e5}) {
+            EnvFunction.setLocalValue("wms_scale_denominator", scale);
+            double length = placement.getDisplacement().getDisplacementY().evaluate(null, Double.class);
+            assertEquals(Math.ceil(length) + 1, maxDisplacement(text), 1e-9);
+        }
+    }
+
+    /** The padding moves a text-offset label with variable anchors too, only along the axes the offset uses. */
+    @Test
+    public void testVariableAnchorPaddingTextOffset() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [1.1, 0],
+                  "text-padding": 3,
+                  "text-variable-anchor": ["left", "right"]
+                }""");
+        assertEquals(14, placement.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
+        assertEquals(0, placement.getDisplacement().getDisplacementY().evaluate(null, Double.class), 1e-9);
+    }
+
+    /** Without variable anchors the label moves away from text-anchor. */
+    @Test
+    public void testRadialOffsetTextAnchor() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 2,
+                  "text-anchor": "right"
+                }""");
+        assertPlacement(placement, null, 1, 0.5, -20, 0);
+    }
+
+    /** The offset can come from an attribute, and a negative offset leaves the label on the point. */
+    @Test
+    public void testRadialOffsetFromAttribute() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": ["get", "rank"],
+                  "text-anchor": "bottom"
+                }""");
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,rank:Double");
+        assertPlacement(placement, SimpleFeatureBuilder.build(type, new Object[] {"label", 2}, null), 0.5, 0, 0, 20);
+        assertPlacement(placement, SimpleFeatureBuilder.build(type, new Object[] {"label", -1}, null), 0.5, 0, 0, 0);
+    }
+
+    /** Evaluates the maxDisplacement vendor option, an expression that may depend on zoom. */
+    private double maxDisplacement(TextSymbolizer text) {
+        String option = text.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY);
+        return ExpressionExtractor.extractCqlExpressions(option).evaluate(null, Double.class);
+    }
+
+    private PointPlacement pointPlacement(String layout) throws Exception {
+        return (PointPlacement) symbolizer(layout).getLabelPlacement();
+    }
+
+    /** Checks the anchor point and the displacement (SLD axis, up is positive) evaluated on the given feature. */
+    private void assertPlacement(
+            PointPlacement placement, SimpleFeature feature, double ax, double ay, double dx, double dy) {
+        assertEquals(ax, placement.getAnchorPoint().getAnchorPointX().evaluate(feature, Double.class), 1e-9);
+        assertEquals(ay, placement.getAnchorPoint().getAnchorPointY().evaluate(feature, Double.class), 1e-9);
+        assertEquals(dx, placement.getDisplacement().getDisplacementX().evaluate(feature, Double.class), 1e-9);
+        assertEquals(dy, placement.getDisplacement().getDisplacementY().evaluate(feature, Double.class), 1e-9);
+    }
+
+    /** Text symbolizer of a single symbol layer whose sort key is the "rank" attribute. */
+    private TextSymbolizer sortKeySymbolizer() throws Exception {
+        return symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-sort-key": ["get", "rank"]
+                }""");
+    }
+
+    /** First symbolizer of a single symbol layer with the given layout. */
+    private TextSymbolizer symbolizer(String layout) throws Exception {
+        String layer = "{'id':'testid','type':'symbol','source':'src','layout':" + layout + "}";
+        MBStyle mbStyle = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return (TextSymbolizer) ((SymbolMBLayer) mbStyle.layer("testid"))
+                .transformInternal(mbStyle)
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
+    }
+
+    private double priority(TextSymbolizer text, Number rank) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,rank:Double");
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] {"label", rank}, null);
+        return text.getPriority().evaluate(feature, Double.class);
+    }
+
+    @Test
+    public void testZoomDrivenTextPadding() throws Exception {
+        // a zoom-driven text-padding cannot collapse to a scalar: it is emitted as a ${cql} vendor option the
+        // renderer evaluates per request, instead of falling back to the default of 2 (which packs labels)
+        String layer = "{'id':'testid','type':'symbol','source':'src','layout':"
+                + """
+                {
+                  "text-field": "{name}",
+                  "text-padding": ["interpolate", ["linear"], ["zoom"], 5, 3, 8, 7, 12, 11]
+                }}""";
+        MBStyle mbStyle = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        String spaceAround = ((SymbolMBLayer) mbStyle.layer("testid"))
+                .transformInternal(mbStyle)
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0)
+                .getOptions()
+                .get("spaceAround");
+        assertThat(spaceAround, Matchers.startsWith("${"));
+        // twice the padding at zoom 8: Mapbox pads both labels, the label cache only the new one
+        EnvFunction.setLocalValue("wms_scale_denominator", 559_082_263.9508929 / 512);
+        assertEquals(14, ExpressionExtractor.extractCqlExpressions(spaceAround).evaluate(null, Double.class), 1e-9);
+    }
+
     @Test
     public void testIconPadding() {
         assertEquals(30.0, testLayer.getIconPadding());
         // defaults to 2.0
         assertEquals(2.0, testLayerDefault.getIconPadding());
         assertEquals(
-                "20.0",
+                "40.0",
                 featureTypePoint
                         .get(0)
                         .rules()
@@ -226,7 +666,7 @@ public class SymbolMBLayerTest {
                         .get("spaceAround"));
         assertEquals(30.0, testLineLayer.getIconPadding());
         assertEquals(
-                "15.0",
+                "30.0",
                 featureTypeLine
                         .get(0)
                         .rules()
@@ -235,6 +675,18 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .getOptions()
                         .get("spaceAround"));
+    }
+
+    /** A layer with an icon and no text keeps the icons twice the icon-padding apart. */
+    @Test
+    public void testIconOnlyPadding() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "icon-image": "dot",
+                  "icon-padding": 30
+                }""");
+        assertEquals("60.0", text.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -249,7 +701,8 @@ public class SymbolMBLayerTest {
         List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
         TextSymbolizer text = (TextSymbolizer)
                 featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
-        Font font = text.fonts().get(0);
+        // the base family comes after the exact face
+        Font font = text.fonts().get(1);
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));
         FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
@@ -329,5 +782,69 @@ public class SymbolMBLayerTest {
         // a tiny font
         assertThat(font.getSize(), Matchers.instanceOf(Literal.class));
         assertEquals(1, (int) font.getSize().evaluate(null, Integer.class));
+    }
+
+    private SymbolMBLayer symbolLayer(String layout) throws ParseException {
+        String layer = "{'id':'testid', 'type':'symbol', 'source':'src', 'layout':" + layout + "}";
+        MBStyle style = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return (SymbolMBLayer) style.layer("testid");
+    }
+
+    @Test
+    public void testDataDrivenTextFont() throws ParseException {
+        // a "case" text-font is not a static font list: getTextFont() defers to the dynamic textFont()
+        SymbolMBLayer layer = symbolLayer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-font": [
+                    "case",
+                    ["<=", ["get", "min_zoom"], 5],
+                    ["literal", ["Noto Sans Medium"]],
+                    ["literal", ["Noto Sans Regular"]]
+                  ]
+                }""");
+        assertNull(layer.getTextFont());
+        // each "case" branch carries a plain font-name literal, not the wrapping ["..."] stack array
+        Function fontCase = (Function) layer.textFont();
+        List<Expression> params = fontCase.getParameters();
+        assertEquals("case", fontCase.getName());
+        assertEquals(3, params.size());
+        assertEquals("Noto Sans Medium", ((Literal) params.get(1)).getValue());
+        assertEquals("Noto Sans Regular", ((Literal) params.get(2)).getValue());
+    }
+
+    /** A data-driven branch carries one font only, so a stack keeps its first font and drops the fallbacks. */
+    @Test
+    public void testDataDrivenTextFontStack() throws ParseException {
+        SymbolMBLayer layer = symbolLayer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-font": [
+                    "case",
+                    ["<=", ["get", "min_zoom"], 5],
+                    ["literal", ["Noto Sans Medium", "Arial Unicode MS Regular"]],
+                    ["literal", ["Noto Sans Regular"]]
+                  ]
+                }""");
+        Function fontCase = (Function) layer.textFont();
+        List<Expression> params = fontCase.getParameters();
+        assertEquals("Noto Sans Medium", ((Literal) params.get(1)).getValue());
+        assertEquals("Noto Sans Regular", ((Literal) params.get(2)).getValue());
+    }
+
+    @Test
+    public void testStaticTextFontStillList() throws ParseException {
+        SymbolMBLayer layer = symbolLayer("{'text-field': '{name}', 'text-font': ['Noto Sans Regular']}");
+        assertEquals(List.of("Noto Sans Regular"), layer.getTextFont());
+    }
+
+    /** An expression padding compares as the default 2 when picking the larger of text and icon padding. */
+    @Test
+    public void testExpressionTextPadding() throws ParseException {
+        SymbolMBLayer layer = symbolLayer(
+                "{'text-field': '{name}', 'text-padding': ['interpolate', ['linear'], ['zoom'], 5, 2, 8, 4]}");
+        assertEquals(2.0, layer.getTextPadding().doubleValue(), 0.0);
     }
 }

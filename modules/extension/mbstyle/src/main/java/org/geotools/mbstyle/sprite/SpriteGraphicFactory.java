@@ -90,8 +90,6 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     /** {@link ExternalGraphic} instances with this format will be handled by the {@link SpriteGraphicFactory}. */
     public static final String FORMAT = "mbsprite";
 
-    final JSONParser jsonParser = new JSONParser();
-
     protected static final Map<URL, BufferedImage> imageCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     protected static final Map<URL, SpriteIndex> indexCache = Collections.synchronizedMap(new SoftValueHashMap<>());
@@ -272,7 +270,8 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
             String charset = Optional.ofNullable(response.getResponseCharset()).orElse("UTF-8");
             try (BufferedReader reader =
                     new BufferedReader(new InputStreamReader(response.getResponseStream(), charset))) {
-                Object parsed = jsonParser.parse(reader);
+                // JSONParser keeps its lexer state, so one instance cannot be shared by the rendering threads
+                Object parsed = new JSONParser().parse(reader);
                 if (parsed instanceof JSONObject object) {
                     spriteIndex = new SpriteIndex(indexUrlStr, object);
                     indexCache.put(baseUrl, spriteIndex);

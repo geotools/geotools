@@ -826,7 +826,7 @@ public class SLDStyleFactory {
             attributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
         }
         double spacing = voParser.getDoubleOption(
-                symbolizer, TextSymbolizer.CHAR_SPACING_KEY, TextSymbolizer.DEFAULT_CHAR_SPACING);
+                symbolizer, TextSymbolizer.CHAR_SPACING_KEY, TextSymbolizer.DEFAULT_CHAR_SPACING, feature);
         if (spacing != 0) {
             // tracking is a percentage of the font size
             double tracking = spacing / size;
@@ -908,11 +908,11 @@ public class SLDStyleFactory {
     }
 
     /**
-     * Minimum dash array value in pixels. Values below this threshold are treated as zero to avoid rendering issues
-     * with astronomically small values (e.g., 1E-12) that can cause Java2D to crash when computing an impossibly large
-     * number of dashes.
+     * Minimum dash array value in pixels. A dash array with all its values below it draws a solid line: such a pattern
+     * cannot be seen, and Java2D takes minutes or fails when a line has millions of dashes. Dash arrays with a smaller
+     * value can come from zoom interpolation, e.g. an MBStyle line-dasharray multiplied by a line-width near zero.
      */
-    private static final float MIN_DASH_VALUE = 1e-6f;
+    private static final float MIN_DASH_VALUE = 0.1f;
 
     private boolean allZeroes(float[] dashes) {
         for (float dash : dashes) {

@@ -90,6 +90,7 @@ import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
@@ -219,6 +220,7 @@ public class CssTranslator {
             entry("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY),
             entry("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY),
             entry("label-all-group", TextSymbolizer.LABEL_ALL_GROUP_KEY),
+            entry("label-group-priority", TextSymbolizer.GROUP_PRIORITY_KEY),
             entry("label-remove-overlaps", TextSymbolizer.REMOVE_OVERLAPS_KEY),
             entry("label-allow-overruns", TextSymbolizer.ALLOW_OVERRUNS_KEY),
             entry("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY),
@@ -228,6 +230,7 @@ public class CssTranslator {
             entry("label-word-spacing", TextSymbolizer.WORD_SPACING_KEY),
             entry("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY),
             entry("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY),
+            entry("label-auto-wrap-balanced", TextSymbolizer.AUTO_WRAP_BALANCED_KEY),
             entry("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY),
             entry("label-conflict-resolution", TextSymbolizer.CONFLICT_RESOLUTION_KEY),
             entry("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY),
@@ -235,6 +238,7 @@ public class CssTranslator {
             entry("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY),
             entry("label-partials", TextSymbolizer.PARTIALS_KEY),
             entry("label-displacement-mode", TextSymbolizer.DISPLACEMENT_MODE_KEY),
+            entry("label-displacement-anchor", TextSymbolizer.DISPLACEMENT_ANCHOR_KEY),
             entry("shield-resize", TextSymbolizer.GRAPHIC_RESIZE_KEY),
             entry("shield-margin", TextSymbolizer.GRAPHIC_MARGIN_KEY),
             entry("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY),
@@ -1969,9 +1973,17 @@ public class CssTranslator {
             }
             String sldKey = vendorOptions.get(vendorOptionKey);
             if (sldKey != null) {
-                String value = getLiteral(values, cssKey, idx, null);
-                if (value != null) {
-                    sb.option(sldKey, value);
+                Value value = getValue(values, cssKey, idx);
+                if (value instanceof Value.Expression || value instanceof Value.Function) {
+                    // the renderer evaluates a ${cql} option for each feature, as in SLD; inside ${} the
+                    // characters \, $ and } need a backslash escape
+                    String cql = ECQL.toCQL(value.toExpression())
+                            .replace("\\", "\\\\")
+                            .replace("$", "\\$")
+                            .replace("}", "\\}");
+                    sb.option(sldKey, "${" + cql + "}");
+                } else if (value != null) {
+                    sb.option(sldKey, value.toLiteral());
                 }
             }
         }

@@ -27,9 +27,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
+import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -53,8 +56,10 @@ import org.geotools.api.style.Stroke;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.FontAttributesExtractor;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
@@ -68,6 +73,7 @@ import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.text.Text;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -85,6 +91,8 @@ import org.json.simple.JSONObject;
  */
 public class SymbolMBLayer extends MBLayer {
 
+    private static final Logger LOGGER = Logging.getLogger(SymbolMBLayer.class);
+
     static final Font TINY_FONT;
 
     static {
@@ -99,6 +107,15 @@ public class SymbolMBLayer extends MBLayer {
     private final JSONObject paint;
 
     private static final String TYPE = "symbol";
+
+    /** Offset of a label with symbol-sort-key 0, the middle of the 1000 wide priority band of its layer */
+    private static final int SORT_KEY_MIDDLE = 500;
+
+    /** Largest distance of a sort key offset from {@link #SORT_KEY_MIDDLE}, so it never reaches the band edges */
+    private static final int SORT_KEY_HALF_RANGE = 499;
+
+    /** Natural log of 1 + the largest sort key absolute value, larger keys get the end offsets */
+    private static final double LOG_MAX_SORT_KEY = Math.log1p(1e15);
 
     private Integer labelPriority;
 
@@ -632,11 +649,13 @@ public class SymbolMBLayer extends MBLayer {
      *
      * <p>Size of the additional area around the icon bounding box used for detecting symbol collisions.
      *
-     * @return Padding around the icon for collision-detection.
+     * @return Padding around the icon for collision-detection, or the default 2 when the padding is an expression
      * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Number getIconPadding() throws MBFormatException {
-        return parse.optional(Number.class, layout, "icon-padding", 2.0);
+        // only picks the larger of text and icon padding; spaceAround uses iconPadding() itself
+        Expression padding = parse.number(layout, "icon-padding", 2.0);
+        return padding instanceof Literal ? padding.evaluate(null, Double.class) : 2.0;
     }
 
     /**
@@ -646,7 +665,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Expression iconPadding() throws MBFormatException {
-        return parse.percentage(layout, "icon-padding", 2.0);
+        return parse.number(layout, "icon-padding", 2.0);
     }
 
     /**
@@ -826,14 +845,18 @@ public class SymbolMBLayer extends MBLayer {
      * @return The font to use for the label
      */
     public List<String> getTextFont() {
-        String[] fonts;
-        if (layout.get("text-font") instanceof JSONObject) {
+        Object textFont = layout.get("text-font");
+        // a data-driven expression (e.g. ["case", ...]) is handled by the dynamic textFont() path
+        if (textFont instanceof JSONObject
+                || (textFont instanceof JSONArray array
+                        && !array.isEmpty()
+                        && array.get(0) instanceof String op
+                        && MBExpression.canCreate(op))) {
             return null;
-        } else {
-            fonts = parse.array(
-                    String.class, layout, "text-font", new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
-            return Arrays.asList(fonts);
         }
+        String[] fonts = parse.array(
+                String.class, layout, "text-font", new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
+        return Arrays.asList(fonts);
     }
 
     /**
@@ -929,7 +952,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Access text-line-height as literal or function expression
+     * Access text-letter-spacing as literal or function expression
      *
      * @return Spacing between label characters
      * @throws MBFormatException JSON definition inconsistent with specification
@@ -1100,11 +1123,13 @@ public class SymbolMBLayer extends MBLayer {
      *
      * <p>Size of the additional area around the text bounding box used for detecting symbol collisions.
      *
-     * @return Padding around the label for detecting collisions
+     * @return Padding around the label for detecting collisions, or the default 2 when the padding is an expression
      * @throws MBFormatException JSON definition inconsistent with specification
      */
     public Number getTextPadding() throws MBFormatException {
-        return parse.optional(Number.class, layout, "text-padding", 2.0);
+        // only picks the larger of text and icon padding; spaceAround uses textPadding() itself
+        Expression padding = parse.number(layout, "text-padding", 2.0);
+        return padding instanceof Literal ? padding.evaluate(null, Double.class) : 2.0;
     }
 
     /**
@@ -1114,7 +1139,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException JSON definition inconsistent with specification
      */
     public Expression textPadding() throws MBFormatException {
-        return parse.percentage(layout, "text-padding", 2.0);
+        return parse.number(layout, "text-padding", 2.0);
     }
 
     /**
@@ -1228,6 +1253,224 @@ public class SymbolMBLayer extends MBLayer {
 
     private boolean hasTextOffset() {
         return parse.isDefined(layout, "text-offset");
+    }
+
+    /**
+     * Returns every name in text-variable-anchor, across all zoom stops, in order and without repeats. The caller drops
+     * the names that are not anchors, such as "step" or "center".
+     */
+    private List<String> getTextVariableAnchor() {
+        Object value = layout.get("text-variable-anchor");
+        if (!(value instanceof JSONArray)) {
+            return Collections.emptyList();
+        }
+        Set<String> anchors = new LinkedHashSet<>();
+        collectStrings((JSONArray) value, anchors);
+        return new ArrayList<>(anchors);
+    }
+
+    /** Returns true for the zoom form of text-variable-anchor, a "step" on zoom. */
+    private boolean isZoomDrivenVariableAnchor() {
+        return layout.get("text-variable-anchor") instanceof JSONArray array
+                && !array.isEmpty()
+                && "step".equals(array.get(0));
+    }
+
+    /** Recursively appends every String scalar found in the array (and any nested arrays) to {@code out}. */
+    private static void collectStrings(JSONArray array, Set<String> out) {
+        for (Object element : array) {
+            if (element instanceof JSONArray nested) {
+                collectStrings(nested, out);
+            } else if (element instanceof String s) {
+                out.add(s);
+            }
+        }
+    }
+
+    /**
+     * Maps text-variable-anchor positions to a comma-separated displacementMode value. The anchor names the side of the
+     * label placed AT the point, so the label sits on the opposite side: "left" (label to the right) -> E, "right" ->
+     * W, and so on. "center" and unknowns carry no directional flip and are dropped.
+     */
+    private String displacementModeFromVariableAnchor() {
+        List<String> modes = new ArrayList<>();
+        for (String anchor : getTextVariableAnchor()) {
+            String mode =
+                    switch (anchor.trim().toLowerCase()) {
+                        case "left" -> "E";
+                        case "right" -> "W";
+                        case "top" -> "S";
+                        case "bottom" -> "N";
+                        case "top-left" -> "SE";
+                        case "top-right" -> "SW";
+                        case "bottom-left" -> "NE";
+                        case "bottom-right" -> "NW";
+                        default -> null;
+                    };
+            if (mode != null && !modes.contains(mode)) {
+                modes.add(mode);
+            }
+        }
+        return String.join(",", modes);
+    }
+
+    /**
+     * (Optional) Units in ems. Defaults to 0. Requires text-field. Distance of the label from the point, away from the
+     * anchor named by text-variable-anchor, or by text-anchor without variable anchors.
+     */
+    public Expression textRadialOffset() {
+        return parse.number(layout, "text-radial-offset", 0);
+    }
+
+    /**
+     * Mapbox pads both colliding boxes, the label cache pads only the new label: double the padding to keep the same
+     * distance between labels. When two labels use different paddings, the label placed second decides the distance.
+     */
+    private String spaceAround(Expression padding) {
+        return MBStyleTransformer.vendorOptionExpression(ff.multiply(ff.literal(2), padding));
+    }
+
+    private boolean hasTextLetterSpacing() {
+        Object spacing = layout.get("text-letter-spacing");
+        return spacing != null && !(spacing instanceof Number number && number.doubleValue() == 0);
+    }
+
+    /** A zero radial offset leaves the label to text-offset, as Mapbox does without variable anchors. */
+    private boolean hasTextRadialOffset() {
+        Object offset = layout.get("text-radial-offset");
+        return offset != null && !(offset instanceof Number number && number.doubleValue() == 0);
+    }
+
+    /**
+     * Returns the anchor the radial offset moves the label away from, as a name or as a zoom step of names: the first
+     * variable anchor, or text-anchor without variable anchors. Returns null for forms that cannot be mapped.
+     */
+    @SuppressWarnings("unchecked") // json-simple JSONArray is a raw ArrayList
+    private Object radialAnchor() {
+        Object variable = layout.get("text-variable-anchor");
+        if (variable == null) {
+            Object anchor = layout.get("text-anchor");
+            if (anchor == null) {
+                return "center";
+            }
+            return anchor instanceof String ? anchor : null;
+        }
+        if (!(variable instanceof JSONArray anchors) || anchors.isEmpty()) {
+            return null;
+        }
+        if ("literal".equals(anchors.get(0)) && anchors.get(1) instanceof JSONArray names && !names.isEmpty()) {
+            return names.get(0);
+        }
+        if (anchors.get(0) instanceof String first && !"step".equals(first)) {
+            return first;
+        }
+        // zoom step: keep input and stops, replace each ["literal", [anchors]] output with its first anchor
+        JSONArray step = new JSONArray();
+        step.addAll(anchors.subList(0, 2));
+        for (int i = 2; i < anchors.size(); i += 2) {
+            if (!(anchors.get(i) instanceof JSONArray literal
+                    && literal.size() == 2
+                    && literal.get(1) instanceof JSONArray names
+                    && !names.isEmpty())) {
+                return null;
+            }
+            step.add(names.get(0));
+            if (i + 1 < anchors.size()) {
+                step.add(anchors.get(i + 1));
+            }
+        }
+        return step;
+    }
+
+    /** Moves the label away from its anchor by the radial offset, plus the text padding with variable anchors. */
+    private Displacement radialDisplacement(Object radialAnchor, Expression fontSize) {
+        Expression offset = ff.multiply(fontSize, ff.function("max", textRadialOffset(), ff.literal(0)));
+        Displacement displacement = sf.displacement(
+                ff.multiply(offset, perAnchor(radialAnchor, a -> awayFrom(a.getX()) * diagonal(a))),
+                ff.multiply(offset, perAnchor(radialAnchor, a -> awayFrom(a.getY()) * diagonal(a))));
+        if (hasTextVariableAnchor()) {
+            addVariableAnchorPadding(
+                    displacement,
+                    perAnchor(radialAnchor, a -> awayFrom(a.getX())),
+                    perAnchor(radialAnchor, a -> awayFrom(a.getY())));
+        }
+        return displacement;
+    }
+
+    /**
+     * Moves the label away from its variable anchor by the length of text-offset on each axis, plus the text padding,
+     * as Mapbox does: the sign of each axis comes from the anchor, not from the offset.
+     */
+    private Displacement variableAnchorDisplacement(Object anchor, Expression fontSize) {
+        double[] offset = getTextOffset();
+        Expression signX = perAnchor(anchor, a -> awayFrom(a.getX()));
+        Expression signY = perAnchor(anchor, a -> awayFrom(a.getY()));
+        Displacement displacement = sf.displacement(
+                ff.multiply(fontSize, ff.multiply(ff.literal(Math.abs(offset[0])), signX)),
+                ff.multiply(fontSize, ff.multiply(ff.literal(Math.abs(offset[1])), signY)));
+        addVariableAnchorPadding(displacement, signX, signY);
+        return displacement;
+    }
+
+    /**
+     * Returns a value of the radial anchor: a literal for an anchor name, a zoom step expression for a step of names.
+     */
+    @SuppressWarnings("unchecked") // json-simple JSONArray and JSONObject are raw collections
+    private Expression perAnchor(Object radialAnchor, ToDoubleFunction<TextAnchor> value) {
+        if (radialAnchor instanceof String name) {
+            return ff.literal(value.applyAsDouble(TextAnchor.parse(name)));
+        }
+        // after the step input, outputs and stops alternate: output, stop, output, ...
+        JSONArray step = new JSONArray();
+        step.addAll((JSONArray) radialAnchor);
+        for (int i = 2; i < step.size(); i += 2) {
+            step.set(i, value.applyAsDouble(TextAnchor.parse((String) step.get(i))));
+        }
+        JSONObject holder = new JSONObject();
+        holder.put("value", step);
+        return parse.number(holder, "value", 0);
+    }
+
+    /**
+     * Returns the way the label moves along one axis, away from the side of the label placed at the point: 1 from the
+     * low side (anchor 0), -1 from the high side (anchor 1), 0 when centered. SLD y grows upwards.
+     */
+    private static double awayFrom(double anchor) {
+        return Math.signum(0.5 - anchor);
+    }
+
+    /** Corners move along the diagonal, the same distance as sides, like Mapbox does. */
+    private static double diagonal(TextAnchor anchor) {
+        return anchor.getX() != 0.5 && anchor.getY() != 0.5 ? Math.sqrt(0.5) : 1;
+    }
+
+    private boolean hasTextVariableAnchor() {
+        return layout.get("text-variable-anchor") != null;
+    }
+
+    /**
+     * Mapbox lays out labels with variable anchors on a collision box grown by the text padding, so the label moves
+     * away from the point by the padding too, on each axis its offset points along (sign -1, 0 or 1).
+     */
+    private void addVariableAnchorPadding(Displacement offset, Expression signX, Expression signY) {
+        offset.setDisplacementX(ff.add(offset.getDisplacementX(), ff.multiply(textPadding(), signX)));
+        offset.setDisplacementY(ff.add(offset.getDisplacementY(), ff.multiply(textPadding(), signY)));
+    }
+
+    /**
+     * Returns the maxDisplacement vendor option for variable anchors. The renderer searches the other anchors only
+     * while its radius, which starts at the length of the label displacement, stays within maxDisplacement: return just
+     * above that length, enough to flip the label to the other anchors, not so much it wanders. The length follows zoom
+     * and feature like the displacement. Without a displacement, allow a one-font-size flip.
+     */
+    private String maxLabelDisplacement(Displacement displacement, Expression fontSize) {
+        Expression length = fontSize;
+        if (displacement != null) {
+            Expression dx = displacement.getDisplacementX();
+            Expression dy = displacement.getDisplacementY();
+            length = ff.function("sqrt", ff.add(ff.multiply(dx, dx), ff.multiply(dy, dy)));
+        }
+        return MBStyleTransformer.vendorOptionExpression(ff.add(ff.function("ceil", length), ff.literal(1)));
     }
 
     /**
@@ -1693,7 +1936,12 @@ public class SymbolMBLayer extends MBLayer {
         String symbolPlacementVal = MBStyleTransformer.requireLiteral(
                 symbolPlacement(), String.class, "point", "symbol-placement", getId());
         Expression fontSize = textSize();
-        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+        boolean linePlacement = !"point".equalsIgnoreCase(symbolPlacementVal.trim());
+        // Mapbox draws viewport aligned line symbols upright at each anchor along the line (e.g. road shields):
+        // a point placement on a line geometry does the same, the renderer still walks the line to place them
+        Alignment rotationAlignment = hasTextField() ? getTextRotationAlignment() : getIconRotationAlignment();
+        boolean uprightOnLine = linePlacement && rotationAlignment == Alignment.VIEWPORT;
+        if (!linePlacement || uprightOnLine) {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
             // Set anchor point (translated by text-translate)
@@ -1707,13 +1955,33 @@ public class SymbolMBLayer extends MBLayer {
                 textTranslate.setDisplacementY(ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
                 displacement = textTranslate;
             }
-            // MapBox test-offset: +y mean down and expressed in ems
-            Displacement textOffset;
-            if (hasTextOffset()) {
+            // MapBox text-radial-offset: moves the label away from its anchor, in ems, and wins over text-offset
+            // with variable anchors and no offset Mapbox places the label as with a zero radial offset
+            // Mapbox ignores text-variable-anchor on line placement
+            boolean variableAnchor = hasTextVariableAnchor() && !linePlacement;
+            boolean radial = hasTextRadialOffset() || variableAnchor && !hasTextOffset();
+            // with variable anchors the label sits at the first anchor, and text-offset moves it away from it
+            boolean anchored = radial || variableAnchor;
+            Object radialAnchor = anchored ? radialAnchor() : null;
+            if (anchored && radialAnchor == null) {
+                LOGGER.warning("Mapbox label anchor ignored on layer '" + getId()
+                        + "': its text-anchor or text-variable-anchor form is not supported");
+            }
+            Displacement textOffset = null;
+            if (radialAnchor != null) {
+                pointP.setAnchorPoint(sf.anchorPoint(
+                        perAnchor(radialAnchor, TextAnchor::getX), perAnchor(radialAnchor, TextAnchor::getY)));
+                textOffset = radial
+                        ? radialDisplacement(radialAnchor, fontSize)
+                        : variableAnchorDisplacement(radialAnchor, fontSize);
+            } else if (hasTextOffset()) {
+                // MapBox text-offset: +y means down, in ems
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
                 textOffset.setDisplacementY(
                         ff.multiply(fontSize, ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+            }
+            if (textOffset != null) {
                 if (displacement == null) {
                     displacement = textOffset;
                 } else {
@@ -1756,6 +2024,9 @@ public class SymbolMBLayer extends MBLayer {
         if (staticFonts != null) {
             for (String textFont : staticFonts) {
                 FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
+                if (!fae.getBaseName().equals(textFont)) {
+                    fonts.add(exactFaceFont(ff.literal(textFont), fontSize));
+                }
                 Font font = sb.createFont(
                         ff.function(FontAlternativesFunction.NAME.getName(), ff.literal(fae.getBaseName())),
                         ff.literal(fae.isItalic() ? "italic" : "normal"),
@@ -1765,6 +2036,7 @@ public class SymbolMBLayer extends MBLayer {
             }
         } else if (textFont() != null) {
             Expression dynamicFont = textFont();
+            fonts.add(exactFaceFont(dynamicFont, fontSize));
             Font font = sb.createFont(
                     ff.function(
                             FontAlternativesFunction.NAME.getName(),
@@ -1816,21 +2088,56 @@ public class SymbolMBLayer extends MBLayer {
         Map<String, String> options = symbolizer.getOptions();
         options.put(TextSymbolizer.LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
+        // Mapbox text-variable-anchor: the sides the label may flip to when the preferred spot collides.
+        // maxDisplacement must be set too, or the renderer never searches the other anchors
+        if (!linePlacement) {
+            String displacementMode = displacementModeFromVariableAnchor();
+            if (!displacementMode.isEmpty()) {
+                options.put(TextSymbolizer.DISPLACEMENT_MODE_KEY, displacementMode);
+                // Mapbox tries each anchor with the label fully on that side, never across the point
+                options.put(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY, "outside");
+                Displacement displacement = ((PointPlacement) labelPlacement).getDisplacement();
+                options.put(TextSymbolizer.MAX_DISPLACEMENT_KEY, maxLabelDisplacement(displacement, fontSize));
+                if (isZoomDrivenVariableAnchor()) {
+                    LOGGER.warning("Mapbox 'text-variable-anchor' is zoom-driven on layer '"
+                            + getId()
+                            + "'; displacementMode is a static vendor option, so the union of all zoom stops ("
+                            + displacementMode
+                            + ") is applied at every zoom.");
+                }
+            }
+        }
+
         // text max angle - only for line placement
         // throw MBFormatException if point placement
-        if (labelPlacement instanceof LinePlacement) {
-            // Ensure the symbol follows the line, if there is no text (e.g. one ways)
-            if (pureSymbol) {
-                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
+        if (linePlacement) {
+            if (uprightOnLine) {
+                // Mapbox anchors a line symbol only where the whole label fits on the line
+                options.put(TextSymbolizer.ALLOW_OVERRUNS_KEY, "false");
             } else {
-                // otherwise align with the text being drawn (e.g. label shields)
-                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+                // Ensure the symbol follows the line, if there is no text (e.g. one ways)
+                if (pureSymbol) {
+                    options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
+                } else {
+                    // otherwise align with the text being drawn (e.g. label shields)
+                    options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+                }
+                // "followLine" will be true if line placement, it is an implied default of MBstyles.
+                options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+                options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
             }
-            // "followLine" will be true if line placement, it is an implied default of MBstyles.
-            options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
-            options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
             options.put(TextSymbolizer.GROUP_KEY, "true");
             options.put(TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
+            // Mapbox drops a line label closer than half the symbol spacing to another one with the same text.
+            // The renderer measures the distance between label boxes, Mapbox between anchors: close enough for
+            // short labels such as road shields
+            if (!pureSymbol) {
+                options.put(
+                        TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
+                        String.valueOf(Math.round(symbolSpacing.doubleValue() / 2)));
+            }
+            // a road split in segments ranks like its best segment, Mapbox places each segment on its own
+            options.put(TextSymbolizer.GROUP_PRIORITY_KEY, GroupPriority.MAX.name());
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -1879,22 +2186,24 @@ public class SymbolMBLayer extends MBLayer {
         if (!hasIconImage()
                 || "point".equalsIgnoreCase(symbolPlacementVal.trim())
                 || getTextPadding().doubleValue() >= getIconPadding().doubleValue()) {
-            options.put("spaceAround", String.valueOf(getTextPadding()));
+            options.put(TextSymbolizer.SPACE_AROUND_KEY, spaceAround(textPadding()));
         }
         // halo blur
         // layer.textHaloBlur();
 
-        // auto wrap
-        // getTextSize defaults to 16, and getTextMaxWidth defaults to 10
-        // converts text-max-width(mbstyle) from ems to pixels for autoWrap(sld)
-        // Only supported when text-max-width and text-size are not functions (because vendor
-        // options don't take expressions)
-        if (hasTextMaxWidth()) {
-            double textMaxWidth =
-                    MBStyleTransformer.requireLiteral(textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
-            double textSize = MBStyleTransformer.requireLiteral(
-                    fontSize, Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
-            options.put(TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
+        // text-max-width is in ems, autoWrap in pixels.
+        // Mapbox wraps point labels at 10 ems even without text-max-width, and never wraps line labels
+        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+            options.put(
+                    TextSymbolizer.AUTO_WRAP_KEY,
+                    MBStyleTransformer.vendorOptionExpression(ff.multiply(textMaxWidth(), fontSize)));
+            options.put(TextSymbolizer.AUTO_WRAP_BALANCED_KEY, "true");
+        }
+        // text-letter-spacing is in ems, charSpacing in pixels
+        if (hasTextLetterSpacing()) {
+            options.put(
+                    TextSymbolizer.CHAR_SPACING_KEY,
+                    MBStyleTransformer.vendorOptionExpression(ff.multiply(textLetterSpacing(), fontSize)));
         }
 
         // If the layer has an icon image, add it to our symbolizer
@@ -1904,7 +2213,7 @@ public class SymbolMBLayer extends MBLayer {
             if (!hasTextField()
                     || getIconPadding().doubleValue() > getTextPadding().doubleValue()
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                options.put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
+                options.put(TextSymbolizer.SPACE_AROUND_KEY, spaceAround(iconPadding()));
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)
@@ -1920,7 +2229,7 @@ public class SymbolMBLayer extends MBLayer {
         // make sure rendering paints the labels in the same layer based order that
         // Mapbox GL would use
         if (labelPriority != null) {
-            symbolizer.setPriority(ff.literal(labelPriority));
+            symbolizer.setPriority(labelPriority());
         }
 
         symbolizers.add(symbolizer);
@@ -1940,6 +2249,18 @@ public class SymbolMBLayer extends MBLayer {
                 filter.semanticTypeIdentifiers(), // we only expect this to be applied to
                 // polygons
                 rules));
+    }
+
+    /**
+     * Returns a font for the exact face named, such as "Arial Black", at normal style and weight. The face carries its
+     * own weight and style. A missing face resolves to no font, so the next font in the list takes over.
+     */
+    private Font exactFaceFont(Expression faceName, Expression fontSize) {
+        return sf.createFont(
+                ff.function(FontAlternativesFunction.NAME.getName(), faceName),
+                ff.literal("normal"),
+                ff.literal("normal"),
+                fontSize);
     }
 
     /**
@@ -2008,6 +2329,48 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    /** Returns the label priority: the layer priority, raised by the symbol-sort-key offset if the layer has one. */
+    private Expression labelPriority() {
+        if (!parse.isDefined(layout, "symbol-sort-key")) {
+            return ff.literal(labelPriority);
+        }
+        // a feature without the key sorts as 0, like in Mapbox: a NaN priority would beat every other label
+        Expression key = parse.number(layout, "symbol-sort-key", 0);
+        Expression sortKey = ff.function("if_then_else", ff.function("isNull", key), ff.literal(0), key);
+        return ff.add(ff.literal(labelPriority), sortKeyOffset(sortKey));
+    }
+
+    /**
+     * Maps a symbol-sort-key to an offset between 1 and 999, added to the layer priority. Each layer owns a 1000 wide
+     * priority band (see {@link MBStyle#layers()}), so the labels of a layer stay above its priority and below the next
+     * layer. Mapbox places lower keys first, while GeoTools places higher priorities first, so the offset decreases as
+     * the key grows:
+     *
+     * <pre>{@code
+     * key:     -1e15 ... -1000    -1    0    1   1000 ... 1e15
+     * offset:    999 ...   600   510  500  490    400 ...    1
+     * }</pre>
+     *
+     * The offset follows the logarithm of the key, so small keys (e.g. zoom levels) and keys in the millions both keep
+     * distinct priorities. Keys beyond +-1e15 get the end offsets:
+     *
+     * <pre>{@code
+     * distance = SORT_KEY_HALF_RANGE * min(1, ln(1 + abs(key)) / LOG_MAX_SORT_KEY)
+     * offset   = SORT_KEY_MIDDLE + distance   if key < 0
+     *            SORT_KEY_MIDDLE - distance   otherwise
+     * }</pre>
+     */
+    private Expression sortKeyOffset(Expression sortKey) {
+        Expression logKey = ff.function("log", ff.add(ff.literal(1), ff.function("abs_4", sortKey)));
+        Expression scaled = ff.function("min", ff.literal(1), ff.divide(logKey, ff.literal(LOG_MAX_SORT_KEY)));
+        Expression distance = ff.multiply(ff.literal(SORT_KEY_HALF_RANGE), scaled);
+        return ff.function(
+                "if_then_else",
+                ff.function("lessThan", sortKey, ff.literal(0)),
+                ff.add(ff.literal(SORT_KEY_MIDDLE), distance),
+                ff.subtract(ff.literal(SORT_KEY_MIDDLE), distance));
     }
 
     public Integer getLabelPriority() {

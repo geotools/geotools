@@ -31,6 +31,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.data.DataUtilities;
@@ -43,6 +45,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.function.ZoomLevelFunction;
 import org.geotools.measure.Units;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
@@ -150,6 +153,8 @@ public class DashArrayIntegrationTest {
 
     private static final long DISPLAY_TIME = 1000;
 
+    private static final double DASH_TOLERANCE = 1e-9;
+
     private Style style;
 
     @Before
@@ -166,9 +171,9 @@ public class DashArrayIntegrationTest {
 
     /**
      * Tests that MBStyle line-dasharray expressions evaluate correctly at zoom levels where line-width interpolates to
-     * near-zero values. At zoom ~14, line-width is ~0 (per the stops [[14,0],[15,1],[20,10]]), so dash values become
-     * astronomically small. This verifies the expressions are constructed correctly - the actual rendering protection
-     * against near-zero values is tested in SLDStyleFactoryTest.testDashArrayNearZero.
+     * near-zero values. At zoom 14, line-width is 0 (per the stops [[14,0],[15,1],[20,10]]), and so are the dash
+     * values. This verifies the expressions are constructed correctly - the actual rendering protection against
+     * near-zero values is tested in SLDStyleFactoryTest.testDashArrayNearZero.
      */
     @Test
     public void testDashArrayExpressionValues() throws Exception {
@@ -192,13 +197,16 @@ public class DashArrayIntegrationTest {
         assertTrue("Dash values should be near zero at zoom 14", dash0 < 1e-6);
         assertTrue("Dash values should be near zero at zoom 14", dash1 < 1e-6);
 
-        // Verify the ratio is preserved (dash = 2 * lineWidth)
-        assertEquals(2.0, dash0 / strokeWidth, 0.001);
-        assertEquals(2.0, dash1 / strokeWidth, 0.001);
+        // Verify the dash follows the width (dash = 2 * lineWidth)
+        assertEquals(2 * strokeWidth, dash0, 1e-12);
+        assertEquals(2 * strokeWidth, dash1, 1e-12);
     }
 
     @Test
     public void testDashArrayWithStrokeWitdthCollapsedToNearZeroRendersOk() throws Exception {
+        // one zoom step above 14, with a line-width reaching 1 at zoom 24 only: dashes of 2e-7 px
+        Style style = createStyle(MBSTYLE.replace("[[14,0],[15,1],[20,10]]", "[[14,0],[24,1]]"));
+        EnvFunction.setGlobalValue("wms_scale_denominator", 17061.836668394135 / Math.pow(2, 1e-6));
         // bounds matching WMTS tile TileMatrix=EPSG:900913:15&TileCol=18891&TileRow=TileRow=10538
         final ReferencedEnvelope tileBounds = new ReferencedEnvelope(
                 3066042.0781481937, 3067265.070600584, 7148390.884234618, 7149613.876687013, CRS.decode("EPSG:3857"));
@@ -241,11 +249,121 @@ public class DashArrayIntegrationTest {
     }
 
     private Style createStyle() throws org.json.simple.parser.ParseException {
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(MBSTYLE);
-        MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = mbStyle.transform();
+        return createStyle(MBSTYLE);
+    }
+
+    private Style createStyle(String mbstyle) throws org.json.simple.parser.ParseException {
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(mbstyle);
+        StyledLayerDescriptor sld = new MBStyle(jsonObject).transform();
         return MapboxTestUtils.getStyle(sld, 0);
+    }
+
+    private static double scaleForZoom(int zoom) {
+        return ZoomLevelFunction.EPSG_3857_O_SCALE / Math.pow(2, zoom);
+    }
+
+    private List<Expression> dashArrayOf(String layer) throws Exception {
+        Style s = createStyle(MapboxTestUtils.style(layer));
+        LineSymbolizer ls = (LineSymbolizer)
+                s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        return ls.getStroke().dashArray();
+    }
+
+    /** A zoom "step" between dash arrays becomes one dash expression per position, scaled by the line width. */
+    @Test
+    public void testZoomStepDashArray() throws Exception {
+        String layer =
+                """
+                {
+                  "id": "boundaries",
+                  "type": "line",
+                  "source": "src",
+                  "source-layer": "x",
+                  "paint": {
+                    "line-color": "#000",
+                    "line-width": 0.5,
+                    "line-dasharray": [
+                      "step",
+                      ["zoom"],
+                      ["literal", [2, 0]],
+                      4,
+                      ["literal", [2, 1]]
+                    ]
+                  }
+                }""";
+        List<Expression> dash = dashArrayOf(layer);
+        assertEquals(2, dash.size());
+
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleForZoom(2));
+        assertEquals(1.0, dash.get(0).evaluate(null, Double.class), DASH_TOLERANCE);
+        assertEquals(0.0, dash.get(1).evaluate(null, Double.class), DASH_TOLERANCE);
+
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleForZoom(10));
+        assertEquals(1.0, dash.get(0).evaluate(null, Double.class), DASH_TOLERANCE);
+        assertEquals(0.5, dash.get(1).evaluate(null, Double.class), DASH_TOLERANCE);
+    }
+
+    /** Dash arrays of different lengths cannot be split by position, so the last one is used at every zoom. */
+    @Test
+    public void testUnequalLengthDashArray() throws Exception {
+        String layer =
+                """
+                {
+                  "id": "boundaries",
+                  "type": "line",
+                  "source": "src",
+                  "source-layer": "x",
+                  "paint": {
+                    "line-color": "#000",
+                    "line-width": 1,
+                    "line-dasharray": [
+                      "step",
+                      ["zoom"],
+                      ["literal", [2]],
+                      4,
+                      ["literal", [3, 1]]
+                    ]
+                  }
+                }""";
+        List<Expression> dash = dashArrayOf(layer);
+        assertEquals(2, dash.size());
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleForZoom(2));
+        assertEquals(3.0, dash.get(0).evaluate(null, Double.class), DASH_TOLERANCE);
+        assertEquals(1.0, dash.get(1).evaluate(null, Double.class), DASH_TOLERANCE);
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleForZoom(10));
+        assertEquals(3.0, dash.get(0).evaluate(null, Double.class), DASH_TOLERANCE);
+        assertEquals(1.0, dash.get(1).evaluate(null, Double.class), DASH_TOLERANCE);
+    }
+
+    /** A "match" label that lists several values selects the same dash array for each of them. */
+    @Test
+    public void testMatchArrayLabelDashArray() throws Exception {
+        String layer =
+                """
+                {
+                  "id": "boundaries",
+                  "type": "line",
+                  "source": "src",
+                  "source-layer": "x",
+                  "paint": {
+                    "line-color": "#000",
+                    "line-width": 1,
+                    "line-dasharray": [
+                      "match",
+                      ["get", "admin_level"],
+                      [2, 4],
+                      ["literal", [2, 1]],
+                      ["literal", [1, 1]]
+                    ]
+                  }
+                }""";
+        List<Expression> dash = dashArrayOf(layer);
+        assertEquals(2, dash.size());
+        SimpleFeatureType type = DataUtilities.createType("boundaries", "admin_level:Long");
+        SimpleFeature level4 = SimpleFeatureBuilder.build(type, new Object[] {4L}, "b.4");
+        SimpleFeature level6 = SimpleFeatureBuilder.build(type, new Object[] {6L}, "b.6");
+        assertEquals(2.0, dash.get(0).evaluate(level4, Double.class), DASH_TOLERANCE);
+        assertEquals(1.0, dash.get(0).evaluate(level6, Double.class), DASH_TOLERANCE);
     }
 
     private SimpleFeatureCollection createStreetsCollection() throws SchemaException {

@@ -18,6 +18,7 @@ package org.geotools.renderer.label;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.LineMetrics;
@@ -67,8 +68,11 @@ class LabelSplitter {
             return Collections.singletonList(lineInfo);
         }
 
-        // first split along the newlines
+        // first split along the newlines; text made only of newlines still gets one empty line, so it has bounds
         String[] splitted = NEWLINE_SPLITTER.split(text);
+        if (splitted.length == 0) {
+            splitted = new String[] {""};
+        }
 
         List<LineInfo> lines = new ArrayList<>();
         if (labelItem.getAutoWrap() <= 0) {
@@ -86,47 +90,27 @@ class LabelSplitter {
                 lines.add(lineInfo);
             }
         } else {
-            // Perform an auto-wrap using the java2d facilities. This
-            // is done using a LineBreakMeasurer, but first we need to create
-            // some extra objects
+            // Perform an auto-wrap, splitting each line at word boundaries
 
             // setup the attributes
             Map<TextAttribute, Object> map = new HashMap<>();
             map.put(TextAttribute.FONT, fonts[0]);
 
+            // balanced wrapping aims all lines of the label at the same width, whatever its newlines
+            FontRenderContext frc = graphics.getFontRenderContext();
+            int wrapWidth = labelItem.getAutoWrap();
+            double target = labelItem.isAutoWrapBalanced() ? balancedTarget(splitted, fonts, wrapWidth, frc) : 0;
+
             // accumulate the lines
-            for (String s : splitted) {
-                String lineText = checkForEmptyLine(s);
-
-                // build the line break iterator that will split lines at word
-                // boundaries when the wrapping length is exceeded
+            for (int p = 0; p < splitted.length; p++) {
+                String lineText = checkForEmptyLine(splitted[p]);
                 List<FontRange> ranges = buildFontRanges(lineText, fonts);
-                AttributedString attributed = buildAttributedLine(lineText, ranges);
-                AttributedCharacterIterator iter = attributed.getIterator();
-                LineBreakMeasurer lineMeasurer =
-                        new LineBreakMeasurer(iter, BreakIterator.getLineInstance(), graphics.getFontRenderContext());
-                BreakIterator breaks = BreakIterator.getLineInstance();
-                breaks.setText(lineText);
+                List<Integer> lineEnds = labelItem.isAutoWrapBalanced()
+                        ? balancedLineEnds(lineText, advances(lineText, ranges, frc), target, p == splitted.length - 1)
+                        : greedyLineEnds(lineText, ranges, wrapWidth, frc);
 
-                // setup iteration and start splitting at word boundaries
                 int prevPosition = 0;
-                while (lineMeasurer.getPosition() < iter.getEndIndex()) {
-                    // grab the next portion of text within the wrapping limits
-                    TextLayout layout = lineMeasurer.nextLayout(labelItem.getAutoWrap(), lineText.length(), true);
-                    int newPosition = prevPosition;
-
-                    if (layout != null) {
-                        newPosition = lineMeasurer.getPosition();
-                    } else {
-                        int nextBoundary = breaks.following(prevPosition);
-                        if (nextBoundary == BreakIterator.DONE) {
-                            newPosition = lineText.length();
-                        } else {
-                            newPosition = nextBoundary;
-                        }
-                        lineMeasurer.setPosition(newPosition);
-                    }
-
+                for (int newPosition : lineEnds) {
                     // extract the text, and trim it since leading and trailing spaces
                     // can affect label alignment in an unpleasant way (improper left
                     // or right alignment, or bad centering)
@@ -164,6 +148,136 @@ class LabelSplitter {
         }
 
         return lines;
+    }
+
+    /** Ends each line at the last word boundary that fits in the wrap width. */
+    private List<Integer> greedyLineEnds(String text, List<FontRange> ranges, int wrapWidth, FontRenderContext frc) {
+        AttributedCharacterIterator iter = buildAttributedLine(text, ranges).getIterator();
+        LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(iter, BreakIterator.getLineInstance(), frc);
+        BreakIterator breaks = BreakIterator.getLineInstance();
+        breaks.setText(text);
+
+        List<Integer> ends = new ArrayList<>();
+        int position = 0;
+        while (lineMeasurer.getPosition() < iter.getEndIndex()) {
+            // grab the next portion of text within the wrapping limits, or the next word if even that does not fit
+            TextLayout layout = lineMeasurer.nextLayout(wrapWidth, text.length(), true);
+            if (layout != null) {
+                position = lineMeasurer.getPosition();
+            } else {
+                int nextBoundary = breaks.following(position);
+                position = nextBoundary == BreakIterator.DONE ? text.length() : nextBoundary;
+                lineMeasurer.setPosition(position);
+            }
+            ends.add(position);
+        }
+        return ends;
+    }
+
+    /** Width each line aims at: the label width spread evenly over the fewest lines the wrap width allows. */
+    private double balancedTarget(String[] paragraphs, Font[] fonts, int wrapWidth, FontRenderContext frc) {
+        double total = 0;
+        for (String paragraph : paragraphs) {
+            String text = checkForEmptyLine(paragraph);
+            for (double advance : advances(text, buildFontRanges(text, fonts), frc)) {
+                total += advance;
+            }
+        }
+        return total / Math.max(1, Math.ceil(total / wrapWidth));
+    }
+
+    /** Advance of each character, letter spacing included, kerning left out. */
+    private double[] advances(String text, List<FontRange> ranges, FontRenderContext frc) {
+        double[] advances = new double[text.length()];
+        for (FontRange range : ranges) {
+            // glyph positions include the font tracking, glyph metrics do not
+            GlyphVector gv = range.font.createGlyphVector(frc, range.text);
+            for (int i = 0; i < range.text.length(); i++) {
+                double x = gv.getGlyphPosition(i).getX();
+                advances[range.startChar + i] = gv.getGlyphPosition(i + 1).getX() - x;
+            }
+        }
+        return advances;
+    }
+
+    /**
+     * Picks the word boundaries that keep every line closest to the target width, even if a line then goes past the
+     * wrap width. The idea comes from the Mapbox GL label layout.
+     *
+     * <p>Trying every split would be slow: each word boundary is a break or not, so 20 words give over 500,000 splits.
+     * Instead, the search finds the best layout of the first word, then of the first two words, and so on. Each step
+     * reuses the earlier results and adds one new line. For "Galleria Vittorio Emanuele Secondo":
+     *
+     * <pre>{@code
+     * 0 Galleria 1 Vittorio 2 Emanuele 3 Secondo 4      line(a, b): cost of one line from boundary a to boundary b
+     *
+     * cost[1] = line(0, 1)
+     * cost[2] = min(line(0, 2), cost[1] + line(1, 2))
+     * cost[3] = min(line(0, 3), cost[1] + line(1, 3), cost[2] + line(2, 3))
+     * cost[4] = min(line(0, 4), cost[1] + line(1, 4), cost[2] + line(2, 4), cost[3] + line(3, 4))
+     * }</pre>
+     *
+     * <p>cost[4] is the best layout of the whole label. Reading the winners back from the end gives the lines: cost[4]
+     * picked cost[2] + line(2, 4), and cost[2] picked line(0, 2), so "Galleria Vittorio" and "Emanuele Secondo". For n
+     * words that is about n^2 / 2 line checks.
+     */
+    private List<Integer> balancedLineEnds(String text, double[] advances, double target, boolean lastParagraph) {
+        // widthBefore[i] is the width of the text before character i
+        double[] widthBefore = new double[text.length() + 1];
+        for (int i = 0; i < text.length(); i++) {
+            widthBefore[i + 1] = widthBefore[i] + advances[i];
+        }
+
+        // line boundaries to choose from: the start of the text, then each word boundary up to the end of the text
+        BreakIterator words = BreakIterator.getLineInstance();
+        words.setText(text);
+        List<Integer> boundaries = new ArrayList<>(List.of(0));
+        for (int end = words.next(); end != BreakIterator.DONE; end = words.next()) {
+            boundaries.add(end);
+        }
+
+        // cost[to]: lowest cost of the lines up to boundary to; lineStart[to]: where the last of them starts
+        int count = boundaries.size();
+        double[] cost = new double[count];
+        int[] lineStart = new int[count];
+        for (int to = 1; to < count; to++) {
+            boolean lastLine = lastParagraph && to == count - 1;
+            cost[to] = Double.POSITIVE_INFINITY;
+            for (int from = 0; from < to; from++) {
+                double width = lineWidth(text, widthBefore, boundaries.get(from), boundaries.get(to));
+                double total = cost[from] + lineCost(width, target, lastLine);
+                if (total <= cost[to]) {
+                    cost[to] = total;
+                    lineStart[to] = from;
+                }
+            }
+        }
+
+        // walk back from the end of the text to collect the chosen line ends
+        List<Integer> ends = new ArrayList<>();
+        for (int to = count - 1; to > 0; to = lineStart[to]) {
+            ends.add(0, boundaries.get(to));
+        }
+        return ends;
+    }
+
+    /** Width of the text between start and end, trailing whitespace left out. */
+    private static double lineWidth(String text, double[] widthBefore, int start, int end) {
+        int last = end;
+        while (last > start && Character.isWhitespace(text.charAt(last - 1))) {
+            last--;
+        }
+        return widthBefore[last] - widthBefore[start];
+    }
+
+    /** Squared distance from the target width. On the last line, going over costs double and staying under half. */
+    private static double lineCost(double width, double target, boolean lastLine) {
+        double delta = width - target;
+        double cost = delta * delta;
+        if (lastLine) {
+            cost *= delta > 0 ? 2 : 0.5;
+        }
+        return cost;
     }
 
     private List<LineComponent> buildLineComponents(

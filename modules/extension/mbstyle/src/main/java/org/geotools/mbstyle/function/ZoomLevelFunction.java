@@ -68,6 +68,12 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
     /** Scale denominator of the root tile. Changes based on the ROOT_TILE_PIXELS value. */
     public static final double EPSG_3857_O_SCALE = 559_082_263.9508929 / ROOT_TILE_PIXELS * 256;
 
+    /** Zoom levels are rounded to multiples of this step, a millionth of a zoom level. */
+    public static final double ZOOM_STEP = 1e-6;
+
+    /** Number of {@link #ZOOM_STEP} in a zoom level: rounding divides by it, which gives exact values like 20.6. */
+    private static final double STEPS_PER_ZOOM = 1e6;
+
     public ZoomLevelFunction() {
         super(NAME);
     }
@@ -97,7 +103,11 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
 
         if ("EPSG:3857".equals(arg1)) {
             // This constant is the zoomLevel 0 scale denominator for web mercator at the equator.
-            return Math.log(EPSG_3857_O_SCALE / arg0.doubleValue()) / Math.log(2);
+            // Rounded so that a request at an integer zoom gets that zoom, whether its scale comes from the exact
+            // WMTS GoogleMapsCompatible bounds or from the rounded GeoWebCache ones, instead of a value just below
+            // the step stops at that zoom
+            double zoom = Math.log(EPSG_3857_O_SCALE / arg0.doubleValue()) / Math.log(2);
+            return Math.round(zoom * STEPS_PER_ZOOM) / STEPS_PER_ZOOM;
         } else {
             throw new IllegalArgumentException("Unsupported srid for zoomLevel function: " + arg1);
         }

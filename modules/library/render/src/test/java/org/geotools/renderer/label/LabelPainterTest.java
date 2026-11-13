@@ -44,6 +44,7 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.mockito.Mockito;
 
@@ -101,8 +102,8 @@ public class LabelPainterTest {
         LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
-        // emtpy label
-        assertEquals(0, painter.getLineCount());
+        // one empty line, so the label still has bounds
+        assertEquals(1, painter.getLineCount());
     }
 
     @Test
@@ -111,8 +112,8 @@ public class LabelPainterTest {
         LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
-        // should default to 0 with no lines to paint
-        assertEquals(0.0, painter.getLineHeightForAnchorY(0), 0.0);
+        // the height of the single empty line
+        assertEquals(painter.lines.get(0).getLineHeight(), painter.getLineHeightForAnchorY(0), 0.0);
     }
 
     @Test
@@ -130,6 +131,38 @@ public class LabelPainterTest {
         // should get line height of last line
         assertEquals(
                 painter.lines.get(painter.getLineCount() - 1).getLineHeight(), painter.getLineHeightForAnchorY(1), 0.0);
+    }
+
+    /** A point label paints its INDEPENDENT graphic at the point, so the label bounds leave it out. */
+    @Test
+    public void testIndependentGraphicPointBounds() throws Exception {
+        assertEquals(8, independentGraphicBounds(shape).getHeight(), 2);
+    }
+
+    /** A polygon label paints its INDEPENDENT graphic on the label back, so the label bounds include it. */
+    @Test
+    public void testIndependentGraphicPolygonBounds() throws Exception {
+        LiteShape2 polygon = new LiteShape2(
+                geometryFactory.toGeometry(new Envelope(0, 100, 0, 100)),
+                ProjectiveTransform.create(new AffineTransform()),
+                null,
+                false);
+        assertEquals(20, independentGraphicBounds(polygon).getHeight(), 0);
+    }
+
+    /** Returns the full bounds of a "line1" label with a 20 pixel INDEPENDENT square graphic. */
+    private Rectangle2D independentGraphicBounds(LiteShape2 labelShape) throws Exception {
+        TextStyle2D style = new TextStyle2D();
+        style.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 10));
+        MarkStyle2D mark = new MarkStyle2D();
+        mark.setShape(new Rectangle2D.Double(-.5, -.5, 1., 1.));
+        mark.setSize(20);
+        style.setGraphic(mark);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, labelShape, "line1", symbolizer);
+        labelItem.setGraphicPlacement(TextSymbolizer.GraphicPlacement.INDEPENDENT);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        painter.setLabel(labelItem);
+        return painter.getFullLabelBounds();
     }
 
     @Test

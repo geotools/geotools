@@ -16,16 +16,27 @@
  */
 package org.geotools.mbstyle.expression;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.xml.styling.SLDTransformer;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 
 public class MBLookupTest extends AbstractMBExpressionTest {
@@ -116,7 +127,32 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         SymbolMBLayer rgbLayer = (SymbolMBLayer) getTest.layer("hasExpression");
         List<FeatureTypeStyle> getFeatures = rgbLayer.transformInternal(getTest);
         String xml = new SLDTransformer().transform(getFeatures.get(0));
-        assertTrue(
-                xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
+        assertTrue(xml.contains(
+                "<ogc:Function name=\"not\"><ogc:Function name=\"isNull\"><ogc:PropertyName>name</ogc:PropertyName>"));
+    }
+
+    /** An attribute of the feature type with a null value counts as missing, like a key a vector tile feature lacks. */
+    @Test
+    public void testHasNullAttribute() throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("places", "name:String,name2:String");
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] {"Brest", null}, null);
+        assertEquals(true, hasExpression("name").evaluate(feature));
+        assertEquals(false, hasExpression("name2").evaluate(feature));
+        assertEquals(false, hasExpression("name3").evaluate(feature));
+    }
+
+    private Expression hasExpression(String key) throws Exception {
+        return MBExpression.transformExpression((JSONArray) new JSONParser().parse("[\"has\", \"" + key + "\"]"));
+    }
+
+    /**
+     * The renderer simplifies rule filters with no feature type. "has" must stay a function call, since its result
+     * depends on the feature.
+     */
+    @Test
+    public void testHasNotFoldedBySimplifier() throws Exception {
+        Expression simplified = (Expression) hasExpression("name").accept(new SimplifyingFilterVisitor(), null);
+        assertThat(simplified, instanceOf(Function.class));
+        assertEquals("not", ((Function) simplified).getName());
     }
 }

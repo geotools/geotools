@@ -18,10 +18,13 @@ package org.geotools.renderer.label;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.DisplacementAnchor;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.locationtech.jts.geom.Geometry;
@@ -48,6 +51,12 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     double priority = 0.0;
 
+    /** Priorities of the features merged in this group, null until a second feature joins it */
+    private DoubleSummaryStatistics groupPriorities;
+
+    /** Computes the group priority out of {@link #groupPriorities} */
+    private GroupPriority groupPriorityMode;
+
     int spaceAround = 0;
 
     String label;
@@ -57,6 +66,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     int maxDisplacement = 0;
 
     int[] displacementAngles;
+
+    DisplacementAnchor displacementAnchor = TextSymbolizer.DEFAULT_DISPLACEMENT_ANCHOR;
 
     int minGroupDistance = 0;
 
@@ -73,6 +84,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     double maxAngleDelta;
 
     int autoWrap = 100;
+
+    boolean autoWrapBalanced = false;
 
     boolean forceLeftToRightEnabled = true;
 
@@ -130,12 +143,23 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         spaceAround = space;
     }
 
+    /** Returns the label priority, for a group computed from the priorities of its features */
     public double getPriority() {
-        return priority;
+        return groupPriorities == null ? priority : groupPriorityMode.priority(groupPriorities);
     }
 
     public void setPriority(double d) {
         priority = d;
+    }
+
+    /** Adds the priority of a feature joining this group, the group priority is then computed with the given mode */
+    public void mergeGroupPriority(double featurePriority, GroupPriority mode) {
+        if (groupPriorities == null) {
+            groupPriorities = new DoubleSummaryStatistics();
+            groupPriorities.accept(priority);
+        }
+        groupPriorities.accept(featurePriority);
+        groupPriorityMode = mode;
     }
 
     /** Construct <code>LabelCacheItem</code>. */
@@ -156,7 +180,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.layerIds.addAll(other.getLayerIds());
         this.geoms.addAll(other.geoms);
         this.symbolizer = other.symbolizer;
-        this.priority = other.priority;
+        this.priority = other.getPriority();
         this.spaceAround = other.spaceAround;
         this.label = other.label;
         this.maxDisplacement = other.maxDisplacement;
@@ -168,6 +192,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.followLineEnabled = other.followLineEnabled;
         this.maxAngleDelta = other.maxAngleDelta;
         this.autoWrap = other.autoWrap;
+        this.autoWrapBalanced = other.autoWrapBalanced;
         this.forceLeftToRightEnabled = other.forceLeftToRightEnabled;
         this.conflictResolutionEnabled = other.conflictResolutionEnabled;
         this.goodnessOfFit = other.goodnessOfFit;
@@ -227,6 +252,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setDisplacementAngles(int[] displacementAngles) {
         this.displacementAngles = displacementAngles;
+    }
+
+    /** Which anchors the search tries for the N, S, E and W displacement angles */
+    public DisplacementAnchor getDisplacementAnchor() {
+        return displacementAnchor;
+    }
+
+    public void setDisplacementAnchor(DisplacementAnchor displacementAnchor) {
+        this.displacementAnchor = displacementAnchor;
     }
 
     /** When enabled, repeats labels every "repeat" pixels (works on lines only atm) */
@@ -301,6 +335,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setAutoWrap(int autoWrap) {
         this.autoWrap = autoWrap;
+    }
+
+    /** Wraps labels into lines of about the same width, instead of filling each line up to the autoWrap width */
+    public boolean isAutoWrapBalanced() {
+        return autoWrapBalanced;
+    }
+
+    public void setAutoWrapBalanced(boolean autoWrapBalanced) {
+        this.autoWrapBalanced = autoWrapBalanced;
     }
 
     /*

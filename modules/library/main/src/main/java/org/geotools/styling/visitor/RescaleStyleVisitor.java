@@ -265,6 +265,14 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                     options,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
                     org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_CHAR_SPACING);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_WORD_SPACING);
             rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
@@ -329,7 +337,9 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
-        if (options.get(key) != null) {
+        if (isExpressionOption(options.get(key))) {
+            options.put(key, multiplyExpressionOption(options.get(key), scaleFactor));
+        } else if (options.get(key) != null) {
             double rescaled = Converters.convert(options.get(key), Double.class) * scaleFactor;
             options.put(key, String.valueOf(rescaled));
         } else if (defaultValue != 0) {
@@ -339,13 +349,36 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
-        if (options.get(key) != null) {
+        if (isExpressionOption(options.get(key))) {
+            options.put(key, multiplyExpressionOption(options.get(key), scaleFactor));
+        } else if (options.get(key) != null) {
             int rescaled = (int) Math.round(Converters.convert(options.get(key), Double.class) * scaleFactor);
             options.put(key, String.valueOf(rescaled));
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
     }
+
+    /**
+     * Returns true if the vendor option is a <code>${cql}</code> expression, which the renderer evaluates per feature.
+     */
+    static boolean isExpressionOption(String value) {
+        if (value == null) {
+            return false;
+        }
+        // a single ${cql} expression; mixed values such as "5${x}" or "${a}${b}" are not supported
+        String trimmed = value.trim();
+        return trimmed.startsWith("${") && trimmed.endsWith("}") && trimmed.indexOf("${", 2) < 0;
+    }
+
+    /**
+     * Returns a <code>${cql}</code> vendor option multiplied by the given factor, still a <code>${cql}</code> option.
+     */
+    static String multiplyExpressionOption(String value, double factor) {
+        String trimmed = value.trim();
+        return "${(" + trimmed.substring(2, trimmed.length() - 1) + ") * " + factor + "}";
+    }
+
     /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);

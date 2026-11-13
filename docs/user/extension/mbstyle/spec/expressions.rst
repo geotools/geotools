@@ -221,6 +221,8 @@ format
 
 Returns ``formatted`` text containing annotations for use in mixed-format ``text-field`` entries. If set, the ``text-font`` argument overrides the font specified by the root layout properties. If set, the ``font-scale`` argument specifies a scaling factor relative to the ``text-size`` specified in the root layout properties.
 
+In GeoTools the section inputs are concatenated into a single label and the per-section options (``text-font``, ``font-scale``, ``text-color``) are ignored, so the whole label is rendered with one font. Mixed per-section fonts are not supported yet.
+
 ::
 
     ["format",
@@ -239,7 +241,7 @@ Returns ``formatted`` text containing annotations for use in mixed-format ``text
      - OpenLayers
    * - basic functionality
      - >= 0.48.0
-     - >= Not yet supported
+     - >= 35.3
      - >= Not yet supported
 
 .. _expressions-literal:
@@ -665,6 +667,9 @@ has
 
 Tests for the presence of an property value in the current feature's properties, or from another object if a second argument is provided.
 
+In GeoTools an attribute with a null value counts as not present, so ``has`` gives the same result whether the
+data source leaves the attribute out or stores it as null, as vector tiles do.
+
 ::
 
     ["has", string]: boolean
@@ -722,7 +727,7 @@ The expressions in this section can be used to add conditional logic to your sty
 !
 ^
 
-Logical negation. Returns true if the input is false, and false if the input is true.
+Logical negation. Returns true if the input is false, and false if the input is true. The same operator can be used as a layer ``filter``.
 
 ::
 
@@ -739,6 +744,10 @@ Logical negation. Returns true if the input is false, and false if the input is 
    * - basic functionality
      - >= 0.41.0
      - >= 20.0
+     - >= 3.0.0
+   * - layer filter
+     - >= 0.41.0
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions-!=:
@@ -989,6 +998,30 @@ Returns ``true`` if any of the inputs are ``true``, ``false`` otherwise. The inp
      - >= 20.0
      - >= 3.0.0
 
+.. _expressions-in:
+
+in
+^^
+
+Returns ``true`` if the first input is a member of the second input, ``false`` otherwise. The same operator can be used as a layer ``filter``. GeoTools supports the second input only as a ``["literal", [...]]`` array, not as an expression or a string.
+
+::
+
+    ["in", value, ["literal", array]]: boolean
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 1.6.0
+     - >= 35.3
+     - >= Not yet supported
+
 .. _expressions-case:
 
 case
@@ -1068,6 +1101,10 @@ Selects the output whose label value matches the input value, or the fallback va
      - >= 0.41.0
      - >= 20.0
      - >= 3.0.0
+   * - array labels such as ``[2, 4]``
+     - >= 0.41.0
+     - >= 35.3
+     - >= 3.0.0
 
 .. _expressions.ramps_scales_curves:
 
@@ -1096,6 +1133,8 @@ Interpolation types:
         stop_input_n: number, stop_output_n: OutputType, ...
     ]: OutputType (number, array<number>, or Color)
 
+GeoTools supports the ``linear`` and ``exponential`` types, with number and color outputs. It does not support ``cubic-bezier``: a style that uses it fails to load. It does not support ``array<number>`` outputs either. A color output must be a literal color string, so a color computed by an expression in a stop output is interpolated as a number.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1106,7 +1145,7 @@ Interpolation types:
      - OpenLayers
    * - basic functionality
      - >= 0.42.0
-     - >= Not yet supported
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions-interpolate-hcl:
@@ -1193,7 +1232,7 @@ Produces discrete, stepped results by evaluating a piece wise-constant function 
      - OpenLayers
    * - basic functionality
      - >= 0.42.0
-     - >= Not yet supported
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions.variable_binding:
@@ -1312,9 +1351,24 @@ is-supported-script
 
 Returns ``true`` if the input string is expected to render legibly. Returns ``false`` if the input string contains sections that cannot be rendered without potential loss of meaning (e.g. Indic scripts that require complex text shaping, or right-to-left scripts if the ``mapbox-gl-rtl-text`` plugin is not in use in Mapbox GL JS).
 
+GeoTools draws complex and right-to-left scripts, so the expression returns ``true`` when the fonts installed in the operating system of the server can display every character of the string. A string in a script that no such font covers returns ``false``. Fonts that GeoServer loads from its data directory are not taken into account.
+
 ::
 
     ["is-supported-script", string]: boolean
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.45.0
+     - >= 35.3
+     - >= Not yet supported
 
 .. _expressions-resolved-locale:
 

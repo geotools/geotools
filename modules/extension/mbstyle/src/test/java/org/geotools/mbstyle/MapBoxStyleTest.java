@@ -16,18 +16,26 @@
  */
 package org.geotools.mbstyle;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.List;
 import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 public class MapBoxStyleTest {
+
+    /** Tolerance StreamingRenderer applies when checking a scale against a rule scale range */
+    private static final double RENDERER_SCALE_TOLERANCE = 1e-6;
 
     @Test
     public void validate() throws IOException, ParseException {
@@ -48,6 +56,34 @@ public class MapBoxStyleTest {
 
             assertEquals("styleInvalidLayers 2 failure", 2, problems.size());
         }
+    }
+
+    /** A layer is drawn at its minzoom and hidden at its maxzoom, at the exact WMTS GoogleMapsCompatible scales. */
+    @Test
+    public void testLayerZoomRangeExactScales() throws ParseException {
+        assertLayerZoomRange22To24(MapboxTestUtils.WEB_MERCATOR_QUAD_ROOT_SCALE);
+    }
+
+    /** Same as above, at the GeoWebCache EPSG:900913 scales, computed from rounded bounds. */
+    @Test
+    public void testLayerZoomRangeGeoWebCacheScales() throws ParseException {
+        assertLayerZoomRange22To24(MapboxTestUtils.GEOWEBCACHE_900913_ROOT_SCALE);
+    }
+
+    /**
+     * Checks that a layer with minzoom 22 and maxzoom 24 is drawn at zoom 22 and hidden at zoom 24, for requests
+     * computed from the given scale of the 256px root tile. High zooms have the smallest scales, so the boundaries are
+     * checked against the scale tolerance of the renderer where it matters most.
+     */
+    private void assertLayerZoomRange22To24(double rootTileScale256) throws ParseException {
+        String layer = "{'id': 'water', 'type': 'fill', 'source': 'src', 'minzoom': 22, 'maxzoom': 24}";
+        MBStyle style = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        Style sld = ((NamedLayer) style.transform().getStyledLayers()[0]).getStyles()[0];
+        Rule rule = sld.featureTypeStyles().get(0).rules().get(0);
+        double zoom22Scale = MapboxTestUtils.zoomScale(rootTileScale256, 22);
+        double zoom24Scale = MapboxTestUtils.zoomScale(rootTileScale256, 24);
+        assertThat(zoom22Scale, lessThan(rule.getMaxScaleDenominator() + RENDERER_SCALE_TOLERANCE));
+        assertThat(zoom24Scale, lessThan(rule.getMinScaleDenominator() - RENDERER_SCALE_TOLERANCE));
     }
 
     @Test
@@ -103,5 +139,26 @@ public class MapBoxStyleTest {
                             .featureTypeStyles()
                             .size());
         }
+    }
+
+    /** A style with a visible background layer validates without problems. */
+    @Test
+    public void testValidateBackground() throws Exception {
+        String json = MapboxTestUtils.style(
+                """
+                {
+                  "id": "bg",
+                  "type": "background",
+                  "paint": { "background-color": "#cccccc" }
+                }""",
+                """
+                {
+                  "id": "f",
+                  "type": "fill",
+                  "source": "src",
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        List<Exception> problems = MapBoxStyle.validate(new StringReader(json));
+        assertEquals(List.of(), problems);
     }
 }

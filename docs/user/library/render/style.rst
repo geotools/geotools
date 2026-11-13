@@ -529,7 +529,9 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 
 * ``allowOverruns(false)``\ : When false does not allow labels on lines to get beyond the beginning/end of the line.  By default a partial overrun is tolerated, set to false to disallow it.
   
-* ``autoWrap(400)``\ : Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the ``followLine`` option
+* ``autoWrap(400)``\ : Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the ``followLine`` option. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
+  
+* ``autoWrapBalanced(false)``\ : With ``true``, ``autoWrap`` splits a label into lines of about the same width, even if a line then goes past the ``autoWrap`` width. With ``false``, each line takes as many words as fit.
   
 * ``conflictResolution(true)``\ : Enables conflict resolution (default, true) meaning no two labels will be allowed to overlap. Symbolizers with conflict resolution off are considered outside of the conflict resolution game, they don't reserve area and can overlap with other labels.
   
@@ -545,13 +547,15 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
   
 * ``group(false)``\ : If true, geometries with the same labels are grouped and considered a single entity to be labeled. This allows to avoid or control repeated labels
   
+* ``groupPriority(sum)``\ : How the priority of a group comes from the priorities of its features, when ``group`` is true and the priority is not a constant. ``sum`` adds them up, so bigger groups win, e.g. with a priority based on area or length. ``max`` takes the highest one, for priorities that rank features, e.g. a road class.
+  
 * ``labelAllGroup(false)``\ : When false,  only the biggest geometry in a group is labeled (the biggest is obtained by merging, when possible, the original geometries). When true, also the smaller items in the group are labeled. Works only on lines at the moment.
   
 * ``repeat(0)``\ : When positive it's the desired distance between two subsequent labels on a "big" geometry. Works only on lines at the moment. If zero only one label is drawn no matter how big the geometry is
   
 * ``maxAngleDelta(90)``\ : When drawing curved labels, max allowed angle between two subsequent characters. Higher angles may cause disconnected words or overlapping characters
   
-* ``maxDisplacement(0)``\ : The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
+* ``maxDisplacement(0)``\ : The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
 * ``minGroupDistance(3)``\ : Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
   
@@ -559,9 +563,9 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 
 * ``polygonAlign(true)``\ : Option overriding manual rotation to align label rotation automatically for polygons.
   
-* ``spaceAround(50)``\ : The minimum distance between two labels, in pixels
+* ``spaceAround(50)``\ : The minimum distance between two labels, in pixels. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
-* ``charSpacing(0)``\ : The extra space between characters, in pixels. Can be negative.
+* ``charSpacing(0)``\ : The extra space between characters, in pixels. Can be negative. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
 * ``wordSpacing(0)``\ : The extra space between words, in pixels. Must be zero or positive.
 
@@ -574,9 +578,12 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 * ``displacementMode``\ : Comma separated list of label displacement directions for point/polygon labels (used along with ``maxDisplacement``). The indicated directions will be tried in turn.
                     Valid values are cardinal directions abbreviations, in particular, N, W, E, S, NW, NE, SW, SE.
 
+* ``displacementAnchor(any)``\ : Label anchors tried by ``displacementMode`` for the N, S, E and W directions. With ``any`` the label is first centered on the displaced position, so it may cover the point.
+                    With ``outside`` the label stays fully on the side it moves to and never covers the point: with E the label starts at the displaced position, with W it ends there, with N its bottom edge sits there, with S its top edge.
+
 * ``fontShrinkSizeMin(0)``\ : lower font size limit that could be used when rendering the label. When set (to a positive value) the rendering process will be applied iteratively by decreasing the initial font size by 1 unit until an acceptable placement location is found or the specified value is reached. Should be set to a value greater than 0 and lower than the symbolizer's font size otherwise it is ignored.
 
-* ``graphicPlacement(label)``: placement of the graphic found in the text symbolizer, compared to the associated label. If using ``label`` (default value) the graphic is centered with the label. If using ``independet`` the graphic is placed relative to label point instead, and the graphic anchor/offset are used to position it, while the label retains its own anchor/offset related to the label point.   
+* ``graphicPlacement(label)``: placement of the graphic found in the text symbolizer, compared to the associated label. If using ``label`` (default value) the graphic is centered with the label. If using ``independent`` the graphic is placed relative to label point instead, and the graphic anchor/offset are used to position it, while the label retains its own anchor/offset related to the label point. On point labels the graphic and the label then each keep their own area free of other labels. Both must fit in the display area, unless ``partials`` is enabled.
 
 Raster Symbolizer
 '''''''''''''''''

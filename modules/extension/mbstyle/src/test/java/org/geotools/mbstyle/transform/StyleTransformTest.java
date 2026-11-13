@@ -19,14 +19,20 @@ package org.geotools.mbstyle.transform;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +40,11 @@ import java.util.Map;
 import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Graphic;
@@ -52,11 +61,14 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
 import org.geotools.filter.text.cql2.CQL;
@@ -66,6 +78,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.ZoomLevelFunction;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.CircleMBLayer;
 import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
@@ -75,6 +88,11 @@ import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.RasterMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.renderer.lite.LabelShieldTest;
+import org.geotools.renderer.style.ExpressionExtractor;
+import org.geotools.renderer.style.FontCache;
+import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.SLD;
 import org.hamcrest.CoreMatchers;
 import org.json.simple.JSONArray;
@@ -82,6 +100,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** Test parsing and transforming a Mapbox fill layer from json. */
 public class StyleTransformTest {
@@ -558,6 +578,129 @@ public class StyleTransformTest {
         assertEquals("INDEPENDENT", ts.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
         assertEquals("false", ts.getOptions().get(org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK));
         assertNotNull(ts.getGraphic());
+        // text-offset is [0,0] here, so the label keeps the center anchor from text-anchor
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+    }
+
+    /** Without variable anchors the label keeps its text-anchor and only moves by the text-offset, as in Mapbox. */
+    @Test
+    public void testSymbolIconLabelKeepsTextAnchor() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+    }
+
+    /**
+     * text-variable-anchor ["left", "right"] becomes the displacementMode search E,W, with a maxDisplacement just above
+     * the offset length so the renderer runs the search.
+     */
+    @Test
+    public void testSymbolVariableAnchorDisplacementMode() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-size": 14,
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": ["left", "right"]
+                """);
+        assertEquals("E,W", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        assertEquals("outside", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY));
+        // the offset length is 14 * 1.1 + 2 (text padding) = 17.4, rounded up plus one
+        int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
+                        ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
+                .evaluate(null, Integer.class);
+        assertEquals(19, maxDisplacement);
+        // the label sits at the first anchor, "left", and moves right by the offset length plus the padding
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.0, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(17.4, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
+        assertEquals(0.0, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 1e-9);
+    }
+
+    /** With "right" as first variable anchor, the text-offset moves the label left whatever the sign of its x. */
+    @Test
+    public void testSymbolVariableAnchorRightFirst() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "text-field": "{name}",
+                "text-size": 14,
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": ["right", "left"]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(1.0, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(-17.4, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
+    }
+
+    /** Each of the eight anchors maps to its own direction; "center" and repeated anchors are dropped. */
+    @Test
+    public void testSymbolVariableAnchorAllSides() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "text-field": "{name}",
+                "text-variable-anchor": ["left", "right", "top", "bottom", "top-left", "top-right",
+                    "bottom-left", "bottom-right", "center", "left"]
+                """);
+        assertEquals("E,W,S,N,SE,SW,NE,NW", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+    }
+
+    /**
+     * A zoom step of variable anchors becomes the union of the anchors of all stops, since displacementMode cannot
+     * follow the zoom.
+     */
+    @Test
+    public void testSymbolVariableAnchorZoomExpression() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": [
+                  "step",
+                  ["zoom"],
+                  ["literal", ["bottom", "left", "right", "top"]],
+                  8,
+                  ["literal", ["center"]]
+                ]
+                """);
+        assertEquals("N,E,W,S", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        // at zoom 5 the first anchor is "bottom": the x offset does not apply, the label moves up by the padding only
+        EnvFunction.setLocalValue("wms_scale_denominator", ZoomLevelFunction.EPSG_3857_O_SCALE / Math.pow(2, 5));
+        try {
+            int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
+                            ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
+                    .evaluate(null, Integer.class);
+            assertEquals(3, maxDisplacement);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    /** Without text-variable-anchor, no displacementMode or maxDisplacement option is added. */
+    @Test
+    public void testSymbolNoVariableAnchorNoDisplacementMode() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0]
+                """);
+        assertNull(ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        assertNull(ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        assertNull(ts.getOptions().get(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY));
     }
 
     @Test
@@ -726,11 +869,12 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
-        assertEquals(1, tsym.fonts().size());
-        assertEquals(1, tsym.fonts().get(0).getFamily().size());
+        // the exact face first, then the base family
+        assertEquals(2, tsym.fonts().size());
+        assertEquals(1, tsym.fonts().get(1).getFamily().size());
 
         FontAlternativesFunction family =
-                (FontAlternativesFunction) tsym.fonts().get(0).getFamily().get(0);
+                (FontAlternativesFunction) tsym.fonts().get(1).getFamily().get(0);
         MapBoxFontBaseNameFunction familyBaseName =
                 (MapBoxFontBaseNameFunction) family.getParameters().get(0);
         assertEquals(
@@ -804,6 +948,74 @@ public class StyleTransformTest {
                         hasEntry("forceLeftToRight", "true")));
     }
 
+    /** Viewport aligned line symbols (road shields) stay upright at their anchors along the line. */
+    @Test
+    public void testLinePlacementViewportAlignment() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "text-rotation-alignment": "viewport",
+                "icon-rotation-alignment": "viewport"
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0, pp.getRotation().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
+        Map<String, String> options = ts.getOptions();
+        assertThat(
+                options,
+                allOf(
+                        hasEntry("repeat", "250"),
+                        hasEntry("minGroupDistance", "125"),
+                        hasEntry("allowOverruns", "false"),
+                        hasEntry("group", "true"),
+                        hasEntry("labelAllGroup", "true")));
+        assertThat(options, not(hasKey("followLine")));
+        assertThat(options, not(hasKey("maxAngleDelta")));
+        assertThat(options, not(hasKey("forceLeftToRight")));
+    }
+
+    /** Text rotation alignment wins over the icon one, the icon is drawn around the text. */
+    @Test
+    public void testLinePlacementMapTextAlignment() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "icon-rotation-alignment": "viewport"
+                """);
+        assertThat(ts.getLabelPlacement(), instanceOf(LinePlacement.class));
+        assertThat(ts.getOptions(), allOf(hasEntry("followLine", "true"), hasEntry("minGroupDistance", "125")));
+    }
+
+    /** A line symbol without text keeps every repeat, Mapbox checks the distance only between equal texts. */
+    @Test
+    public void testLinePlacementIconOnly() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "icon-image": "oneway"
+                """);
+        assertThat(ts.getOptions(), not(hasKey("minGroupDistance")));
+    }
+
+    /** Mapbox ignores text-variable-anchor on line placement, the upright label stays centered on its anchor. */
+    @Test
+    public void testLinePlacementViewportVariableAnchor() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "text-rotation-alignment": "viewport",
+                "text-variable-anchor": ["left", "right"]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
+        assertNull(pp.getDisplacement());
+    }
+
     @Test
     public void testTextOffsetEmsPointPlacement() throws Exception {
         JSONObject jsonObject = parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementOffsetTest.json");
@@ -838,5 +1050,222 @@ public class StyleTransformTest {
     @SuppressWarnings("unchecked")
     private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
         return (T) fts.rules().get(0).symbolizers().get(0);
+    }
+
+    /** Parses a single inline layer through the full json -> SLD path and returns its feature type styles. */
+    private List<FeatureTypeStyle> transformInline(String layer) throws ParseException {
+        MBStyle mbStyle = new MBStyle(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return mbStyle.layers().get(0).transform(mbStyle);
+    }
+
+    /** Transforms a single point symbol layer with the given layout body and returns its (only) TextSymbolizer. */
+    private TextSymbolizer symbolFromLayout(String layoutBody) throws ParseException {
+        String layer =
+                """
+                {
+                  "id": "poi",
+                  "type": "symbol",
+                  "source": "src",
+                  "source-layer": "x",
+                  "layout": { %s }
+                }"""
+                        .formatted(layoutBody);
+        MBStyle mbStyle = new MBStyle(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        List<FeatureTypeStyle> fts = mbStyle.layers("src").get(0).transform(mbStyle);
+        return (TextSymbolizer) fts.get(0).rules().get(0).symbolizers().get(0);
+    }
+
+    @Test
+    public void testInterpolateTextSizeEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-field": "{name}",
+                    "text-size": ["interpolate", ["linear"], ["zoom"], 5, 10, 10, 20]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        Expression size = ts.getFont().getSize();
+        // zoom 7.5 sits halfway between the 5 and 10 stops
+        EnvFunction.setLocalValue("wms_scale_denominator", 1544261.172187233);
+        try {
+            assertEquals(15.0, size.evaluate(null, Double.class), 1e-6);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    @Test
+    public void testDataDrivenFontEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-field": "{name}",
+                    "text-font": [
+                      "case",
+                      ["<=", ["get", "min_zoom"], 5],
+                      ["literal", ["Noto Sans Medium"]],
+                      ["literal", ["Noto Sans Regular"]]
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        assertEquals(2, ts.fonts().size());
+        Function exactFace = (Function) ts.fonts().get(0).getFamily().get(0);
+        Function family = (Function) ts.fonts().get(1).getFamily().get(0);
+        Expression baseName = family.getParameters().get(0);
+        Expression fontName = ((Function) baseName).getParameters().get(0);
+        SimpleFeature important = place(3);
+        SimpleFeature minor = place(7);
+        assertEquals("Noto Sans Medium", fontName.evaluate(important, String.class));
+        assertEquals("Noto Sans Regular", fontName.evaluate(minor, String.class));
+        assertEquals("Noto Sans", baseName.evaluate(important, String.class));
+        assertEquals("Noto Sans", baseName.evaluate(minor, String.class));
+        assertEquals("Noto Sans Medium", exactFace.getParameters().get(0).evaluate(important, String.class));
+    }
+
+    /** A face name with a weight renders with that exact face when it is installed. */
+    @Test
+    public void testExactFontFace() throws Exception {
+        registerFont(StyleTransformTest.class, "DejaVuSans-ExtraLight.ttf");
+        Font font = firstLabelFont("DejaVu Sans ExtraLight");
+        assertEquals("DejaVu Sans ExtraLight", font.getName());
+        assertFalse(font.isBold());
+    }
+
+    /** A heavy face that is not installed falls back to the bold base family. */
+    @Test
+    public void testMissingHeavyFontFace() throws Exception {
+        registerFont(LabelShieldTest.class, "Vera.ttf");
+        Font font = firstLabelFont("Bitstream Vera Sans Black");
+        assertEquals("Bitstream Vera Sans", font.getName());
+        assertTrue(font.isBold());
+    }
+
+    private static void registerFont(Class<?> base, String fileName) throws Exception {
+        try (InputStream is = TestData.getResource(base, fileName).openStream()) {
+            // drops font lists cached by earlier tests, which miss the font registered here
+            FontCache.getDefaultInstance().resetCache();
+            FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
+        }
+    }
+
+    /** Returns the first Java font the renderer picks for a label using the given text-font. */
+    private Font firstLabelFont(String textFont) throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {"text-field": "{kind}", "text-font": ["%s"]}
+                }"""
+                        .formatted(textFont));
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        TextStyle2D style = (TextStyle2D) new SLDStyleFactory().createStyle(poi("shop", "1"), ts);
+        return style.getFonts()[0];
+    }
+
+    private SimpleFeature place(int minZoom) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("places", "min_zoom:int");
+        return SimpleFeatureBuilder.build(type, new Object[] {minZoom}, "places.1");
+    }
+
+    private SimpleFeature poi(String kind, String ref) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("e2e", "kind:String,ref:String,geom:Point");
+        return SimpleFeatureBuilder.build(
+                type, new Object[] {kind, ref, new GeometryFactory().createPoint(new Coordinate(0, 0))}, "e2e.1");
+    }
+
+    @Test
+    public void testFormatTextFieldEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-font": ["Noto Sans Regular"],
+                    "text-field": [
+                      "format",
+                      ["get", "kind"],
+                      {},
+                      "\\n",
+                      {},
+                      ["get", "ref"],
+                      {}
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        assertEquals("park\nA1", ts.getLabel().evaluate(poi("park", "A1"), String.class));
+    }
+
+    @Test
+    public void testInFilterEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "fill",
+                  "source": "src",
+                  "filter": ["in", ["get", "kind"], ["literal", ["park", "wood"]]],
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        Filter filter = fts.get(0).rules().get(0).getFilter();
+        assertTrue(filter.evaluate(poi("park", null)));
+        assertFalse(filter.evaluate(poi("street", null)));
+    }
+
+    @Test
+    public void testNotFilterEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "fill",
+                  "source": "src",
+                  "filter": ["!", ["has", "ref"]],
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        assertEquals(1, fts.size());
+        assertEquals(1, fts.get(0).rules().size());
+        Filter filter = fts.get(0).rules().get(0).getFilter();
+        assertTrue(filter.evaluate(poi("park", null)));
+        assertFalse(filter.evaluate(poi("park", "A1")));
+    }
+
+    @Test
+    public void testIsSupportedScriptEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-font": ["Noto Sans Regular"],
+                    "text-field": [
+                      "case",
+                      ["is-supported-script", ["get", "kind"]],
+                      ["get", "kind"],
+                      "?"
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        // a Latin label is displayable by the server fonts, so the case picks the native value
+        assertEquals("park", ts.getLabel().evaluate(poi("park", null), String.class));
+        // U+0378 is a permanently unassigned code point: no font has a glyph for it
+        assertEquals("?", ts.getLabel().evaluate(poi("A\u0378B", null), String.class));
     }
 }

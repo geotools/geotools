@@ -430,13 +430,16 @@ Text symbolizer definition:
           rotation: <expression>
         x-allowOverruns: <boolean>
         x-autoWrap: <expression>
+        x-autoWrapBalanced: <boolean>
         x-conflictResolution: <boolean>
+        x-displacementAnchor: <any|outside>
         x-followLine: <boolean>
         x-forceLeftToRight: <boolean>
         x-goodnessOfFit: <expression>
         x-graphic-margin: <expression>
         x-graphic-resize: <none|proportional|stretch>
         x-group: <boolean>
+        x-groupPriority: <sum|max>
         x-labelAllGroup: <boolean>
         x-labelPriority: <expression>
         x-repeat: <expression>
@@ -529,10 +532,19 @@ The majority of hints focus on controlling text:
       # geometries, on lines it is mutually exclusive with the followLine option
       x-autoWrap: 400
       
+      # When true, autoWrap splits a label into lines of about the same width, even if a line then
+      # goes past the autoWrap width. When false, each line takes as many words as fit.
+      x-autoWrapBalanced: false
+      
       # Enables conflict resolution (default, true) meaning no two labels will be allowed to
       # overlap. Symbolizers with conflict resolution off are considered outside of the
       # conflict resolution game, they don't reserve area and can overlap with other labels.
       x-conflictResolution: true
+      
+      # Label anchors tried by displacementMode for the N, S, E and W directions. With any the label
+      # is first centered on the displaced position, so it may cover the point. With outside the
+      # label stays on the side it moves to, so it never covers the point.
+      x-displacementAnchor: any
       
       # When true activates curved labels on linear geometries. The label will follow the shape of 
       # the current line, as opposed to being drawn a tangent straight line
@@ -557,6 +569,10 @@ The majority of hints focus on controlling text:
       # If true, geometries with the same labels are grouped and considered a single entity to be
       # abeled. This allows to avoid or control repeated labels
       x-group: false
+
+      # When grouping with a label priority that is not a constant, how the group gets its priority:
+      # sum adds up the priorities of its features (the default), max takes the highest one
+      x-groupPriority: sum
 
       # When false,  only the biggest geometry in a group is labelled (the biggest is obtained by
       # merging, when possible, the original geometries). When true, also the smaller items in the

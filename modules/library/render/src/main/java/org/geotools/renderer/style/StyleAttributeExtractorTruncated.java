@@ -105,5 +105,16 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor im
         if (text.getLabelPlacement() != null) {
             text.getLabelPlacement().accept(this);
         }
+
+        visitOptions(text);
+    }
+
+    /** Only charSpacing reaches the Style2D, so only its attributes make a text symbolizer dynamic. */
+    @Override
+    protected void visitOptions(TextSymbolizer text) {
+        String charSpacing = text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY);
+        if (charSpacing != null && charSpacing.contains("${")) {
+            visitCqlExpression(charSpacing);
+        }
     }
 }

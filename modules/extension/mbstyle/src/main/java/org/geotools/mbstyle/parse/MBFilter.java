@@ -382,7 +382,9 @@ public class MBFilter {
             return filterIn(json, false);
         }
         // Combining Filters
-        else if ("all".equals(operator)) {
+        else if ("!".equals(operator)) {
+            return filterNot(json);
+        } else if ("all".equals(operator)) {
             return filterAll(json);
         } else if ("any".equals(operator)) {
             return filterAny(json);
@@ -408,6 +410,18 @@ public class MBFilter {
                     + "\" invalid. It may be misspelled or not supported by this implementation:"
                     + json);
         }
+    }
+
+    private Filter filterNot(JSONArray array) {
+        if (array.size() != 2) {
+            throwUnexpectedArgumentCount("!", 1);
+        }
+        if (!(array.get(1) instanceof JSONArray nested)) {
+            throw new MBFormatException("\"!\" filter expects a nested expression array, got: " + array.get(1));
+        }
+        MBFilter mbFilter = new MBFilter(nested, parse);
+        Filter filter = mbFilter.filter();
+        return ff.not(filter);
     }
 
     private Filter filterNone(JSONArray array) {
@@ -460,6 +474,11 @@ public class MBFilter {
     }
 
     private Filter filterIn(JSONArray array, boolean in) {
+        // expression form ["in", input, haystack] vs legacy ["in", key, v0, v1, ...], told apart as MapLibre does;
+        // "!in" exists only in the legacy form
+        if (in && (!(array.get(1) instanceof String) || (array.size() > 2 && array.get(2) instanceof JSONArray))) {
+            return ff.equals(MBExpression.transformExpression(array), ff.literal(true));
+        }
         String key = parse.get(array, 1);
         Expression[] args = new Expression[array.size() - 1];
         args[0] = ff.property(key);

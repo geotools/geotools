@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.label;
 
+import static org.geotools.api.style.TextSymbolizer.GROUP_PRIORITY_KEY;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -48,7 +50,9 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.DisplacementAnchor;
 import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.GeometryClipper;
@@ -60,7 +64,10 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.label.LabelCacheItem.GraphicResize;
 import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.PointStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
@@ -175,6 +182,12 @@ public class LabelCacheImpl implements LabelCache {
     static final double[] LEFT_UP_ANCHOR_CANDIDATES = {1, 0, 1, 0.5};
     static final double[] LEFT_DOWN_ANCHOR_CANDIDATES = {1, 1, 1, 0.5};
 
+    // Anchor candidate values for the N, S, E, W directions with displacementAnchor = outside
+    static final double[] OUTSIDE_N_ANCHOR_CANDIDATES = {0.5, 0};
+    static final double[] OUTSIDE_S_ANCHOR_CANDIDATES = {0.5, 1};
+    static final double[] OUTSIDE_E_ANCHOR_CANDIDATES = {0, 0.5};
+    static final double[] OUTSIDE_W_ANCHOR_CANDIDATES = {1, 0.5};
+
     protected LabelRenderingMode labelRenderingMode = LabelRenderingMode.STRING;
 
     // SLDStyleFactory caches by identity, we have to re-use the same labellels equivalent
@@ -265,6 +278,7 @@ public class LabelCacheImpl implements LabelCache {
     @Override
     public void start() {
         stop = false;
+        voParser.clearRememberedResults();
     }
 
     @Override
@@ -361,11 +375,13 @@ public class LabelCacheImpl implements LabelCache {
                     labelCache.add(item);
                     groupedLabelsLookup.put(item, item);
                 } else {
-                    // add to the priority only in the non-default case or non-literal. Ie.
+                    // merge the priority only in the non-default case or non-literal. Ie.
                     // area()
                     Expression priority = symbolizer.getPriority();
                     if (priority != null && !(priority instanceof Literal)) {
-                        groupItem.setPriority(groupItem.getPriority() + priorityValue);
+                        GroupPriority mode = (GroupPriority)
+                                voParser.getEnumOption(symbolizer, GROUP_PRIORITY_KEY, GroupPriority.SUM);
+                        groupItem.mergeGroupPriority(priorityValue, mode);
                     }
 
                     groupItem.getGeoms().add(shape.getGeometry());
@@ -397,11 +413,13 @@ public class LabelCacheImpl implements LabelCache {
         item.setSpaceAround(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
-                org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND));
+                org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND,
+                feature));
         item.setMaxDisplacement(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY,
-                org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT));
+                org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT,
+                feature));
         item.setMinGroupDistance(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
@@ -436,7 +454,13 @@ public class LabelCacheImpl implements LabelCache {
             item.setAutoWrap(voParser.getIntOption(
                     symbolizer,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
-                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP));
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP,
+                    feature));
+            item.setAutoWrapBalanced(voParser.getBooleanOption(
+                    symbolizer,
+                    org.geotools.api.style.TextSymbolizer.AUTO_WRAP_BALANCED_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP_BALANCED,
+                    feature));
         } else {
             // at fine level cause it would show up for every label with this setup
             LOGGER.log(Level.FINE, "Disabling auto-wrap, it's not supported along with followLine yet");
@@ -479,6 +503,10 @@ public class LabelCacheImpl implements LabelCache {
                 org.geotools.api.style.TextSymbolizer.DEFAULT_WORD_SPACING));
         item.setDisplacementAngles(voParser.getDisplacementAngles(
                 symbolizer, org.geotools.api.style.TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        item.setDisplacementAnchor((DisplacementAnchor) voParser.getEnumOption(
+                symbolizer,
+                org.geotools.api.style.TextSymbolizer.DISPLACEMENT_ANCHOR_KEY,
+                org.geotools.api.style.TextSymbolizer.DEFAULT_DISPLACEMENT_ANCHOR));
 
         item.setFontShrinkSizeMin(voParser.getIntOption(
                 symbolizer,
@@ -886,6 +914,9 @@ public class LabelCacheImpl implements LabelCache {
                     if (painted) {
                         labelCount++;
 
+                        if (labelItem.getMinGroupDistance() >= 0) {
+                            glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, groupLabels));
+                        }
                         if (labelItem.isConflictResolutionEnabled()) {
                             if (DEBUG_CACHE_BOUNDS) {
                                 painter.graphics.setStroke(new BasicStroke());
@@ -1337,6 +1368,7 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         int[] displacementAngles = labelItem.getDisplacementAngles();
+        boolean outside = labelItem.getDisplacementAnchor() == DisplacementAnchor.OUTSIDE;
 
         // ... use at least a 2 pixel step, no matter what the label length is
         final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
@@ -1400,17 +1432,19 @@ public class LabelCacheImpl implements LabelCache {
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.SE.getAngle()) {
                         anchorPointCandidates = RIGHT_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.N.getAngle()) {
-                        anchorPointCandidates = VERTICAL_UP_ANCHOR_CANDIDATES;
+                        anchorPointCandidates = outside ? OUTSIDE_N_ANCHOR_CANDIDATES : VERTICAL_UP_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.S.getAngle()) {
-                        anchorPointCandidates = VERTICAL_DOWN_ANCHOR_CANDIDATES;
+                        anchorPointCandidates = outside ? OUTSIDE_S_ANCHOR_CANDIDATES : VERTICAL_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.NW.getAngle()) {
                         anchorPointCandidates = LEFT_UP_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.SW.getAngle()) {
                         anchorPointCandidates = LEFT_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.E.getAngle()) {
-                        anchorPointCandidates = HORIZONTAL_LEFT_ANCHOR_CANDIDATES;
+                        anchorPointCandidates =
+                                outside ? OUTSIDE_E_ANCHOR_CANDIDATES : HORIZONTAL_LEFT_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.W.getAngle()) {
-                        anchorPointCandidates = HORIZONTAL_RIGHT_ANCHOR_CANDIDATES;
+                        anchorPointCandidates =
+                                outside ? OUTSIDE_W_ANCHOR_CANDIDATES : HORIZONTAL_RIGHT_ANCHOR_CANDIDATES;
                     }
 
                     // try out various anchor point positions
@@ -1460,14 +1494,18 @@ public class LabelCacheImpl implements LabelCache {
 
         // check for overlaps and paint
         Rectangle2D transformed = transformBounds(tempTransform, painter.getFullLabelBounds());
-        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
-                || labelItem.isConflictResolutionEnabled()
-                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())) {
+        // an INDEPENDENT graphic (e.g. a POI icon beside its label) is drawn at the feature point, apart from the
+        // offset label: reserve it as a second box, instead of growing the label box over the gap between them
+        Rectangle2D iconBounds = independentGraphicBounds(labelItem, point);
+        boolean conflict = labelItem.isConflictResolutionEnabled()
+                && (glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
+                        || iconBounds != null && glyphs.labelsWithinDistance(iconBounds, labelItem.getSpaceAround()));
+        boolean inside = displayArea.contains(transformed) && (iconBounds == null || encloses(displayArea, iconBounds));
+        if (!(inside || labelItem.isPartialsEnabled()) || conflict) {
             return false;
         } else {
             // labelPoint only needed when a graphic is placed independently of the label
-            Coordinate labelPoint = labelItem.getTextStyle().getGraphic() != null
-                            && labelItem.getGraphicPlacement() == GraphicPlacement.INDEPENDENT
+            Coordinate labelPoint = iconBounds != null
                     ? new Coordinate(
                             point.getCoordinateSequence().getX(0),
                             point.getCoordinateSequence().getY(0))
@@ -1478,9 +1516,45 @@ public class LabelCacheImpl implements LabelCache {
                 painter.graphics.setColor(Color.RED);
                 painter.graphics.draw(transformed);
             }
-            if (labelItem.isConflictResolutionEnabled()) glyphs.addLabel(labelItem, transformed);
+            if (labelItem.isConflictResolutionEnabled()) {
+                glyphs.addLabel(labelItem, transformed);
+                if (iconBounds != null) glyphs.addLabel(labelItem, iconBounds);
+            }
             return true;
         }
+    }
+
+    /**
+     * Checks the box lies within the area, edges included. Unlike {@link Rectangle#contains(Rectangle2D)}, it accepts a
+     * box with no width or height, such as the one of a vertical line mark.
+     */
+    private static boolean encloses(Rectangle area, Rectangle2D box) {
+        return box.getMinX() >= area.getMinX()
+                && box.getMaxX() <= area.getMaxX()
+                && box.getMinY() >= area.getMinY()
+                && box.getMaxY() <= area.getMaxY();
+    }
+
+    /**
+     * Returns the screen bounds of an INDEPENDENT graphic painted at the feature point, or null when the item has no
+     * such graphic. Rotation and graphic resize are left out: the box only keeps other labels off the icon.
+     */
+    Rectangle2D independentGraphicBounds(LabelCacheItem labelItem, Point point) {
+        Style2D graphic = labelItem.getTextStyle().getGraphic();
+        if (labelItem.getGraphicPlacement() != GraphicPlacement.INDEPENDENT || graphic == null) {
+            return null;
+        }
+        // a mark comes already anchored and displaced around the origin, an image has its corner there
+        Rectangle dimensions = labelItem.getTextStyle().getGraphicDimensions();
+        double x = dimensions.getX();
+        double y = dimensions.getY();
+        if (graphic instanceof PointStyle2D image && !(graphic instanceof MarkStyle2D)) {
+            // same placement as StyledShapePainter
+            x += image.getDisplacementX() - image.getAnchorPointX() * dimensions.getWidth();
+            y += image.getDisplacementY() - (1 - image.getAnchorPointY()) * dimensions.getHeight();
+        }
+        return new Rectangle2D.Double(
+                point.getX() + x, point.getY() + y, dimensions.getWidth(), dimensions.getHeight());
     }
 
     /** Splits the polygon into its component lines and labels those, one by one */

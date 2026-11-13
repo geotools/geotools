@@ -365,10 +365,10 @@ public class MBStyle {
             int layerMinZoom = layer.getMinZoom();
             Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE
                     ? null
-                    : MBObjectStops.zoomLevelToScaleDenominator(Math.min(25d, layerMaxZoom));
+                    : MBObjectStops.zoomBoundaryScaleDenominator(Math.min(25d, layerMaxZoom));
             Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE
                     ? null
-                    : MBObjectStops.zoomLevelToScaleDenominator(Math.max(-25d, layerMinZoom));
+                    : MBObjectStops.zoomBoundaryScaleDenominator(Math.max(-25d, layerMinZoom));
 
             if (layer.visibility()) {
                 // check for property and zoom functions, if true we will have a layer for each one
@@ -379,10 +379,10 @@ public class MBStyle {
                     for (MBLayer l : mbObjectStops.layersForStop) {
                         double s = stopLevels.get(i);
                         double[] rangeForStopLevel = mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
-                        Double maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                        Double maxScaleDenominator = MBObjectStops.zoomBoundaryScaleDenominator(rangeForStopLevel[0]);
                         Double minScaleDenominator = null;
                         if (rangeForStopLevel[1] != -1) {
-                            minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
+                            minScaleDenominator = MBObjectStops.zoomBoundaryScaleDenominator(rangeForStopLevel[1]);
                         }
 
                         featureTypeStyles.addAll(l.transform(this, minScaleDenominator, maxScaleDenominator));

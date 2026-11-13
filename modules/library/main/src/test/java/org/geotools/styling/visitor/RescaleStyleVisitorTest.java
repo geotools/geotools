@@ -18,6 +18,7 @@ package org.geotools.styling.visitor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -164,6 +165,30 @@ public class RescaleStyleVisitorTest {
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
         assertEquals("20", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY));
         assertEquals("20 40", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
+    }
+
+    /** Letter and word spacing are in pixels, so they grow with the text at a higher DPI. */
+    @Test
+    public void testTextSymbolizerSpacing() throws Exception {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, "1.5");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY, "4");
+
+        ts.accept(visitor);
+        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        assertEquals("3.0", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY));
+        assertEquals("8.0", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY));
+    }
+
+    /** Without spacing options the rescaled symbolizer gets none, the default spacing is zero. */
+    @Test
+    public void testTextSymbolizerDefaultSpacing() throws Exception {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
+
+        ts.accept(visitor);
+        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        assertNull(clone.getOptions().get(org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY));
+        assertNull(clone.getOptions().get(org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY));
     }
 
     @Test

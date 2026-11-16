@@ -167,6 +167,11 @@
       <groupId>tech.units</groupId>
       <artifactId>indriya</artifactId>
     </dependency>
+    <dependency>
+      <!-- indriya annotates its classes with @API but declares the jar optional -->
+      <groupId>org.apiguardian</groupId>
+      <artifactId>apiguardian-api</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>javax.measure</groupId>

@@ -28,7 +28,7 @@ jobs:
           gt-maven-
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
-      run: sudo ethtool -K eth0 tx off rx off
+      run: sudo ethtool -K "$(ip route show default | awk '{print $5; exit}')" tx off rx off
     - name: Build with Maven
       run: |
         mvn -B -fae clean install -Dall -Dspotless.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml

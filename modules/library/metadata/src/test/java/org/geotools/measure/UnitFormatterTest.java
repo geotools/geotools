@@ -32,10 +32,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.measure.BinaryPrefix;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import org.junit.Test;
@@ -53,14 +57,20 @@ public class UnitFormatterTest {
         List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.unitToName);
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInOld = unitToName.stream()
+                .filter(entry -> !INDRIYA_ONLY_UNITS.contains(entry.getKey()))
                 .filter(entry -> !unitToSymbol.contains(entry))
                 .collect(Collectors.toList());
         List<Map.Entry<Unit<?>, String>> indriyaBug = asList(
                 entry(ASTRONOMICAL_UNIT, "UA"),
+                // indriya labels day, week and year as d, wk and yr, and changed the cubic metre label
+                entry(Units.DAY, "d"),
                 entry(ELECTRICAL_HORSEPOWER, "hp(E)"),
                 entry(Units.MONTH, "mo"),
+                entry(CUBIC_METRE, "m³"),
                 entry(SI.REVOLUTION, "rev"),
                 entry(REVOLUTION_PER_MINUTE, "rpm"),
+                entry(Units.WEEK, "wk"),
+                entry(Units.YEAR, "yr"),
                 entry(Units.GRAM.prefix(MICRO), "µg"),
                 entry(Units.LITRE.prefix(MICRO), "µl"),
                 entry(Units.CELSIUS.prefix(MICRO), "µ℃"));
@@ -82,8 +92,13 @@ public class UnitFormatterTest {
         List<Map.Entry<Unit<?>, String>> unitsOnlyInNew = unitToSymbol.stream()
                 .filter(entry -> !unitToNameMap.contains(entry))
                 .collect(Collectors.toList());
-        // only one kind of µ is added for those special-cased units in indriya:
         List<Map.Entry<? extends Unit<?>, String>> indriyaBug = asList(
+                // GeoTools keeps its own labels for day, cubic metre, week and year
+                entry(Units.DAY, "day"),
+                entry(CUBIC_METRE, "㎥"),
+                entry(Units.WEEK, "week"),
+                entry(Units.YEAR, "year"),
+                // only one kind of µ is added for those special-cased units in indriya:
                 entry(Units.GRAM.prefix(MICRO), "μg"),
                 entry(Units.LITRE.prefix(MICRO), "μl"),
                 entry(Units.CELSIUS.prefix(MICRO), "μ℃"));
@@ -103,6 +118,7 @@ public class UnitFormatterTest {
         List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.nameToUnit);
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInOld = nameToUnitMap.stream()
+                .filter(entry -> !INDRIYA_ONLY_UNITS.contains(entry.getValue()))
                 .filter(entry -> !symbolToUnit.contains(entry))
                 .collect(Collectors.toList());
         List<Map.Entry<String, Unit<?>>> indriyaBug = asList(
@@ -110,9 +126,13 @@ public class UnitFormatterTest {
                 entry("month", MONTH),
                 entry("mo", MONTH),
                 entry("mon", MONTH),
-                entry("m2", SQUARE_METRE),
+                entry("m3", CUBIC_METRE),
+                entry("m³", CUBIC_METRE),
                 entry("rpm", REVOLUTION_PER_MINUTE),
-                entry("m3", CUBIC_METRE));
+                // indriya parses wk, y and yr, GeoTools does not
+                entry("wk", Units.WEEK),
+                entry("y", Units.YEAR),
+                entry("yr", Units.YEAR));
 
         assertEquals(
                 unitsOnlyInOld.size() + " names only in old: " + unitsOnlyInOld + "\n", indriyaBug, unitsOnlyInOld);
@@ -173,6 +193,23 @@ public class UnitFormatterTest {
                 .sorted(Comparator.nullsFirst(
                         Comparator.comparing(x -> x.getValue().toString())))
                 .collect(Collectors.toList());
+    }
+
+    /** Units that indriya labels and GeoTools does not: square metres, prefixed cubic metres, binary prefixes. */
+    private static final Set<Unit<?>> INDRIYA_ONLY_UNITS = indriyaOnlyUnits();
+
+    private static Set<Unit<?>> indriyaOnlyUnits() {
+        Set<Unit<?>> units = new HashSet<>(List.of(SQUARE_METRE));
+        for (MetricPrefix prefix : MetricPrefix.values()) {
+            units.add(SQUARE_METRE.prefix(prefix));
+            units.add(CUBIC_METRE.prefix(prefix));
+        }
+        for (BinaryPrefix prefix : BinaryPrefix.values()) {
+            for (Unit<?> unit : List.of(Units.LITRE, SQUARE_METRE, CUBIC_METRE, Units.CELSIUS, Units.OHM)) {
+                units.add(unit.prefix(prefix));
+            }
+        }
+        return units;
     }
 
     private static final BaseUnitFormatter formatter = new BaseUnitFormatter(Stream.of(

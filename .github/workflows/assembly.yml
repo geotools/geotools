@@ -37,7 +37,7 @@ jobs:
         pip install -r requirements.txt
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
-      run: sudo ethtool -K eth0 tx off rx off
+      run: sudo ethtool -K "$(ip route show default | awk '{print $5; exit}')" tx off rx off
     - name: Build with Maven
       run: |
         mvn -B clean install -DskipTests -Dall -T1C --file pom.xml

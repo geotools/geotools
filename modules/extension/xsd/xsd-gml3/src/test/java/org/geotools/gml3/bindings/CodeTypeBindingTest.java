@@ -25,6 +25,7 @@ import org.geotools.gml3.ComplexAttributeTestSupport;
 import org.geotools.gml3.GML;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
 
@@ -37,9 +38,12 @@ public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
         ComplexAttribute myCode = gmlCodeType(GML.name, TEST_NAME_VALUE, TEST_NAME_CODESPACE);
         Document dom = encode(myCode, GML.name);
         // print(dom);
-        assertEquals("gml:name", dom.getDocumentElement().getNodeName());
-        assertEquals(TEST_NAME_VALUE, dom.getDocumentElement().getFirstChild().getNodeValue());
-        assertNotNull(dom.getDocumentElement().getAttribute("codeSpace"));
-        assertEquals(TEST_NAME_CODESPACE, dom.getDocumentElement().getAttribute("codeSpace"));
+        Element docElement = dom.getDocumentElement();
+        assertEquals("name", docElement.getLocalName());
+        assertEquals(GML.NAMESPACE, docElement.getNamespaceURI());
+        assertEquals("name", docElement.getNodeName());
+        assertEquals(TEST_NAME_VALUE, docElement.getFirstChild().getNodeValue());
+        assertNotNull(docElement.getAttribute("codeSpace"));
+        assertEquals(TEST_NAME_CODESPACE, docElement.getAttribute("codeSpace"));
     }
 }

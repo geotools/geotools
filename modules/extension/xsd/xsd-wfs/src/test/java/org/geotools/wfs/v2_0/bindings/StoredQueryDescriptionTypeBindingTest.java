@@ -30,6 +30,9 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
     @Test
@@ -95,14 +98,17 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         qet.setValue(xml);
 
         Document dom = encode(sqd, WFS.StoredQueryDescription, WFS.StoredQueryDescriptionType);
-        assertEquals("wfs:StoredQueryDescription", dom.getDocumentElement().getNodeName());
-        assertEquals(1, dom.getElementsByTagName("wfs:QueryExpressionText").getLength());
+        Element docElement = dom.getDocumentElement();
+        assertEquals(WFS.StoredQueryDescription.getLocalPart(), docElement.getLocalName());
+        assertEquals(WFS.StoredQueryDescription.getNamespaceURI(), docElement.getNamespaceURI());
 
-        assertEquals(
-                "wfs:Query",
-                dom.getElementsByTagName("wfs:QueryExpressionText")
-                        .item(0)
-                        .getFirstChild()
-                        .getNodeName());
+        NodeList nlQueryExpressionText = dom.getElementsByTagNameNS(WFS.NAMESPACE, "QueryExpressionText");
+        assertEquals(1, nlQueryExpressionText.getLength());
+
+        Node query = dom.getElementsByTagNameNS(WFS.NAMESPACE, "QueryExpressionText")
+                .item(0)
+                .getFirstChild();
+        assertEquals(WFS.Query.getLocalPart(), query.getLocalName());
+        assertEquals(WFS.Query.getNamespaceURI(), query.getNamespaceURI());
     }
 }

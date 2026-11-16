@@ -28,6 +28,6 @@ public class LocationPropertyTypeBindingTest extends GML3TestSupport {
     @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.point(), GML.location);
-        assertEquals(1, dom.getElementsByTagName("gml:Point").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
     }
 }

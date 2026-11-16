@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /** Tests for {@link ElementTypeHandler}. */
 public class ElementTypeHandlerTest {
 
@@ -34,8 +36,8 @@ public class ElementTypeHandlerTest {
     /** Test abstracT true */
     @Test
     public void abstracT() throws SAXException {
-        attributes.addAttribute("", "name", "name", "string", "Generic");
-        attributes.addAttribute("", "abstract", "abstract", "boolean", "cat");
+        attributes.addAttribute(NULL_NS_URI, "name", "name", "string", "Generic");
+        attributes.addAttribute(NULL_NS_URI, "abstract", "abstract", "boolean", "cat");
         try {
             handler.startElement(NAMESPACE_URI, "name", attributes);
             handler.endElement(NAMESPACE_URI, "name");
@@ -50,7 +52,7 @@ public class ElementTypeHandlerTest {
     /** Test that a {@code ref} attribute is set as the {@code name}. */
     @Test
     public void ref() throws SAXException {
-        attributes.addAttribute("", "ref", "ref", "string", "test:another-element");
+        attributes.addAttribute(NULL_NS_URI, "ref", "ref", "string", "test:another-element");
         handler.startElement(NAMESPACE_URI, "element", attributes);
         Assert.assertEquals("test:another-element", handler.getName());
     }
@@ -61,8 +63,8 @@ public class ElementTypeHandlerTest {
      */
     @Test
     public void refAndName() {
-        attributes.addAttribute("", "ref", "ref", "string", "test:another-element");
-        attributes.addAttribute("", "name", "name", "string", "some-name");
+        attributes.addAttribute(NULL_NS_URI, "ref", "ref", "string", "test:another-element");
+        attributes.addAttribute(NULL_NS_URI, "name", "name", "string", "some-name");
         try {
             handler.startElement(NAMESPACE_URI, "element", attributes);
             Assert.fail("Schema element declaration cannot have both 'ref' and 'name' attributes");
@@ -80,8 +82,8 @@ public class ElementTypeHandlerTest {
      */
     @Test
     public void refAndType() {
-        attributes.addAttribute("", "ref", "ref", "string", "test:another-element");
-        attributes.addAttribute("", "type", "type", "string", "some-type");
+        attributes.addAttribute(NULL_NS_URI, "ref", "ref", "string", "test:another-element");
+        attributes.addAttribute(NULL_NS_URI, "type", "type", "string", "some-type");
         try {
             handler.startElement(NAMESPACE_URI, "element", attributes);
             Assert.fail();

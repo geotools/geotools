@@ -27,6 +27,7 @@ import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class PolygonTypeBindingTest extends GML32TestSupport {
     //    public void testNoInterior() throws Exception {
@@ -45,8 +46,9 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
     @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.polygon(), GML.Polygon);
-
-        assertEquals("gml:Polygon", dom.getDocumentElement().getNodeName());
+        Element docElement = dom.getDocumentElement();
+        assertEquals("Polygon", docElement.getLocalName());
+        assertEquals(GML.NAMESPACE, docElement.getNamespaceURI());
 
         assertThat(dom, hasXPath("/gml:Polygon/gml:exterior", notNullValue(String.class)));
         assertThat(dom, hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class)));

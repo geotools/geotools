@@ -52,7 +52,9 @@ public class OGCFilterTypeBindingTest extends FilterTestSupport {
     @Test
     public void testEncodeSpatial() throws Exception {
         Document doc = encode(FilterMockData.intersects(), OGC.Filter);
-        assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(OGC.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(OGC.Filter.getNamespaceURI(), docElement.getNamespaceURI());
 
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "Intersects").getLength());
     }
@@ -70,7 +72,10 @@ public class OGCFilterTypeBindingTest extends FilterTestSupport {
     public void testEncodeComparison() throws Exception {
         Document doc = encode(FilterMockData.propertyIsEqualTo(), OGC.Filter);
 
-        assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(OGC.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(OGC.Filter.getNamespaceURI(), docElement.getNamespaceURI());
+
         assertEquals(
                 1,
                 doc.getElementsByTagNameNS(OGC.NAMESPACE, "PropertyIsEqualTo").getLength());
@@ -89,12 +94,16 @@ public class OGCFilterTypeBindingTest extends FilterTestSupport {
     public void testEncodeLogical() throws Exception {
         Document doc = encode(FilterMockData.and(), OGC.Filter);
 
-        assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(OGC.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(OGC.Filter.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "And").getLength());
 
         doc = encode(FilterMockData.not(), OGC.Filter);
 
-        assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
+        docElement = doc.getDocumentElement();
+        assertEquals(OGC.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(OGC.Filter.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "Not").getLength());
     }
 }

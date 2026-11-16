@@ -98,7 +98,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     private void encodeLinestring(LineString geometry, GMLWriter handler) throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "linear");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "CDATA", "linear");
         handler.startElement(lineStringSegment, atts);
 
         handler.posList(geometry.getCoordinateSequence());
@@ -108,7 +108,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     private void encodeCurve(SingleCurvedGeometry curve, GMLWriter handler) throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "circularArc3Points");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "CDATA", "circularArc3Points");
         handler.startElement(arcString, atts);
 
         handler.posList(new LiteCoordinateSequence(curve.getControlPoints()));

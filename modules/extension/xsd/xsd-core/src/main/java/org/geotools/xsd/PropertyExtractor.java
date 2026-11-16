@@ -44,5 +44,5 @@ public interface PropertyExtractor {
      * @param element The element declaration corresponding to the object being encoded.
      * @return A set of element, object tuples.
      */
-    List /*Object[2]*/ properties(Object object, XSDElementDeclaration element);
+    List<ExtractedProperty<?>> properties(Object object, XSDElementDeclaration element);
 }

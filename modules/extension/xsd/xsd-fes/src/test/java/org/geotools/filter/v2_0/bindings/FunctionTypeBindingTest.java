@@ -11,6 +11,7 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class FunctionTypeBindingTest extends FESTestSupport {
     @Test
@@ -31,10 +32,12 @@ public class FunctionTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.function(), FES.Function);
-        assertEquals("fes:Function", dom.getDocumentElement().getNodeName());
-        assertEquals("abs", dom.getDocumentElement().getAttribute("name"));
+        Document doc = encode(FilterMockData.function(), FES.Function);
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Function.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Function.getNamespaceURI(), docElement.getNamespaceURI());
+        assertEquals("abs", docElement.getAttribute("name"));
 
-        assertNotNull(getElementByQName(dom, FES.ValueReference));
+        assertNotNull(getElementByQName(doc, FES.ValueReference));
     }
 }

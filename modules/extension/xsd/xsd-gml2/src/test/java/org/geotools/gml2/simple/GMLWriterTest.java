@@ -148,7 +148,7 @@ public class GMLWriterTest extends GMLTestSupport {
         Properties outputProps = new Properties();
         outputProps.setProperty(INDENT_AMOUNT_KEY, "2");
         xmls.getTransformer().setOutputProperties(outputProps);
-        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
 
         GMLWriter handler =

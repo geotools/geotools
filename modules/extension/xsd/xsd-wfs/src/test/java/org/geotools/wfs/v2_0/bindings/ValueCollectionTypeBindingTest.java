@@ -94,7 +94,10 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         vc.getMember().add(valueCollection);
 
         Document doc = encode(vc, WFS.ValueCollection);
-        assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(WFS.ValueCollection.getLocalPart(), docElement.getLocalName());
+        assertEquals(WFS.ValueCollection.getNamespaceURI(), docElement.getNamespaceURI());
+
         assertEquals(2, getElementsByQName(doc, WFS.member).getLength());
 
         NodeList geoms = getElementsByQName(doc, new QName("http://geotools.org", "geom"));
@@ -109,7 +112,9 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
                         features, featureType.getDescriptor("str"), filterFac.property("str")));
 
         doc = encode(vc, WFS.ValueCollection);
-        assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());
+        docElement = doc.getDocumentElement();
+        assertEquals(WFS.ValueCollection.getLocalPart(), docElement.getLocalName());
+        assertEquals(WFS.ValueCollection.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(2, getElementsByQName(doc, WFS.member).getLength());
 
         NodeList strs = getElementsByQName(doc, new QName("http://geotools.org", "str"));
@@ -126,7 +131,9 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
                         features, featureType.getDescriptor("date"), filterFac.property("date")));
 
         doc = encode(vc, WFS.ValueCollection);
-        assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());
+        docElement = doc.getDocumentElement();
+        assertEquals(WFS.ValueCollection.getLocalPart(), docElement.getLocalName());
+        assertEquals(WFS.ValueCollection.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(2, getElementsByQName(doc, WFS.member).getLength());
 
         // print(doc);

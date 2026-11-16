@@ -24,7 +24,7 @@ public class WPSResultTest extends WPSTestSupport {
         Encoder encoder = new Encoder(createConfiguration());
         String encodedValue = encoder.encodeAsString(o, WPS.GetResult);
 
-        Assert.assertTrue(encodedValue.contains("<wps:JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</wps:JobID>"));
+        Assert.assertTrue(encodedValue.contains("<JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</JobID>"));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class WPSResultTest extends WPSTestSupport {
         Encoder encoder = new Encoder(createConfiguration());
         String encodedValue = encoder.encodeAsString(o, WPS.Result);
 
-        Assert.assertTrue(encodedValue.contains("<wps:JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</wps:JobID>"));
+        Assert.assertTrue(encodedValue.contains("<JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</JobID>"));
         Assert.assertTrue(encodedValue.contains(
                 "http://result.data.server/FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66/BUFFERED_GEOMETRY.xml"));
     }

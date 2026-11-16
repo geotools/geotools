@@ -26,6 +26,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Encoder;
@@ -47,9 +48,18 @@ public class FESFilterTest extends FESTestSupport {
         docFactory.setNamespaceAware(true);
         Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
 
-        assertEquals(1, doc.getElementsByTagName("fes:PropertyIsLike").getLength());
-        assertEquals(1, doc.getElementsByTagName("fes:ValueReference").getLength());
-        assertEquals(1, doc.getElementsByTagName("fes:Literal").getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.PropertyIsLike.getNamespaceURI(), FES.PropertyIsLike.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.ValueReference.getNamespaceURI(), FES.ValueReference.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.Literal.getNamespaceURI(), FES.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -66,8 +76,17 @@ public class FESFilterTest extends FESTestSupport {
 
         Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
 
-        assertEquals(1, doc.getElementsByTagName("fes:After").getLength());
-        assertEquals(1, doc.getElementsByTagName("fes:ValueReference").getLength());
-        assertEquals(1, doc.getElementsByTagName("fes:Literal").getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.After.getNamespaceURI(), FES.After.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.ValueReference.getNamespaceURI(), FES.ValueReference.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(FES.Literal.getNamespaceURI(), FES.Literal.getLocalPart())
+                        .getLength());
     }
 }

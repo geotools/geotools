@@ -63,13 +63,23 @@ public class OGCFilterTest {
 
         Document doc = docFactory.newDocumentBuilder().parse(file); // NOPMD: AvoidDocumentBuilder
 
-        Assert.assertEquals("ogc:PropertyIsEqualTo", doc.getDocumentElement().getNodeName());
-        Assert.assertEquals(1, doc.getElementsByTagName("ogc:PropertyName").getLength());
-        Assert.assertEquals(1, doc.getElementsByTagName("ogc:Literal").getLength());
+        Element docElement = doc.getDocumentElement();
+        Assert.assertEquals(OGC.PropertyIsEqualTo.getLocalPart(), docElement.getLocalName());
+        Assert.assertEquals(OGC.PropertyIsEqualTo.getNamespaceURI(), docElement.getNamespaceURI());
 
-        Element propertyName =
-                (Element) doc.getElementsByTagName("ogc:PropertyName").item(0);
-        Element literal = (Element) doc.getElementsByTagName("ogc:Literal").item(0);
+        Assert.assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.PropertyName.getNamespaceURI(), "PropertyName")
+                        .getLength());
+        Assert.assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.Literal.getNamespaceURI(), "Literal")
+                        .getLength());
+
+        Element propertyName = (Element) doc.getElementsByTagNameNS(OGC.PropertyName.getNamespaceURI(), "PropertyName")
+                .item(0);
+        Element literal = (Element) doc.getElementsByTagNameNS(OGC.Literal.getNamespaceURI(), "Literal")
+                .item(0);
 
         Assert.assertEquals("testString", propertyName.getFirstChild().getNodeValue());
         Assert.assertEquals("2", literal.getFirstChild().getNodeValue());

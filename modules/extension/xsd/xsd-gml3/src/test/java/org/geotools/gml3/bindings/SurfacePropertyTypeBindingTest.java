@@ -38,7 +38,7 @@ public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
                 null);
 
         Document dom = encode(polygon, GML.surfaceProperty);
-        assertEquals(1, dom.getElementsByTagName("gml:Polygon").getLength());
-        assertEquals(1, dom.getElementsByTagName("gml:exterior").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "exterior").getLength());
     }
 }

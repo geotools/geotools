@@ -122,33 +122,35 @@ public class WFSFeatureCollectionEncodingTest {
 
         NamedNodeMap attributes = d.getDocumentElement().getAttributes();
         assertEquals("unknown", attributes.getNamedItem("numberMatched").getTextContent());
-        assertEquals(1, d.getElementsByTagName("wfs:boundedBy").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:boundedBy").getLength());
-        assertEquals(2, d.getElementsByTagName("wfs:member").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
+        assertEquals(1, d.getElementsByTagNameNS(WFS.NAMESPACE, "boundedBy").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "boundedBy").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(WFS.NAMESPACE, "member").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, d.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
         // check ids
         assertEquals(
                 "zero.geometry",
-                d.getElementsByTagName("gml:Point")
+                d.getElementsByTagNameNS(GML.NAMESPACE, "Point")
                         .item(0)
                         .getAttributes()
-                        .getNamedItem("gml:id")
+                        .getNamedItemNS(GML.NAMESPACE, "id")
                         .getNodeValue());
         assertEquals(
                 "one.geometry",
-                d.getElementsByTagName("gml:Point")
+                d.getElementsByTagNameNS(GML.NAMESPACE, "Point")
                         .item(1)
                         .getAttributes()
-                        .getNamedItem("gml:id")
+                        .getNamedItemNS(GML.NAMESPACE, "id")
                         .getNodeValue());
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        assertEquals(
+                2, d.getElementsByTagNameNS("http://geotools.org", "feature").getLength());
 
-        Assert.assertNotNull(
-                ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("gml:id"));
+        Assert.assertNotNull(((Element) d.getElementsByTagNameNS("http://geotools.org", "feature")
+                        .item(0))
+                .getAttributeNS(GML.NAMESPACE, "id"));
     }
 
     @Test
@@ -167,34 +169,38 @@ public class WFSFeatureCollectionEncodingTest {
 
         NamedNodeMap attributes = d.getDocumentElement().getAttributes();
         assertEquals("unknown", attributes.getNamedItem("numberMatched").getTextContent());
-        assertEquals(1, d.getElementsByTagName("wfs:boundedBy").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:boundedBy").getLength());
-        assertEquals(2, d.getElementsByTagName("wfs:member").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
-        assertEquals("0.0000 0.0000", d.getElementsByTagName("gml:pos").item(0).getTextContent());
+        assertEquals(1, d.getElementsByTagNameNS(WFS.NAMESPACE, "boundedBy").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "boundedBy").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(WFS.NAMESPACE, "member").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, d.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
+        assertEquals(
+                "0.0000 0.0000",
+                d.getElementsByTagNameNS(GML.NAMESPACE, "pos").item(0).getTextContent());
 
         // check ids
         assertEquals(
                 "zero.geometry",
-                d.getElementsByTagName("gml:Point")
+                d.getElementsByTagNameNS(GML.NAMESPACE, "Point")
                         .item(0)
                         .getAttributes()
-                        .getNamedItem("gml:id")
+                        .getNamedItemNS(GML.NAMESPACE, "id")
                         .getNodeValue());
         assertEquals(
                 "one.geometry",
-                d.getElementsByTagName("gml:Point")
+                d.getElementsByTagNameNS(GML.NAMESPACE, "Point")
                         .item(1)
                         .getAttributes()
-                        .getNamedItem("gml:id")
+                        .getNamedItemNS(GML.NAMESPACE, "id")
                         .getNodeValue());
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        assertEquals(
+                2, d.getElementsByTagNameNS("http://geotools.org", "feature").getLength());
 
-        Assert.assertNotNull(
-                ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("gml:id"));
+        Assert.assertNotNull(((Element) d.getElementsByTagNameNS("http://geotools.org", "feature")
+                        .item(0))
+                .getAttributeNS(GML.NAMESPACE, "id"));
     }
 
     @Test
@@ -241,16 +247,18 @@ public class WFSFeatureCollectionEncodingTest {
 
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
 
-        assertEquals(0, d.getElementsByTagName("wfs:boundedBy").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:boundedBy").getLength());
-        assertEquals(2, d.getElementsByTagName("wfs:member").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
+        assertEquals(0, d.getElementsByTagNameNS(WFS.NAMESPACE, "boundedBy").getLength());
+        assertEquals(0, d.getElementsByTagNameNS(GML.NAMESPACE, "boundedBy").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(WFS.NAMESPACE, "member").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, d.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, d.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        Assert.assertNotNull(
-                ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("gml:id"));
+        assertEquals(
+                2, d.getElementsByTagNameNS("http://geotools.org", "feature").getLength());
+        Assert.assertNotNull(((Element) d.getElementsByTagNameNS("http://geotools.org", "feature")
+                        .item(0))
+                .getAttributeNS(GML.NAMESPACE, "id"));
     }
 
     @Test
@@ -268,34 +276,36 @@ public class WFSFeatureCollectionEncodingTest {
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         XMLTestSupport.print(d);
 
-        List<Element> members = getChildElementsByTagName(d.getDocumentElement(), "wfs:member");
+        List<Element> members = getChildElementsByTagNameNS(d.getDocumentElement(), WFS.NAMESPACE, "member");
         assertEquals(2, members.size());
 
         assertEquals(
                 1,
-                getChildElementsByTagName(members.get(0), "wfs:FeatureCollection")
+                getChildElementsByTagNameNS(members.get(0), WFS.NAMESPACE, "FeatureCollection")
                         .size());
 
-        Element fc1 = getChildElementsByTagName(members.get(0), "wfs:FeatureCollection")
+        Element fc1 = getChildElementsByTagNameNS(members.get(0), WFS.NAMESPACE, "FeatureCollection")
                 .get(0);
 
-        assertEquals(2, getChildElementsByTagName(fc1, "wfs:member").size());
-        assertEquals(2, fc1.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, fc1.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, fc1.getElementsByTagName("gml:coord").getLength());
+        assertEquals(
+                2, getChildElementsByTagNameNS(fc1, WFS.NAMESPACE, "member").size());
+        assertEquals(2, fc1.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, fc1.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, fc1.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
         assertEquals(
                 1,
-                getChildElementsByTagName(members.get(1), "wfs:FeatureCollection")
+                getChildElementsByTagNameNS(members.get(1), WFS.NAMESPACE, "FeatureCollection")
                         .size());
 
-        Element fc2 = getChildElementsByTagName(members.get(1), "wfs:FeatureCollection")
+        Element fc2 = getChildElementsByTagNameNS(members.get(1), WFS.NAMESPACE, "FeatureCollection")
                 .get(0);
 
-        assertEquals(2, getChildElementsByTagName(fc2, "wfs:member").size());
-        assertEquals(2, fc2.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, fc2.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, fc2.getElementsByTagName("gml:coord").getLength());
+        assertEquals(
+                2, getChildElementsByTagNameNS(fc2, WFS.NAMESPACE, "member").size());
+        assertEquals(2, fc2.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, fc2.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, fc2.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
         // check mixed CRS support: each feature is in its own CRS, the bbox is WGS84
         assertEquals("urn:ogc:def:crs:EPSG::4326", getWFSBoundsCRS(d.getDocumentElement()));
@@ -319,34 +329,36 @@ public class WFSFeatureCollectionEncodingTest {
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         XMLTestSupport.print(d);
 
-        List<Element> members = getChildElementsByTagName(d.getDocumentElement(), "wfs:member");
+        List<Element> members = getChildElementsByTagNameNS(d.getDocumentElement(), WFS.NAMESPACE, "member");
         assertEquals(2, members.size());
 
         assertEquals(
                 1,
-                getChildElementsByTagName(members.get(0), "wfs:FeatureCollection")
+                getChildElementsByTagNameNS(members.get(0), WFS.NAMESPACE, "FeatureCollection")
                         .size());
 
-        Element fc1 = getChildElementsByTagName(members.get(0), "wfs:FeatureCollection")
+        Element fc1 = getChildElementsByTagNameNS(members.get(0), WFS.NAMESPACE, "FeatureCollection")
                 .get(0);
 
-        assertEquals(2, getChildElementsByTagName(fc1, "wfs:member").size());
-        assertEquals(2, fc1.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, fc1.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, fc1.getElementsByTagName("gml:coord").getLength());
+        assertEquals(
+                2, getChildElementsByTagNameNS(fc1, WFS.NAMESPACE, "member").size());
+        assertEquals(2, fc1.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, fc1.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, fc1.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
         assertEquals(
                 1,
-                getChildElementsByTagName(members.get(1), "wfs:FeatureCollection")
+                getChildElementsByTagNameNS(members.get(1), WFS.NAMESPACE, "FeatureCollection")
                         .size());
 
-        Element fc2 = getChildElementsByTagName(members.get(1), "wfs:FeatureCollection")
+        Element fc2 = getChildElementsByTagNameNS(members.get(1), WFS.NAMESPACE, "FeatureCollection")
                 .get(0);
 
-        assertEquals(2, getChildElementsByTagName(fc2, "wfs:member").size());
-        assertEquals(2, fc2.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, fc2.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, fc2.getElementsByTagName("gml:coord").getLength());
+        assertEquals(
+                2, getChildElementsByTagNameNS(fc2, WFS.NAMESPACE, "member").size());
+        assertEquals(2, fc2.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
+        assertEquals(2, fc2.getElementsByTagNameNS(GML.NAMESPACE, "pos").getLength());
+        assertEquals(0, fc2.getElementsByTagNameNS(GML.NAMESPACE, "coord").getLength());
 
         // all collections use 4269, there is no mix-in
         assertEquals("urn:ogc:def:crs:EPSG::4269", getWFSBoundsCRS(d.getDocumentElement()));
@@ -355,20 +367,23 @@ public class WFSFeatureCollectionEncodingTest {
     }
 
     private String getWFSBoundsCRS(Element doc) {
-        return getChildElementsByTagName(doc, "wfs:boundedBy")
+        return getChildElementsByTagNameNS(doc, WFS.NAMESPACE, "boundedBy")
                 .get(0)
-                .getElementsByTagName("gml:Envelope")
+                .getElementsByTagNameNS(GML.NAMESPACE, "Envelope")
                 .item(0)
                 .getAttributes()
                 .getNamedItem("srsName")
                 .getNodeValue();
     }
 
-    List<Element> getChildElementsByTagName(Node e, String name) {
+    List<Element> getChildElementsByTagNameNS(Node e, String namespace, String localName) {
         List<Element> elements = new ArrayList<>();
         for (int i = 0; i < e.getChildNodes().getLength(); i++) {
             Node n = e.getChildNodes().item(i);
-            if (n instanceof Element element && n.getNodeName().equals(name)) {
+
+            if (n instanceof Element element
+                    && localName.equals(n.getLocalName())
+                    && namespace.equals(n.getNamespaceURI())) {
                 elements.add(element);
             }
         }

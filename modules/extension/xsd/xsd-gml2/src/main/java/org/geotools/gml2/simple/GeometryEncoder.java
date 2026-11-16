@@ -84,7 +84,7 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
 
     /** Adds a gmlId to an existing and non null attribute set */
     protected void addGmlId(AttributesImpl attributes, String gmlId) {
-        attributes.addAttribute(GML.NAMESPACE, "id", "gml:id", null, gmlId);
+        attributes.addAttribute(GML.NAMESPACE, "id", "gml:id", "CDATA", gmlId);
     }
 
     /**

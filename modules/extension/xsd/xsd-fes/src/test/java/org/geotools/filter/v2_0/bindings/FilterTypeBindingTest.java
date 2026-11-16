@@ -220,7 +220,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testEncodeId() throws Exception {
         Document doc = encode(FilterMockData.id(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
 
         assertEquals(3, getElementsByQName(doc, FES.ResourceId).getLength());
     }
@@ -228,7 +230,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testEncodeRsourceId() throws Exception {
         Document doc = encode(FilterMockData.resourceId(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
         // print(doc);
 
         assertEquals(4, getElementsByQName(doc, FES.ResourceId).getLength());
@@ -237,7 +241,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testEncodeSpatial() throws Exception {
         Document doc = encode(FilterMockData.intersects(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
 
         Element e = getElementByQName(doc, FES.Intersects);
         assertNotNull(e);
@@ -250,7 +256,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     public void testEncodeBoundingBox() throws Exception {
         Document doc = encode(FilterMockData.bbox(), FES.Filter);
 
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "BBOX").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(GML.NAMESPACE, "Envelope").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
@@ -259,7 +267,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testEncodeComparison() throws Exception {
         Document doc = encode(FilterMockData.propertyIsEqualTo(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
 
         Element e = getElementByQName(doc, FES.PropertyIsEqualTo);
         assertNotNull(e);
@@ -272,7 +282,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testEncodeLogic() throws Exception {
         Document doc = encode(FilterMockData.and(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
 
         Element e = getElementByQName(doc, FES.And);
         assertNotNull(e);

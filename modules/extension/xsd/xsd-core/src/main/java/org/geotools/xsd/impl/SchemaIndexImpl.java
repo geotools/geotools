@@ -275,7 +275,7 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     @Override
-    public List getAttributes(XSDElementDeclaration element) {
+    public List<XSDAttributeDeclaration> getAttributes(XSDElementDeclaration element) {
         List<XSDAttributeDeclaration> attributes = element2attributes.get(element);
 
         if (attributes == null) {

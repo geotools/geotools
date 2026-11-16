@@ -407,7 +407,7 @@ public class SLDParserTest {
 
     static String color = "00AA00";
 
-    static String formattedCssStrokeParameter = "<Stroke>"
+    static String formattedCssStrokeParameter = "<Stroke xmlns:ogc=\"http://www.opengis.net/ogc\">"
             + "\n\t<CssParameter name=\"stroke\">#"
             + "\n\t\t<ogc:Function name=\"env\">"
             + "\n\t\t\t<ogc:Literal>stroke_color</ogc:Literal>"

@@ -33,7 +33,9 @@ public class PropertyIsBetweenBindingTest extends FESTestSupport {
     @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.propertyIsBetween(), FES.Filter);
-        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.Filter.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.Filter.getNamespaceURI(), docElement.getNamespaceURI());
         print(doc);
 
         Element between = getElementByQName(doc, FES.PropertyIsBetween);
@@ -41,17 +43,27 @@ public class PropertyIsBetweenBindingTest extends FESTestSupport {
         NodeList children = between.getChildNodes();
         assertEquals(3, children.getLength());
         Node valueReference = children.item(0);
-        assertEquals("fes:ValueReference", valueReference.getNodeName());
+        assertEquals(FES.ValueReference.getLocalPart(), valueReference.getLocalName());
+        assertEquals(FES.ValueReference.getNamespaceURI(), valueReference.getNamespaceURI());
         assertEquals("foo", valueReference.getTextContent());
 
-        assertEquals("fes:LowerBoundary", children.item(1).getNodeName());
+        Node lowerBoundary = children.item(1);
+        assertEquals("LowerBoundary", lowerBoundary.getLocalName());
+        assertEquals(FES.NAMESPACE, lowerBoundary.getNamespaceURI());
+
         Node lowerLiteral = children.item(1).getFirstChild();
-        assertEquals("fes:Literal", lowerLiteral.getNodeName());
+        assertEquals(FES.Literal.getLocalPart(), lowerLiteral.getLocalName());
+        assertEquals(FES.Literal.getNamespaceURI(), lowerLiteral.getNamespaceURI());
         assertEquals("10", lowerLiteral.getTextContent());
 
-        assertEquals("fes:UpperBoundary", children.item(2).getNodeName());
+        Node upperBoundary = children.item(2);
+        assertEquals("UpperBoundary", upperBoundary.getLocalName());
+        assertEquals(FES.NAMESPACE, upperBoundary.getNamespaceURI());
+
         Node upperLiteral = children.item(2).getFirstChild();
-        assertEquals("fes:Literal", upperLiteral.getNodeName());
+        assertEquals(FES.Literal.getLocalPart(), upperLiteral.getLocalName());
+        assertEquals(FES.Literal.getNamespaceURI(), upperLiteral.getNamespaceURI());
+
         assertEquals("20", upperLiteral.getTextContent());
     }
 }

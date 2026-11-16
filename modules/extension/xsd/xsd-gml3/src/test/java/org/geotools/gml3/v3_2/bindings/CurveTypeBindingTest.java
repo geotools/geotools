@@ -28,7 +28,9 @@ public class CurveTypeBindingTest extends GML32TestSupport {
     @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.compoundCurve(), GML.Curve);
-        assertEquals(1, dom.getElementsByTagName("gml:ArcString").getLength());
-        assertEquals(1, dom.getElementsByTagName("gml:LineStringSegment").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "ArcString").getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, "LineStringSegment").getLength());
     }
 }

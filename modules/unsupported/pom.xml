@@ -47,12 +47,46 @@
     <module>vector-mosaic</module>
     <module>jdbc-h2gis</module>
     <module>graticules</module>
-    <module>duckdb</module>
-    <module>geoparquet</module>
     <module>jdbc-singlestore</module>
     <module>pmtiles</module>
   </modules>
   <profiles>
+
+    <!-- ================================================== -->
+    <!-- OS Specific Modules -->
+    <!-- ================================================== -->
+    <!-- The following profiles will be activated only on -->
+    <!-- supported Operating Systems, or can be turned on by -->
+    <!-- providing -Dall on the command line. -->
+    <profile>
+      <id>duckdb</id>
+      <activation>
+        <os>
+          <name>!FreeBSD</name>
+        </os>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <modules>
+        <module>duckdb</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>geoparquet</id>
+      <activation>
+        <os>
+          <name>!FreeBSD</name>
+        </os>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <modules>
+        <module>geoparquet</module>
+      </modules>
+    </profile>
+
     <!-- ================================================== -->
     <!-- Unsupported Modules -->
     <!-- ================================================== -->
@@ -227,18 +261,6 @@
       <id>teradata</id>
       <modules>
         <module>jdbc-teradata</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>duckdb</id>
-      <modules>
-        <module>duckdb</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>geoparquet</id>
-      <modules>
-        <module>geoparquet</module>
       </modules>
     </profile>
     <profile>

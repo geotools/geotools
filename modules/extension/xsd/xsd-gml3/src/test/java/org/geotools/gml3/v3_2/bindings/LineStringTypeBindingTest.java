@@ -26,6 +26,7 @@ import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class LineStringTypeBindingTest extends GML32TestSupport {
     //    public void testPos() throws Exception {
@@ -51,10 +52,12 @@ public class LineStringTypeBindingTest extends GML32TestSupport {
     @Test
     public void testEncode() throws Exception {
         LineString line = GML3MockData.lineString();
-        Document d = encode(line, GML.LineString);
+        Document doc = encode(line, GML.LineString);
 
-        assertEquals("gml:LineString", d.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals("LineString", docElement.getLocalName());
+        assertEquals(GML.NAMESPACE, docElement.getNamespaceURI());
 
-        assertThat(d, hasXPath("/gml:LineString/gml:posList", notNullValue(String.class)));
+        assertThat(doc, hasXPath("/gml:LineString/gml:posList", notNullValue(String.class)));
     }
 }

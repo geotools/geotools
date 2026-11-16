@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /** Tests for {@link ComplexTypeHandler}. */
 public class ComplexTypeHandlerTest {
 
@@ -33,8 +35,8 @@ public class ComplexTypeHandlerTest {
     /** Test abstracT true */
     @Test
     public void abstracT() throws SAXException {
-        attributes.addAttribute("", "name", "name", "string", "Generic");
-        attributes.addAttribute("", "abstract", "abstract", "boolean", "cat");
+        attributes.addAttribute(NULL_NS_URI, "name", "name", "string", "Generic");
+        attributes.addAttribute(NULL_NS_URI, "abstract", "abstract", "boolean", "cat");
         try {
             handler.startElement(NAMESPACE_URI, "name", attributes);
             Assert.fail("Schrodinger: I am not a cat");
@@ -48,8 +50,8 @@ public class ComplexTypeHandlerTest {
     /** Test abstracT true */
     @Test
     public void mixed() throws SAXException {
-        attributes.addAttribute("", "name", "name", "string", "Assorted");
-        attributes.addAttribute("", "mixed", "mixed", "boolean", "true");
+        attributes.addAttribute(NULL_NS_URI, "name", "name", "string", "Assorted");
+        attributes.addAttribute(NULL_NS_URI, "mixed", "mixed", "boolean", "true");
 
         handler.startElement(NAMESPACE_URI, "name", attributes);
         Assert.assertEquals("Assorted", handler.getName());

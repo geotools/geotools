@@ -1,4 +1,4 @@
-<Filter>
+<Filter xmlns:ogc="http://www.opengis.net/ogc">
     <PropertyIsLike wildCard="%" singleChar="_" escape="\">
         <Function name="env">
             <Literal>key</Literal>

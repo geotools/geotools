@@ -25,6 +25,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class LinearRingTypeBindingTest extends GML32TestSupport {
     //    public void testPos() throws Exception {
@@ -54,11 +55,12 @@ public class LinearRingTypeBindingTest extends GML32TestSupport {
     //    }
     @Test
     public void testEncode() throws Exception {
-        Document d = encode(GML3MockData.linearRing(), GML.LinearRing);
+        Document doc = encode(GML3MockData.linearRing(), GML.LinearRing);
+        Element docElement = doc.getDocumentElement();
+        assertEquals("LinearRing", docElement.getLocalName());
+        assertEquals(GML.NAMESPACE, docElement.getNamespaceURI());
 
-        assertEquals("gml:LinearRing", d.getDocumentElement().getNodeName());
-
-        assertThat(d, hasXPath("/gml:LinearRing/gml:posList", notNullValue(String.class)));
+        assertThat(doc, hasXPath("/gml:LinearRing/gml:posList", notNullValue(String.class)));
 
         // print(d);
     }

@@ -66,9 +66,9 @@ public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.feature(), TEST.TestFeature);
 
-        assertEquals(1, dom.getElementsByTagName("gml:boundedBy").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:geom").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:count").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:date").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "boundedBy").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "geom").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "count").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "date").getLength());
     }
 }

@@ -34,7 +34,7 @@ jobs:
       - name: Disable checksum offloading
         # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
         run: |
-          sudo ethtool -K eth0 tx off rx off
+          sudo ethtool -K "$(ip route show default | awk '{print $5; exit}')" tx off rx off
       - name: Build GeoTools (no tests, prepare fresh artifacts)
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}

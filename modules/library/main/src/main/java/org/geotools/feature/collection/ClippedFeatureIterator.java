@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -47,8 +48,10 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.geom.util.GeometryEditor;
+import org.locationtech.jts.geom.util.GeometryFixer;
 
 /**
  * SimpleFeatureIterator wrapper that clip (crops) features according to the clip geometry passed. Can preserve the Z
@@ -143,13 +146,15 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
 
     private Object clipGeometry(Geometry geom, CoordinateReferenceSystem crs) {
         // first off, clip
-        Geometry clipped = null;
-        if (clipper != null) {
-            clipped = clipper.clip(geom, true);
-        } else {
-            if (geom.getEnvelopeInternal().intersects(clip.getEnvelopeInternal())) {
-                clipped = clip.intersection(geom);
-            }
+        Geometry clipped;
+        try {
+            clipped = clip(geom);
+        } catch (TopologyException e) {
+            // an invalid geometry (a hole outside its shell, nested holes, a self-crossing ring...) can make the
+            // clip throw, and with it the whole iteration: clip its repaired version instead
+            LOGGER.log(Level.FINE, "Clipping an invalid geometry failed, clipping its repaired version instead", e);
+            geom = GeometryFixer.fix(geom);
+            clipped = clip(geom);
         }
 
         if (clipped == null) {
@@ -186,6 +191,16 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         }
 
         return result;
+    }
+
+    private Geometry clip(Geometry geom) {
+        if (clipper != null) {
+            return clipper.clip(geom, true);
+        }
+        if (geom.getEnvelopeInternal().intersects(clip.getEnvelopeInternal())) {
+            return clip.intersection(geom);
+        }
+        return null;
     }
 
     protected boolean hasElevations(CoordinateSequence seq) {

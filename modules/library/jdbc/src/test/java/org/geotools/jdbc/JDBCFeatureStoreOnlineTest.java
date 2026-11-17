@@ -413,6 +413,29 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         assertEquals(0, features.size());
     }
 
+    @Test
+    public void testRemoveFeaturesWithIdAndPropertyFilter() throws IOException {
+        FilterFactory ff = dataStore.getFilterFactory();
+        String typeName = tname("ft1");
+        Filter filter = ff.and(
+                ff.id(ff.featureId(typeName + ".0"), ff.featureId(typeName + ".1")),
+                ff.equals(ff.property(aname("intProperty")), ff.literal(0)));
+
+        SimpleFeatureCollection features = featureStore.getFeatures();
+        assertEquals(3, features.size());
+
+        featureStore.removeFeatures(filter);
+        assertEquals(2, features.size());
+
+        // only the feature matching both the id and the property should be gone
+        assertEquals(
+                0,
+                featureStore.getFeatures(ff.id(ff.featureId(typeName + ".0"))).size());
+        assertEquals(
+                1,
+                featureStore.getFeatures(ff.id(ff.featureId(typeName + ".1"))).size());
+    }
+
     @Test(expected = Exception.class)
     public void testRemoveFeaturesWithInvalidFilter() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

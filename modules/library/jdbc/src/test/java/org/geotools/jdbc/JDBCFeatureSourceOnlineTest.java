@@ -191,6 +191,26 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testGetFeaturesWithIdAndPropertyFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        String typeName = tname("ft1");
+        Filter filter = ff.and(
+                ff.id(ff.featureId(typeName + ".0"), ff.featureId(typeName + ".1")),
+                ff.equals(ff.property(aname("intProperty")), ff.literal(0)));
+
+        SimpleFeatureCollection features = featureSource.getFeatures(filter);
+        assertEquals(1, features.size());
+
+        try (SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertEquals(typeName + ".0", feature.getID());
+            assertEquals(0, ((Number) feature.getAttribute(aname("intProperty"))).intValue());
+            assertFalse(iterator.hasNext());
+        }
+    }
+
+    @Test
     @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testGetFeaturesWithInvalidFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

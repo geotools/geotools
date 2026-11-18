@@ -439,8 +439,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     private RenderedImage mosaicHeterogeneousImages(List<ImageInTile> sources) {
         // at the time of writing, only JAI-EXT mosaic can handle a mix of different
         // color models, we need to use it explicitly
-        final ParameterBlockImageN pb =
-                new ParameterBlockImageN(new org.eclipse.imagen.media.mosaic.MosaicDescriptor());
+        final ParameterBlockImageN pb = new ParameterBlockImageN("Mosaic");
         for (ImageInTile it : sources) {
             if (it.posx != 0 || it.posy != 0) {
                 ImageWorker iw = new ImageWorker(it.image);

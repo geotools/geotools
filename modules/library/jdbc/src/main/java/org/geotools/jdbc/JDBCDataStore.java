@@ -2234,11 +2234,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Releases an existing connection (paying special attention to {@link Transaction#AUTO_COMMIT}.
      *
-     * <p>If the state is based off the AUTO_COMMIT transaction - close using {@link #closeSafe(Connection)}. Otherwise
-     * wait until the transaction itself is closed to close the connection.
+     * <p>Under AUTO_COMMIT, turns autocommit back on and closes the connection with {@link #closeSafe(Connection)}.
+     * Under any other transaction, leaves the connection open, and {@link Transaction#close()} closes it.
      */
     protected final void releaseConnection(Connection cx, JDBCState state) {
         if (state.getTransaction() == Transaction.AUTO_COMMIT) {
+            // A read turns autocommit off to stream with a cursor, see SQLDialect.isAutoCommitQuery().
+            // Turning it back on commits the read, so the connection goes back to the pool outside a transaction.
+            try {
+                if (!cx.getAutoCommit()) {
+                    cx.setAutoCommit(true);
+                }
+            } catch (SQLException e) {
+                LOGGER.log(Level.FINE, "Error occurred turning autocommit back on before closing the connection", e);
+            }
             closeSafe(cx);
         }
     }

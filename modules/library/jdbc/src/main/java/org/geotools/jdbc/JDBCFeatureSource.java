@@ -649,8 +649,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 }
             }
         } catch (Throwable e) { // NOSONAR
-            // close the connection
-            getDataStore().closeSafe(cx);
+            getDataStore().releaseConnection(cx, getState());
             // safely rethrow
             if (e instanceof Error error) {
                 throw error;

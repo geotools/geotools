@@ -16,12 +16,15 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.data.DefaultTransaction;
@@ -95,6 +98,26 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
             // on the closeSafe method, that swallows exceptions
             featureStore.getCount(Query.ALL);
         }
+    }
+
+    /** Checks a read under AUTO_COMMIT gives its connection back with autocommit on, outside a transaction. */
+    @Test
+    public void testAutoCommitRead() throws IOException {
+        List<Boolean> autoCommitOnRelease = new ArrayList<>();
+        dataStore.getConnectionLifecycleListeners().add(new MockListener() {
+            @Override
+            public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
+                autoCommitOnRelease.add(cx.getAutoCommit());
+            }
+        });
+
+        try (SimpleFeatureIterator fi = featureStore.getFeatures().features()) {
+            while (fi.hasNext()) {
+                fi.next();
+            }
+        }
+
+        assertEquals(List.of(true), autoCommitOnRelease);
     }
 
     private static class MockListener implements ConnectionLifecycleListener {

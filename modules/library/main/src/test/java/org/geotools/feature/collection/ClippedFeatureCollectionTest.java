@@ -105,6 +105,64 @@ public class ClippedFeatureCollectionTest {
         delegateGeom.add(bG.buildFeature("fid.3"));
     }
 
+    /** A polygon whose hole crosses its shell: invalid, and the clip used to throw a TopologyException. */
+    private DefaultFeatureCollection invalidPolygons(boolean withValid) throws ParseException {
+        WKTReader reader = new WKTReader();
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("InvalidPolygons");
+        tb.add("geom", Polygon.class);
+        tb.add("name", String.class);
+        SimpleFeatureType featureType = tb.buildFeatureType();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection(null, featureType);
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(featureType);
+        Geometry invalid = reader.read("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0), (9 4, 11 4, 11 5, 9 5, 9 4))");
+        assertFalse(invalid.isValid());
+        fb.add(invalid);
+        fb.add("invalid");
+        fc.add(fb.buildFeature("fid.1"));
+        if (withValid) {
+            fb.add(reader.read("POLYGON((3 3, 3 6, 6 6, 6 3, 3 3))"));
+            fb.add("valid");
+            fc.add(fb.buildFeature("fid.2"));
+        }
+        return fc;
+    }
+
+    private void assertValidAndInside(SimpleFeatureCollection result, Geometry clip, int expected) {
+        assertEquals(expected, result.size());
+        try (SimpleFeatureIterator fi = result.features()) {
+            while (fi.hasNext()) {
+                Geometry g = (Geometry) fi.next().getDefaultGeometry();
+                assertTrue(g.isValid());
+                assertFalse(g.isEmpty());
+                assertTrue(clip.buffer(1e-9).covers(g));
+            }
+        }
+    }
+
+    @Test
+    public void testClipInvalidPolygonRectangle() throws Exception {
+        // rectangular clip: the fast GeometryClipper path
+        Geometry clip = new WKTReader().read("POLYGON((2 2, 2 9, 22 9, 22 2, 2 2))");
+        SimpleFeatureCollection result = new ClippedFeatureCollection(invalidPolygons(false), clip, false);
+        assertValidAndInside(result, clip, 1);
+    }
+
+    @Test
+    public void testClipInvalidPolygonNonRectangular() throws Exception {
+        // non rectangular clip: the Geometry.intersection path
+        Geometry clip = new WKTReader().read("POLYGON((2 2, 22 2, 12 9, 2 2))");
+        SimpleFeatureCollection result = new ClippedFeatureCollection(invalidPolygons(false), clip, false);
+        assertValidAndInside(result, clip, 1);
+    }
+
+    @Test
+    public void testInvalidPolygonDoesNotStopTheIteration() throws Exception {
+        Geometry clip = new WKTReader().read("POLYGON((2 2, 2 9, 22 9, 22 2, 2 2))");
+        SimpleFeatureCollection result = new ClippedFeatureCollection(invalidPolygons(true), clip, false);
+        assertValidAndInside(result, clip, 2);
+    }
+
     @Test
     public void testClipPolygon() throws ParseException {
         Geometry clip = new WKTReader().read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))");

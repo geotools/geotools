@@ -102,7 +102,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
     private final double[] elt;
 
     /** The inverse transform. Will be created only when first needed. */
-    private transient ProjectiveTransform inverse;
+    private transient volatile ProjectiveTransform inverse;
 
     /**
      * Constructs a transform from the specified matrix. The matrix should be affine, but it will not be verified.
@@ -455,22 +455,30 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
 
     /** Creates the inverse transform of this object. */
     @Override
-    public synchronized MathTransform inverse() throws NoninvertibleTransformException {
-        if (inverse == null) {
-            if (isIdentity()) {
-                inverse = this;
-            } else {
-                final XMatrix matrix = getGeneralMatrix();
-                try {
-                    matrix.invert();
-                } catch (SingularMatrixException | IllegalArgumentException | MatrixDimensionException exception) {
-                    throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
-                }
-                inverse = createInverse(matrix);
-                inverse.inverse = this;
-            }
+    public MathTransform inverse() throws NoninvertibleTransformException {
+        ProjectiveTransform result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized ProjectiveTransform computeInverse() throws NoninvertibleTransformException {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        if (isIdentity()) {
+            inverse = this;
+            return this;
+        }
+        final XMatrix matrix = getGeneralMatrix();
+        try {
+            matrix.invert();
+        } catch (SingularMatrixException | IllegalArgumentException | MatrixDimensionException exception) {
+            throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
+        }
+        ProjectiveTransform result = createInverse(matrix);
+        result.inverse = this;
+        inverse = result;
+        return result;
     }
 
     /** Creates an inverse transform using the specified matrix. To be overridden by {@link GeocentricTranslation}. */

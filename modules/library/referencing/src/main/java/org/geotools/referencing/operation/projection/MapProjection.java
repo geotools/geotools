@@ -231,7 +231,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     protected double globalScale;
 
     /** The inverse of this map projection. Will be created only when needed. */
-    private transient MathTransform2D inverse;
+    private transient volatile MathTransform2D inverse;
 
     /**
      * Constant needed for the <code>mlfn<code> method.
@@ -1110,9 +1110,12 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
         if (!invertible) {
             throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
         }
+        MathTransform2D result = inverse;
+        return result != null ? result : computeInverse();
+    }
 
-        // No synchronization. Not a big deal if this method is invoked in
-        // the same time by two threads resulting in two instances created.
+    /** Creates the inverse on the first call. */
+    private synchronized MathTransform2D computeInverse() {
         if (inverse == null) {
             inverse = new Inverse();
         }

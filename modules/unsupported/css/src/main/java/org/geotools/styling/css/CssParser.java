@@ -100,7 +100,7 @@ public class CssParser extends BaseParser<Object> {
      * Returns the single instance of the CSS parser. The CSSParser should not be instantiated directly, Parboiled needs
      * to do it instead.
      */
-    public static CssParser getInstance() {
+    public static synchronized CssParser getInstance() {
         // we need to lazily create it, otherwise Parboiled won't be able to instrument the class
         if (INSTANCE == null) {
             INSTANCE = Parboiled.createParser(CssParser.class);
@@ -111,9 +111,9 @@ public class CssParser extends BaseParser<Object> {
 
     /**
      * Turns the CSS provided into a {@link Stylesheet} object, will throw a {@link CSSParseException} in case of syntax
-     * errors
+     * errors. Serialize calls because Parboiled stores the current parse context on the shared parser instance.
      */
-    public static Stylesheet parse(String css) throws CSSParseException {
+    public static synchronized Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
         ParseRunner<Stylesheet> runner = new ReportingParseRunner<>(parser.StyleSheet());
         ParsingResult<Stylesheet> result = runner.run(css);

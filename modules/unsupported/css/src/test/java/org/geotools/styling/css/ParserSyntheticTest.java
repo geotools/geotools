@@ -26,9 +26,15 @@ import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.imagen.media.classifier.LinearColorMap;
 import org.eclipse.imagen.media.classifier.LinearColorMapElement;
 import org.geotools.api.style.ColorMap;
@@ -57,6 +63,36 @@ import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 
 public class ParserSyntheticTest extends CssBaseTest {
+
+    @Test
+    public void parallelStylesheetParsing() throws Exception {
+        String css = "[@scale < 25000] { stroke: #112233; stroke-width: 2.75; } "
+                + "* { mark: symbol(circle); mark-size: 12.5; } :mark { fill: red; }";
+        int workers = 3;
+        CountDownLatch ready = new CountDownLatch(workers);
+        CountDownLatch start = new CountDownLatch(1);
+        ExecutorService executor = Executors.newFixedThreadPool(workers);
+        try {
+            List<Future<Void>> results = new ArrayList<>();
+            for (int worker = 0; worker < workers; worker++) {
+                results.add(executor.submit(() -> {
+                    ready.countDown();
+                    assertTrue(start.await(10, TimeUnit.SECONDS));
+                    for (int attempt = 0; attempt < 100; attempt++) {
+                        assertEquals(3, CssParser.parse(css).getRules().size());
+                    }
+                    return null;
+                }));
+            }
+            assertTrue(ready.await(10, TimeUnit.SECONDS));
+            start.countDown();
+            for (Future<Void> result : results) {
+                result.get(20, TimeUnit.SECONDS);
+            }
+        } finally {
+            executor.shutdownNow();
+        }
+    }
 
     @Test
     public void simpleLine() throws IOException {

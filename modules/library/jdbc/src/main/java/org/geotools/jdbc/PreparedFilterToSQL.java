@@ -151,14 +151,18 @@ public class PreparedFilterToSQL extends FilterToSQL {
         }
 
         Set ids = filter.getIdentifiers();
-
-        List<PrimaryKeyColumn> columns = primaryKey.getColumns();
-        for (Iterator i = ids.iterator(); i.hasNext(); ) {
-            try {
+        try {
+            if (ids.size() > 1) {
+                out.write("(");
+            }
+            List<PrimaryKeyColumn> columns = primaryKey.getColumns();
+            for (Iterator i = ids.iterator(); i.hasNext(); ) {
                 Identifier id = (Identifier) i.next();
                 List<Object> attValues = JDBCDataStore.decodeFID(primaryKey, id.toString(), false);
 
-                out.write("(");
+                if (attValues.size() > 1) {
+                    out.write("(");
+                }
 
                 for (int j = 0; j < attValues.size(); j++) {
                     // in case of join the pk columns need to be qualified with alias
@@ -184,16 +188,20 @@ public class PreparedFilterToSQL extends FilterToSQL {
                     }
                 }
 
-                out.write(")");
+                if (attValues.size() > 1) {
+                    out.write(")");
+                }
 
                 if (i.hasNext()) {
                     out.write(" OR ");
                 }
-            } catch (java.io.IOException e) {
-                throw new RuntimeException(IO_ERROR, e);
             }
+            if (ids.size() > 1) {
+                out.write(")");
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(IO_ERROR, e);
         }
-
         return extraData;
     }
 

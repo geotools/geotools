@@ -542,8 +542,8 @@ public class ImageWorker {
      * @param readMetadata If {@code true}, metadata will be read.
      */
     public final void load(final String source, final int imageChoice, final boolean readMetadata) {
-        final ParameterBlockImageN pbj = new ParameterBlockImageN("ImageRead");
-        pbj.setParameter("Input", source)
+        final ParameterBlockImageN pbj = new ParameterBlockImageN("ImageRead")
+                .setParameter("Input", source)
                 .setParameter("ImageChoice", Integer.valueOf(imageChoice))
                 .setParameter("ReadMetadata", Boolean.valueOf(readMetadata))
                 .setParameter("VerifyInput", Boolean.TRUE);
@@ -612,10 +612,7 @@ public class ImageWorker {
         if (image instanceof RenderedOp renderedOp) {
             return renderedOp;
         }
-        // Creating a parameter block
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        // Executing the operation
+        ParameterBlockImageN pb = new ParameterBlockImageN("Null").addSource(image);
         return ImageN.create("Null", pb, getRenderingHints());
     }
 
@@ -629,10 +626,7 @@ public class ImageWorker {
      * @see #getImageAsROI
      */
     public ImageWorker nullOp() {
-        // Creating a parameter block
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        // Executing the operation
+        ParameterBlockImageN pb = new ParameterBlockImageN("Null").addSource(image);
         image = ImageN.create("Null", pb, getRenderingHints());
         return this;
     }
@@ -1019,9 +1013,6 @@ public class ImageWorker {
     private double[][] getExtremas() {
         Object extrema = getComputedProperty(EXTREMA);
         if (!(extrema instanceof double[][])) {
-            // Create the parameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
             StatsType[] stats = {StatsType.EXTREMA};
             // Band definition
             int numBands = getNumBands();
@@ -1030,13 +1021,14 @@ public class ImageWorker {
                 bands[i] = i;
             }
 
-            // Image parameters
-            pb.set(xPeriod, 0); // xPeriod
-            pb.set(yPeriod, 1); // yPeriod
-            pb.set(roi, 2); // ROI
-            pb.set(nodata, 3); // NoData
-            pb.set(bands, 5); // band indexes
-            pb.set(stats, 6); // statistic operation
+            ParameterBlockImageN pb = new ParameterBlockImageN("Stats")
+                    .addSource(image)
+                    .setParameter("xPeriod", xPeriod)
+                    .setParameter("yPeriod", yPeriod)
+                    .setParameter("ROI", roi)
+                    .setParameter("noData", nodata)
+                    .setParameter("bands", bands)
+                    .setParameter("stats", stats);
             image = ImageN.create("Stats", pb, getRenderingHints());
             // Retrieving the statistics
             Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
@@ -1074,9 +1066,6 @@ public class ImageWorker {
                 return wrapper;
             }
         }
-        // Create the parameterBlock
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
         StatsType[] stats = {StatsType.HISTOGRAM};
         // Band definition
         int numBands = getNumBands();
@@ -1085,16 +1074,17 @@ public class ImageWorker {
             bands[i] = i;
         }
 
-        // Image parameters
-        pb.set(xPeriod, 0); // xPeriod
-        pb.set(yPeriod, 1); // yPeriod
-        pb.set(roi, 2); // ROI
-        pb.set(nodata, 3); // NoData
-        pb.set(bands, 5); // band indexes
-        pb.set(stats, 6); // statistic operation
-        pb.set(numBins, 9); // Bin number.
-        pb.set(lowValues, 7); // Lower values per band.
-        pb.set(highValues, 8); // Higher values per band.
+        ParameterBlockImageN pb = new ParameterBlockImageN("Stats")
+                .addSource(image)
+                .setParameter("xPeriod", xPeriod)
+                .setParameter("yPeriod", yPeriod)
+                .setParameter("ROI", roi)
+                .setParameter("noData", nodata)
+                .setParameter("bands", bands)
+                .setParameter("stats", stats)
+                .setParameter("numBins", numBins)
+                .setParameter("lowValue", lowValues)
+                .setParameter("highValue", highValues);
         image = ImageN.create("Stats", pb, getRenderingHints());
         // Retrieving the statistics
         Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
@@ -1140,9 +1130,6 @@ public class ImageWorker {
     public double[] getMean() {
         Object mean = getComputedProperty(MEAN);
         if (!(mean instanceof double[])) {
-            // Create the parameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
             StatsType[] stats = {StatsType.MEAN};
             // Band definition
             int numBands = getNumBands();
@@ -1151,13 +1138,14 @@ public class ImageWorker {
                 bands[i] = i;
             }
 
-            // Image parameters
-            pb.set(xPeriod, 0); // xPeriod
-            pb.set(yPeriod, 1); // yPeriod
-            pb.set(roi, 2); // ROI
-            pb.set(nodata, 3); // NoData
-            pb.set(bands, 5); // band indexes
-            pb.set(stats, 6); // statistic operation
+            ParameterBlockImageN pb = new ParameterBlockImageN("Stats")
+                    .addSource(image)
+                    .setParameter("xPeriod", xPeriod)
+                    .setParameter("yPeriod", yPeriod)
+                    .setParameter("ROI", roi)
+                    .setParameter("noData", nodata)
+                    .setParameter("bands", bands)
+                    .setParameter("stats", stats);
             image = ImageN.create("Stats", pb, getRenderingHints());
             // Retrieving the statistics
             Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
@@ -1389,14 +1377,14 @@ public class ImageWorker {
         }
         final RenderingHints hints = getRenderingHints(DataBuffer.TYPE_BYTE);
         if (computeRescale) {
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0); // The source image.
-            pb.set(scale, 0); // The per-band constants to multiply by.
-            pb.set(offset, 1); // The per-band offsets to be added.
-            pb.set(roi, 2); // ROI
-            pb.set(nodata, 3); // NoData range
+            ParameterBlockImageN pb = new ParameterBlockImageN("Rescale")
+                    .addSource(image)
+                    .setParameter("constants", scale)
+                    .setParameter("offsets", offset)
+                    .setParameter("ROI", roi)
+                    .setParameter("noData", nodata);
             if (isNoDataNeeded() && !Double.isNaN(destNodata)) {
-                pb.set(destNodata, 5);
+                pb.setParameter("destNoData", destNodata);
             }
 
             image = ImageN.create("Rescale", pb, hints);
@@ -1404,9 +1392,8 @@ public class ImageWorker {
                 setNoData(RangeFactory.create((byte) destNodata, DataBuffer.TYPE_BYTE));
             }
         } else {
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0); // The source image.
-            pb.set(DataBuffer.TYPE_BYTE, 0); // The destination image data type (BYTE)
+            ParameterBlockImageN pb =
+                    new ParameterBlockImageN("Format").addSource(image).setParameter("dataType", DataBuffer.TYPE_BYTE);
             image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, DataBuffer.TYPE_BYTE));
         }
@@ -1451,19 +1438,15 @@ public class ImageWorker {
             final KernelImageN ditherMask = KernelImageN.ERROR_FILTER_FLOYD_STEINBERG;
             final LookupTableImageN colorMap = ColorCube.BYTE_496;
 
-            // Creation of the ParameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            // Setting source
-            pb.setSource(image, 0);
-            // Setting parameters
-            pb.set(colorMap, 0);
-            pb.set(ditherMask, 1);
-            pb.set(roi, 2);
-            pb.set(nodata, 3);
+            ParameterBlockImageN pb = new ParameterBlockImageN("ErrorDiffusion")
+                    .addSource(image)
+                    .setParameter("colorMap", colorMap)
+                    .setParameter("errorKernel", ditherMask)
+                    .setParameter("roi", roi)
+                    .setParameter("nodata", nodata);
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
-                    int dest = (int) background[0];
-                    pb.set(dest, 4);
+                    pb.setParameter("destNoData", (int) background[0]);
                 }
             }
 
@@ -1473,19 +1456,15 @@ public class ImageWorker {
             final KernelImageN[] ditherMask = KernelImageN.DITHER_MASK_443;
             final ColorCube colorMap = ColorCube.BYTE_496;
 
-            // Creation of the ParameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            // Setting source
-            pb.setSource(image, 0);
-            // Setting parameters
-            pb.set(colorMap, 0);
-            pb.set(ditherMask, 1);
-            pb.set(roi, 2);
-            pb.set(nodata, 3);
+            ParameterBlockImageN pb = new ParameterBlockImageN("OrderedDither")
+                    .addSource(image)
+                    .setParameter("colorMap", colorMap)
+                    .setParameter("ditherMask", ditherMask)
+                    .setParameter("roi", roi)
+                    .setParameter("nodata", nodata);
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
-                    int dest = (int) background[0];
-                    pb.set(dest, 4);
+                    pb.setParameter("destNoData", background[0]);
                 }
             }
 
@@ -1597,23 +1576,20 @@ public class ImageWorker {
             hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
 
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(lookupTable, 0);
-            pb.set(roi, 2);
-            pb.set(nodata, 3);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                    .addSource(image)
+                    .setParameter("table", lookupTable)
+                    .setParameter("ROI", roi)
+                    .setParameter("NoData", nodata);
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
-                    pb.set(background[0], 1);
+                    pb.setParameter("destinationNoData", background[0]);
                 }
             }
 
             image = ImageN.create("Lookup", pb, hints);
-            // New parameterblock for format operation
-            pb = new ParameterBlock();
-            pb.setSource(image, 0);
             int dataType = image.getSampleModel().getDataType();
-            pb.set(dataType, 0);
+            pb = new ParameterBlockImageN("Format").addSource(image).setParameter("dataType", dataType);
             image = ImageN.create("Format", pb, hints);
             // Converting NoData Range
             setNoData(RangeFactory.convert(nodata, dataType));
@@ -1630,9 +1606,9 @@ public class ImageWorker {
                 final RenderingHints hints = getRenderingHints();
 
                 // ParameterBlock creation
-                ParameterBlock pb = new ParameterBlock();
-                pb.setSource(image, 0);
-                pb.set(new int[] {--numBands}, 0);
+                ParameterBlockImageN pb = new ParameterBlockImageN("BandSelect")
+                        .addSource(image)
+                        .setParameter("bandIndices", new int[] {--numBands});
                 final RenderedOp alphaChannel = ImageN.create("BandSelect", pb, hints);
                 retainBands(numBands);
                 forceIndexColorModel(errorDiffusion);
@@ -1854,14 +1830,14 @@ public class ImageWorker {
             layout.setSampleModel(destinationSampleModel);
 
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(lut, 0);
-            pb.set(roi, 2);
-            pb.set(nodata, 3);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                    .addSource(image)
+                    .setParameter("table", lut)
+                    .setParameter("ROI", roi)
+                    .setParameter("NoData", nodata);
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
-                    pb.set(background[0], 1);
+                    pb.setParameter("destinationNoData", background[0]);
                 }
             }
 
@@ -1873,10 +1849,8 @@ public class ImageWorker {
                     ? DataBuffer.TYPE_BYTE
                     : image.getSampleModel().getTransferType();
             final RenderingHints hints = getRenderingHints(type);
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0); // The source image.
-            pb.set(type, 0);
-
+            ParameterBlockImageN pb =
+                    new ParameterBlockImageN("Format").addSource(image).setParameter("dataType", type);
             image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, type));
         }
@@ -2091,18 +2065,18 @@ public class ImageWorker {
         setRenderingHints(newRi);
 
         // Setting the parameter blocks
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(cm, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("ColorConvert")
+                .addSource(image)
+                .setParameter("colorModel", cm)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 // Elaborating the final NoData value
                 if (background.length != cm.getNumColorComponents()) {
                     throw new IllegalArgumentException("Wrong DestinationNoData value defined");
                 }
-                pb.set(background, 3);
+                pb.setParameter("destNoData", background);
             }
         }
 
@@ -2122,7 +2096,7 @@ public class ImageWorker {
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker bandMerge(int writeband) {
-        ParameterBlock pb = new ParameterBlock();
+        ParameterBlockImageN pb = new ParameterBlockImageN("BandMerge");
 
         PlanarImage sourceImage = PlanarImage.wrapRenderedImage(getRenderedImage());
 
@@ -2137,18 +2111,18 @@ public class ImageWorker {
         for (int i = 0; i < length; i++) {
             pb.addSource(firstBand);
         }
-        pb.set(new Range[] {nodata}, 0);
+        pb.setParameter("noData", new Range[] {nodata});
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 // Elaborating the final NoData value
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(nodata.getMin().doubleValue(), 1);
+                pb.setParameter("destinationNoData", nodata.getMin().doubleValue());
             }
         }
-        pb.set(roi, 3);
-        sourceImage = ImageN.create("bandmerge", pb);
+        pb.setParameter("roi", roi);
+        sourceImage = ImageN.create("BandMerge", pb);
         image = sourceImage;
         invalidateStatistics();
 
@@ -2180,7 +2154,7 @@ public class ImageWorker {
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker addBand(RenderedImage image, boolean before, boolean addAlpha, Range nodata2) {
-        ParameterBlock pb = new ParameterBlock();
+        ParameterBlockImageN pb = new ParameterBlockImageN("BandMerge");
         if (before) {
             pb.setSource(image, 0);
             pb.setSource(this.image, 1);
@@ -2188,17 +2162,16 @@ public class ImageWorker {
             pb.setSource(this.image, 0);
             pb.setSource(image, 1);
         }
-        pb.set(new Range[] {nodata, nodata2}, 0);
+        pb.setParameter("noData", new Range[] {nodata, nodata2});
         if (isNoDataNeeded() || nodata2 != null) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(nodata.getMin().doubleValue(), 1);
+                pb.setParameter("destinationNoData", nodata.getMin().doubleValue());
             }
         }
-        pb.set(roi, 3);
-        pb.set(addAlpha, 4);
+        pb.setParameter("roi", roi).setParameter("setAlpha", addAlpha);
         this.image = ImageN.create("BandMerge", pb, this.getRenderingHints());
         invalidateStatistics();
 
@@ -2229,8 +2202,7 @@ public class ImageWorker {
      */
     public final ImageWorker addBands(
             RenderedImage[] bands, boolean addAlpha, Range[] nodata2, List<AffineTransform> transformationList) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.addSource(this.image);
+        ParameterBlockImageN pb = new ParameterBlockImageN("BandMerge").addSource(this.image);
         for (RenderedImage band : bands) {
             pb.addSource(band);
         }
@@ -2239,18 +2211,18 @@ public class ImageWorker {
         if (nodata2 != null) {
             System.arraycopy(nodata2, 0, newRange, 1, nodata2.length);
         }
-        pb.set(newRange, 0);
+        pb.setParameter("noData", newRange);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(nodata.getMin().doubleValue(), 1);
+                pb.setParameter("destinationNoData", nodata.getMin().doubleValue());
             }
         }
-        pb.set(transformationList, 3);
-        pb.set(roi, 3);
-        pb.set(addAlpha, 4);
+        pb.setParameter("transformations", transformationList)
+                .setParameter("roi", roi)
+                .setParameter("setAlpha", addAlpha);
         this.image = ImageN.create("BandMerge", pb, this.getRenderingHints());
         invalidateStatistics();
 
@@ -2333,14 +2305,14 @@ public class ImageWorker {
         final double[][] coeff = new double[1][numBands + 1];
         Arrays.fill(coeff[0], 0, numColorBands, 1.0 / numColorBands);
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(coeff, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("BandCombine")
+                .addSource(image)
+                .setParameter("matrix", coeff)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 3);
+                pb.setParameter("destNoData", background[0]);
             }
         }
 
@@ -2415,9 +2387,8 @@ public class ImageWorker {
                 bands[i] = i;
             }
             // ParameterBlock creation
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(bands, 0);
+            ParameterBlockImageN pb =
+                    new ParameterBlockImageN("BandSelect").addSource(image).setParameter("bandIndices", bands);
             image = ImageN.create("BandSelect", pb, getRenderingHints());
         }
 
@@ -2438,9 +2409,8 @@ public class ImageWorker {
      */
     public final ImageWorker retainBands(final int[] bands) {
         // ParameterBlock creation
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(bands, 0);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN("BandSelect").addSource(image).setParameter("bandIndices", bands);
         image = ImageN.create("BandSelect", pb, getRenderingHints());
         return this;
     }
@@ -2452,9 +2422,8 @@ public class ImageWorker {
      * @return this {@link ImageWorker}
      */
     public final ImageWorker format(final int dataType) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(dataType, 0);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN("Format").addSource(image).setParameter("dataType", dataType);
 
         image = ImageN.create("Format", pb, getRenderingHints());
         setNoData(RangeFactory.convert(nodata, dataType));
@@ -2507,11 +2476,11 @@ public class ImageWorker {
             }
             final RenderingHints hints = getRenderingHints();
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(threshold, 0);
-            pb.set(roi, 1);
-            pb.set(nodata, 2);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Binarize")
+                    .addSource(image)
+                    .setParameter("threshold", threshold)
+                    .setParameter("roi", roi)
+                    .setParameter("nodata", nodata);
 
             image = ImageN.create("Binarize", pb, hints);
 
@@ -2554,14 +2523,14 @@ public class ImageWorker {
             table = LookupTableFactory.create(new int[] {value0, value1}, DataBuffer.TYPE_BYTE);
         }
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(table, 0);
-        pb.set(roi, 2);
-        pb.set(nodata, 3);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                .addSource(image)
+                .setParameter("table", table)
+                .setParameter("ROI", roi)
+                .setParameter("NoData", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             }
         }
 
@@ -2678,9 +2647,9 @@ public class ImageWorker {
         hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         hints.add(new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(image.getSampleModel().getDataType(), 0);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Format")
+                .addSource(image)
+                .setParameter("dataType", image.getSampleModel().getDataType());
 
         image = ImageN.create("Format", pb, hints);
         setNoData(RangeFactory.convert(nodata, image.getSampleModel().getDataType()));
@@ -2740,9 +2709,8 @@ public class ImageWorker {
                 opaqueBands[i] = i;
             }
             // ParameterBlock creation
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(opaqueBands, 0);
+            ParameterBlockImageN pb =
+                    new ParameterBlockImageN("BandSelect").addSource(image).setParameter("bandIndices", opaqueBands);
             image = ImageN.create("BandSelect", pb, hints);
             numBands = numColorBands;
         }
@@ -2779,14 +2747,14 @@ public class ImageWorker {
         // we should not transform on color map here
         hints.put(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(table, 0);
-        pb.set(roi, 2);
-        pb.set(nodata, 3);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                .addSource(image)
+                .setParameter("table", table)
+                .setParameter("ROI", roi)
+                .setParameter("NoData", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             }
         }
 
@@ -2808,30 +2776,28 @@ public class ImageWorker {
             // Values at index 0,1,2 are set to 1.0, value at index 3 is left to 0.
             Arrays.fill(matrix[0], 0, 3, 1.0);
             // ParameterBlock definition
-            pb = new ParameterBlock();
-            pb.setSource(luImage, 0);
-            pb.set(matrix, 0);
-            pb.set(roi, 1);
-            pb.set(nodata, 2);
+            pb = new ParameterBlockImageN("BandCombine")
+                    .addSource(luImage)
+                    .setParameter("matrix", matrix)
+                    .setParameter("roi", roi)
+                    .setParameter("nodata", nodata);
             if (background != null && background.length > 0) {
-                pb.set(background[0], 3);
+                pb.setParameter("destNoData", background[0]);
             }
 
             luImage = ImageN.create("BandCombine", pb, getRenderingHints());
             // luImage = BandCombineDescriptor.create(luImage, matrix, hints);
         }
-        pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.setSource(luImage, 1);
-        pb.set(new Range[] {nodata}, 0);
+        pb = new ParameterBlockImageN("BandMerge")
+                .addSource(image)
+                .addSource(luImage)
+                .setParameter("noData", new Range[] {nodata});
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                double dest = background[0];
-                pb.set(dest, 1);
+                pb.setParameter("destinationNoData", background[0]);
             }
         }
-        pb.set(roi, 3);
-        pb.set(true, 4);
+        pb.setParameter("roi", roi).setParameter("setAlpha", true);
         image = ImageN.create("BandMerge", pb, hints);
         // image = BandMergeDescriptor.create(image, luImage, hints);
 
@@ -2842,15 +2808,14 @@ public class ImageWorker {
     /** Inverts the pixel values of the {@linkplain #image}. */
     public final ImageWorker invert() {
         // ParameterBlock creation
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(AlgebraDescriptor.Operator.INVERT, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME)
+                .addSource(image)
+                .setParameter("operation", AlgebraDescriptor.Operator.INVERT)
+                .setParameter("roi", roi)
+                .setParameter("noData", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                double dest = background[0];
-                pb.set(dest, 3);
+                pb.setParameter("destinationNoData", background[0]);
             }
         }
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
@@ -2899,13 +2864,13 @@ public class ImageWorker {
                     LookupTableFactory.create(lutData, mask.getSampleModel().getDataType());
 
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(mask, 0);
-            pb.set(lut, 0);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                    .addSource(mask)
+                    .setParameter("table", lut)
+                    .setParameter("ROI", roi);
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             }
-            pb.set(roi, 2);
 
             mask = ImageN.create("Lookup", pb, hints);
 
@@ -2914,9 +2879,7 @@ public class ImageWorker {
             /*
              * Adding to the other image exploiting the implict clamping
              */
-            pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.setSource(mask, 1);
+            pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(image).addSource(mask);
             prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
             image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(image, mask, getRenderingHints());
@@ -2931,35 +2894,29 @@ public class ImageWorker {
 
             // Split between ImageN and JAI-EXT operations
 
-            ParameterBlock pb;
+            ParameterBlockImageN pb;
             // now if we mask with 1 we have to invert the mask
             RenderingHints renderingHints = new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
             if (maskValue) {
-                pb = new ParameterBlock();
-                pb.setSource(mask, 0);
+                pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(mask);
                 prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
                 mask = ImageN.create(ALGEBRIC_OP_NAME, pb, renderingHints);
             }
             // and with the image to zero the interested pixels
             tileCacheEnabled(false);
-            pb = new ParameterBlock();
-            pb.setSource(mask, 0);
-            pb.setSource(image, 1);
+            pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(mask).addSource(image);
             prepareAlgebricOperation(Operator.AND, pb, roi, nodata, true);
             image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AndDescriptor.create(mask, image, getRenderingHints());
 
             // add the new value to the mask
-            pb = new ParameterBlock();
-            pb.setSource(mask, 0);
+            pb = new ParameterBlockImageN(OPERATION_CONST_OP_NAME).addSource(mask);
             prepareOpConstOperation(Operator.SUM, new double[] {newValue}, pb, roi, null, false);
             image = ImageN.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
             // mask = AddConstDescriptor.create(mask, new double[] { newValue }, renderingHints);
 
             // add the mask to the image to mask with the new value
-            pb = new ParameterBlock();
-            pb.setSource(mask, 0);
-            pb.setSource(image, 1);
+            pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(mask).addSource(image);
             prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
             image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(mask, image, getRenderingHints());
@@ -2974,9 +2931,9 @@ public class ImageWorker {
      * space.
      */
     public ImageWorker max(RenderedImage[] sources) {
-        ParameterBlock pb = new ParameterBlock();
-        for (int i = 0; i < sources.length; i++) {
-            pb.setSource(sources[i], i);
+        ParameterBlockImageN pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME);
+        for (RenderedImage source : sources) {
+            pb.addSource(source);
         }
         prepareAlgebricOperation(Operator.MAX, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
@@ -2988,9 +2945,9 @@ public class ImageWorker {
      * space.
      */
     public ImageWorker min(RenderedImage[] sources) {
-        ParameterBlock pb = new ParameterBlock();
-        for (int i = 0; i < sources.length; i++) {
-            pb.setSource(sources[i], i);
+        ParameterBlockImageN pb = new ParameterBlockImageN(ALGEBRIC_OP_NAME);
+        for (RenderedImage source : sources) {
+            pb.addSource(source);
         }
         prepareAlgebricOperation(Operator.MIN, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
@@ -2998,12 +2955,10 @@ public class ImageWorker {
     }
 
     private void prepareAlgebricOperation(
-            Operator op, ParameterBlock pb, ROI roi, Range nodata, boolean setDestNoData) {
-        pb.set(op, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+            Operator op, ParameterBlockImageN pb, ROI roi, Range nodata, boolean setDestNoData) {
+        pb.setParameter("operation", op).setParameter("roi", roi).setParameter("noData", nodata);
         if (background != null && background.length > 0) {
-            pb.set(background[0], 3);
+            pb.setParameter("destinationNoData", background[0]);
             // We must set the new NoData value
             if (setDestNoData && roi != null && nodata != null) {
                 setNoData(RangeFactory.create(background[0], background[0]));
@@ -3012,13 +2967,13 @@ public class ImageWorker {
     }
 
     private void prepareOpConstOperation(
-            Operator op, double[] values, ParameterBlock pb, ROI roi, Range nodata, boolean setDestNoData) {
-        pb.set(op, 1);
-        pb.set(values, 0);
-        pb.set(roi, 2);
-        pb.set(nodata, 3);
+            Operator op, double[] values, ParameterBlockImageN pb, ROI roi, Range nodata, boolean setDestNoData) {
+        pb.setParameter("operation", op)
+                .setParameter("constants", values)
+                .setParameter("roi", roi)
+                .setParameter("noData", nodata);
         if (background != null && background.length > 0) {
-            pb.set(background[0], 4);
+            pb.setParameter("destinationNoData", background[0]);
             // We must set the new NoData value
             if (setDestNoData && roi != null && nodata != null) {
                 setNoData(RangeFactory.create(background[0], background[0]));
@@ -3035,9 +2990,8 @@ public class ImageWorker {
      * @see AlgebraDescriptor
      */
     public final ImageWorker addImage(final RenderedImage renderedImage) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.setSource(renderedImage, 1);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(image).addSource(renderedImage);
         prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
@@ -3054,8 +3008,7 @@ public class ImageWorker {
      * @see ConstantDescriptor
      */
     public final ImageWorker multiplyConst(double[] inValues) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
+        ParameterBlockImageN pb = new ParameterBlockImageN(OPERATION_CONST_OP_NAME).addSource(image);
         prepareOpConstOperation(Operator.MULTIPLY, inValues, pb, roi, nodata, true);
         image = ImageN.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
         // image = MultiplyConstDescriptor.create(image, inValues, getRenderingHints());
@@ -3073,9 +3026,8 @@ public class ImageWorker {
      * @see AlgebraDescriptor
      */
     public final ImageWorker multiply(RenderedImage renderedImage) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.setSource(renderedImage, 1);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(image).addSource(renderedImage);
         prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
@@ -3088,8 +3040,7 @@ public class ImageWorker {
      * ImageN {@link AlgebraDescriptor} for details.
      */
     public final ImageWorker xorConst(int[] values) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
+        ParameterBlockImageN pb = new ParameterBlockImageN(OPERATION_CONST_OP_NAME).addSource(image);
         double[] valuesD = new double[values.length];
         for (int i = 0; i < values.length; i++) {
             valuesD[i] = values[i];
@@ -3109,9 +3060,8 @@ public class ImageWorker {
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker subtract(final RenderedImage renderedImage) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.setSource(renderedImage, 1);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(image).addSource(renderedImage);
         prepareAlgebricOperation(Operator.SUBTRACT, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
@@ -3127,9 +3077,8 @@ public class ImageWorker {
      * @see AlgebraDescriptor
      */
     public final ImageWorker or(final RenderedImage renderedImage) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.setSource(renderedImage, 1);
+        ParameterBlockImageN pb =
+                new ParameterBlockImageN(ALGEBRIC_OP_NAME).addSource(image).addSource(renderedImage);
         prepareAlgebricOperation(Operator.OR, pb, roi, nodata, true);
         image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
@@ -3255,10 +3204,8 @@ public class ImageWorker {
         if (layout.isValid(ImageLayout.TILE_WIDTH_MASK) || layout.isValid(ImageLayout.TILE_HEIGHT_MASK)) {
             final int type = image.getSampleModel().getDataType();
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0); // The source image.
-            pb.set(type, 0);
-
+            ParameterBlockImageN pb =
+                    new ParameterBlockImageN("Format").addSource(image).setParameter("dataType", type);
             image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, type));
         }
@@ -3307,14 +3254,14 @@ public class ImageWorker {
             RenderingHints hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
 
             // ParameterBlock definition
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            pb.set(table, 0);
-            pb.set(roi, 2);
-            pb.set(nodata, 3);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                    .addSource(image)
+                    .setParameter("table", table)
+                    .setParameter("ROI", roi)
+                    .setParameter("NoData", nodata);
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
-                    pb.set(background[0], 1);
+                    pb.setParameter("destinationNoData", background[0]);
                 }
             }
 
@@ -3344,18 +3291,18 @@ public class ImageWorker {
                         new Byte[] {Byte.valueOf(alpha)},
                         new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
-                ParameterBlock pb = new ParameterBlock();
-                pb.setSource(expanded, 0);
-                pb.setSource(alphaBand, 1);
-                pb.set(new Range[] {nodata, nodata == null ? null : RangeFactory.create(alpha - 1, alpha - 1)}, 0);
+                ParameterBlockImageN pb = new ParameterBlockImageN("BandMerge")
+                        .addSource(expanded)
+                        .addSource(alphaBand)
+                        .setParameter("noData", new Range[] {
+                            nodata, nodata == null ? null : RangeFactory.create(alpha - 1, alpha - 1)
+                        });
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
-                        double dest = background[0];
-                        pb.set(dest, 1);
+                        pb.setParameter("destinationNoData", background[0]);
                     }
                 }
-                pb.set(roi, 3);
-                pb.set(true, 4);
+                pb.setParameter("roi", roi).setParameter("setAlpha", true);
                 result = ImageN.create("BandMerge", pb, null);
                 // result = BandMergeDescriptor.create(expanded, alphaBand, null);
             } else {
@@ -3363,16 +3310,16 @@ public class ImageWorker {
                 final int bands = expanded.getSampleModel().getNumBands();
                 int alphaBand = bands - 1;
                 // ParameterBlock definition
-                ParameterBlock pb = new ParameterBlock();
-                pb.setSource(expanded, 0);
                 LookupTable table = buildOpacityLookupTable(
                         opacity, bands, alphaBand, expanded.getSampleModel().getDataType());
-                pb.set(table, 0);
-                pb.set(roi, 2);
-                pb.set(nodata, 3);
+                ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                        .addSource(expanded)
+                        .setParameter("table", table)
+                        .setParameter("ROI", roi)
+                        .setParameter("NoData", nodata);
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
-                        pb.set(background[0], 1);
+                        pb.setParameter("destinationNoData", background[0]);
                     }
                 }
 
@@ -3989,8 +3936,6 @@ public class ImageWorker {
             this.image = source;
             return this;
         }
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(source, 0);
         if (!hasShearX && !hasShearY && nonNegativeScaleX && nonNegativeScaleY) {
             if (!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
                 // this will do an integer translate, but to get there we need to remove the image
@@ -3998,23 +3943,25 @@ public class ImageWorker {
                 Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(ImageN.KEY_IMAGE_LAYOUT);
                 double[] scalingParams = {1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())};
-                scale(pb, scalingParams, interpolation, localHints);
+                scale(source, scalingParams, interpolation, localHints);
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
             } else {
                 // generic scale
                 double[] scalingParams = {tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()};
-                scale(pb, scalingParams, interpolation, getRenderingHints());
+                scale(source, scalingParams, interpolation, getRenderingHints());
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
             }
         } else {
-            pb.set(tx, 0);
-            pb.set(interpolation, 1);
-            pb.set(bgValues, 2);
-            pb.set(roi, 3);
-            pb.set(true, 5);
-            pb.set(nodata, 6);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Affine")
+                    .addSource(source)
+                    .setParameter("transform", tx)
+                    .setParameter("interpolation", interpolation)
+                    .setParameter("backgroundValues", bgValues)
+                    .setParameter("roi", roi)
+                    .setParameter("setDestinationNoData", true)
+                    .setParameter("nodata", nodata);
             image = ImageN.create("Affine", pb, getRenderingHints());
             updateNoData(bgValues, image);
             updateROI(false, "Affine");
@@ -4023,15 +3970,8 @@ public class ImageWorker {
     }
 
     /** Perform scaling */
-    private void scale(ParameterBlock pb, double[] scalingParams, Interpolation interpolation, RenderingHints hints) {
-        for (int i = 0; i < 4; i++) {
-            if (USE_JAI_SCALE2) {
-                pb.set(scalingParams[i], i);
-            } else {
-                pb.set((float) scalingParams[i], i);
-            }
-        }
-        RenderedImage sourceImage = pb.getRenderedSource(0);
+    private void scale(
+            RenderedImage sourceImage, double[] scalingParams, Interpolation interpolation, RenderingHints hints) {
         ColorModel cm = sourceImage.getColorModel();
         SampleModel sm = sourceImage.getSampleModel();
         final int numBands = sm.getNumBands();
@@ -4051,15 +3991,16 @@ public class ImageWorker {
                     .setRenderingHints(hints)
                     .retainLastBand()
                     .getRenderedImage();
-            pb.setSource(noAlpha.getRenderedImage(), 0);
+            sourceImage = noAlpha.getRenderedImage();
         }
 
-        pb.set(interpolation, 4);
-        pb.set(roi, 5);
-        pb.set(nodata, 7);
+        ParameterBlockImageN pb = scaleParameters(sourceImage, scalingParams)
+                .setParameter("interpolation", interpolation)
+                .setParameter("ROI", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background, 8);
+                pb.setParameter("backgroundValues", background);
             }
         }
         RenderedImage scaledImage = ImageN.create(SCALE_OP_NAME, pb, hints);
@@ -4067,23 +4008,28 @@ public class ImageWorker {
         if (alphaChannel != null) {
             // Need to scale alpha separately (with nearest interpolation)
             // to avoid partial transparency
-            ParameterBlock pb2 = new ParameterBlock();
-            pb2.setSource(alphaChannel, 0);
-            for (int i = 0; i < 4; i++) {
-                if (USE_JAI_SCALE2) {
-                    pb2.set(scalingParams[i], i);
-                } else {
-                    pb2.set((float) scalingParams[i], i);
-                }
-            }
-            pb2.set(Interpolation.getInstance(Interpolation.INTERP_NEAREST), 4);
-            pb2.set(roi, 5);
-            pb2.set(nodata, 7);
+            ParameterBlockImageN pb2 = scaleParameters(alphaChannel, scalingParams)
+                    .setParameter("interpolation", Interpolation.getInstance(Interpolation.INTERP_NEAREST))
+                    .setParameter("ROI", roi)
+                    .setParameter("nodata", nodata);
             alphaChannel = ImageN.create(SCALE_OP_NAME, pb2, hints);
             // Now, re-attach the scaled alpha to the scaled image
             ImageWorker merged = prepareForScaledAlphaChannel(scaledImage, hints, cm, sm);
             image = merged.addBand(alphaChannel, false, true, null).getRenderedImage();
         }
+    }
+
+    private ParameterBlockImageN scaleParameters(RenderedImage source, double[] scalingParams) {
+        ParameterBlockImageN pb = new ParameterBlockImageN(SCALE_OP_NAME).addSource(source);
+        String[] names = {"xScale", "yScale", "xTrans", "yTrans"};
+        for (int i = 0; i < names.length; i++) {
+            if (USE_JAI_SCALE2) {
+                pb.setParameter(names[i], scalingParams[i]);
+            } else {
+                pb.setParameter(names[i], (float) scalingParams[i]);
+            }
+        }
+        return pb;
     }
 
     /** Reattach scaled alpha channel with separate layout. */
@@ -4211,19 +4157,19 @@ public class ImageWorker {
             }
         }
 
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(source, 0);
-        pb.set(x, 0);
-        pb.set(y, 1);
-        pb.set(width, 2);
-        pb.set(height, 3);
-        pb.set(roi, 4);
-        pb.set(nodata, 5);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Crop")
+                .addSource(source)
+                .setParameter("x", x)
+                .setParameter("y", y)
+                .setParameter("width", width)
+                .setParameter("height", height)
+                .setParameter("ROI", roi)
+                .setParameter("NoData", nodata);
         if (isNoDataNeeded()) {
             double destinationNoData = nodata != null
                     ? nodata.getMin().doubleValue()
                     : background != null && background.length > 0 ? background[0] : Double.NaN;
-            pb.set(new double[] {destinationNoData}, 6);
+            pb.setParameter("destNoData", new double[] {destinationNoData});
         }
 
         image = ImageN.create("Crop", pb, commonHints);
@@ -4238,20 +4184,19 @@ public class ImageWorker {
                 LOGGER.log(Level.FINE, "Input image already present but will be replaced by ImageFunction");
             }
         }
-        // Create a new parameter block
-        ParameterBlock pb = new ParameterBlock();
-        pb.add(function)
-                .add(w)
-                .add(h)
-                .add(xScale)
-                .add(yScale)
-                .add(xTrans)
-                .add(yTrans)
-                .add(roi)
-                .add(nodata);
+        ParameterBlockImageN pb = new ParameterBlockImageN("ImageFunction")
+                .setParameter("function", function)
+                .setParameter("width", w)
+                .setParameter("height", h)
+                .setParameter("xScale", xScale)
+                .setParameter("yScale", yScale)
+                .setParameter("xTrans", xTrans)
+                .setParameter("yTrans", yTrans)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.add((float) background[0]);
+                pb.setParameter("destNoData", (float) background[0]);
             }
         }
 
@@ -4337,10 +4282,8 @@ public class ImageWorker {
             }
         }
 
-        // ParameterBlock creation
-        ParameterBlock pb = new ParameterBlock();
+        ParameterBlockImageN pb = new ParameterBlockImageN("Mosaic");
         int srcNum = 0;
-        // pb.addSource(image);
         if (images != null && images.length > 0) {
             for (RenderedImage renderedImage : images) {
                 if (renderedImage != null) {
@@ -4388,12 +4331,12 @@ public class ImageWorker {
             nodataNew = handleMosaicThresholds(thresholds, srcNum);
         }
         // Setting the parameters
-        pb.add(type);
-        pb.add(alphasNew);
-        pb.add(roisNew);
-        pb.add(thresholds);
-        pb.add(background != null ? background : nodataBackground);
-        pb.add(nodataNew);
+        pb.setParameter("mosaicType", type)
+                .setParameter("sourceAlpha", alphasNew)
+                .setParameter("sourceROI", roisNew)
+                .setParameter("sourceThreshold", thresholds)
+                .setParameter("backgroundValues", background != null ? background : nodataBackground)
+                .setParameter("nodata", nodataNew);
         RenderingHints hints = getRenderingHints();
         image = ImageN.create("Mosaic", pb, hints);
         boolean setRoiProperty = false;
@@ -4549,19 +4492,20 @@ public class ImageWorker {
         }
 
         // ok, rasterize the vector one if any and mosaic
-        ParameterBlock pb = new ParameterBlock();
+        ParameterBlockImageN pb = new ParameterBlockImageN("Mosaic");
         if (vectorReference != null) {
             pb.addSource(vectorReference.getAsImage());
         }
         for (ROI rasterROI : rasterROIs) {
             pb.addSource(rasterROI.getAsImage());
         }
-        pb.add(org.eclipse.imagen.media.mosaic.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
-        pb.add(null); // alphas
-        pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
-        pb.add(ROI_THRESHOLDS);
-        pb.add(ROI_BACKGROUND);
-        pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
+        // sourceROI left null to avoid double bit -> byte expansion of the ROI data
+        pb.setParameter("mosaicType", org.eclipse.imagen.media.mosaic.MosaicDescriptor.MOSAIC_TYPE_OVERLAY)
+                .setParameter("sourceThreshold", ROI_THRESHOLDS)
+                .setParameter("backgroundValues", ROI_BACKGROUND)
+                .setParameter(
+                        "nodata",
+                        handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
         RenderedImage roiMosaic = ImageN.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
     }
@@ -4602,17 +4546,17 @@ public class ImageWorker {
     }
 
     public ImageWorker border(int leftPad, int rightPad, int topPad, int bottomPad, BorderExtender ext) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.addSource(image);
-        pb.add(leftPad);
-        pb.add(rightPad);
-        pb.add(topPad);
-        pb.add(bottomPad);
-        pb.add(ext);
-        pb.add(nodata);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Border")
+                .addSource(image)
+                .setParameter("leftPad", leftPad)
+                .setParameter("rightPad", rightPad)
+                .setParameter("topPad", topPad)
+                .setParameter("bottomPad", bottomPad)
+                .setParameter("type", ext)
+                .setParameter("noData", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.add(background[0]);
+                pb.setParameter("destNoData", background[0]);
             }
         }
         image = ImageN.create("Border", pb, getRenderingHints());
@@ -4620,11 +4564,11 @@ public class ImageWorker {
     }
 
     public ImageWorker translate(float xTrans, float yTrans, Interpolation interp) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.addSource(image);
-        pb.add(xTrans);
-        pb.add(yTrans);
-        pb.add(interp);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Translate")
+                .addSource(image)
+                .setParameter("xTrans", xTrans)
+                .setParameter("yTrans", yTrans)
+                .setParameter("interpolation", interp);
         // do not use getRenderingHints() with translate, as it cannot deal with layout hints
         image = ImageN.create("Translate", pb, commonHints);
         return this;
@@ -4632,13 +4576,13 @@ public class ImageWorker {
 
     /** Warps the underlying raster using the provided Warp object. */
     public ImageWorker warp(Warp warp, Interpolation interp) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(warp, 0);
-        pb.set(interp, 1);
-        pb.set(roi, 3);
-        pb.set(nodata, 4);
-        pb.set(background, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Warp")
+                .addSource(image)
+                .setParameter("warp", warp)
+                .setParameter("interpolation", interp)
+                .setParameter("backgroundValues", background)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         image = ImageN.create("Warp", pb, getRenderingHints());
         updateROI(true, null);
         return this;
@@ -4646,10 +4590,8 @@ public class ImageWorker {
 
     /** Scales the underlying raster using the provided parameters. */
     public ImageWorker scale(double xScale, double yScale, double xTrans, double yTrans, Interpolation interp) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
         double[] scalingParams = {xScale, yScale, xTrans, yTrans};
-        scale(pb, scalingParams, interp, getRenderingHints());
+        scale(image, scalingParams, interp, getRenderingHints());
 
         // getting the new ROI property
         updateROI(true, SCALE_OP_NAME);
@@ -4659,18 +4601,18 @@ public class ImageWorker {
     /** Performs Lookup on the underlying image */
     public ImageWorker lookup(LookupTable table) {
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(table, 0);
-        pb.set(roi, 2);
         // Convert the NoData
         if (nodata != null) {
             nodata = RangeFactory.convert(nodata, image.getSampleModel().getDataType());
         }
-        pb.set(nodata, 3);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Lookup")
+                .addSource(image)
+                .setParameter("table", table)
+                .setParameter("ROI", roi)
+                .setParameter("NoData", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("destinationNoData", background[0]);
             }
         }
 
@@ -4680,14 +4622,14 @@ public class ImageWorker {
 
     /** Warps the underlying using the provided Warp object. */
     public ImageWorker colorIndex(ColorIndexer indexer) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(indexer, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("ColorIndexer")
+                .addSource(image)
+                .setParameter("Indexer", indexer)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background, 3);
+                pb.setParameter("destNoData", (int) background[0]);
             }
         }
         image = ImageN.create("ColorIndexer", pb, getRenderingHints());
@@ -4696,12 +4638,12 @@ public class ImageWorker {
 
     /** Apply a Raster classification on the underlying image. */
     public ImageWorker classify(ColorMapTransform domain1D, Integer bandIndex) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(domain1D, 0);
-        pb.set(bandIndex, 1);
-        pb.set(roi, 2);
-        pb.set(nodata, 3);
+        ParameterBlockImageN pb = new ParameterBlockImageN("RasterClassifier")
+                .addSource(image)
+                .setParameter("Domain1D", domain1D)
+                .setParameter("bandIndex", bandIndex)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (domain1D.hasGaps()) {
                 // We must set the new NoData value
@@ -4715,12 +4657,12 @@ public class ImageWorker {
 
     /** Apply a Generic Piecewise operation on the underlying image. */
     public ImageWorker piecewise(PiecewiseTransform1D transform, Integer bandIndex) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(transform, 0);
-        pb.set(bandIndex, 1);
-        pb.set(roi, 2);
-        pb.set(nodata, 3);
+        ParameterBlockImageN pb = new ParameterBlockImageN("GenericPiecewise")
+                .addSource(image)
+                .setParameter("Domain1D", transform)
+                .setParameter("bandIndex", bandIndex)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         image = ImageN.create("GenericPiecewise", pb, getRenderingHints());
         // this sets the NoData value in the output image (so must be done after the ImageN operation)
         if (isNoDataNeeded()) {
@@ -4736,12 +4678,12 @@ public class ImageWorker {
 
     /** Apply a rescale operation on the underlying image. */
     public ImageWorker rescale(double[] scale, double[] offset) {
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0); // The source image.
-        pb.set(scale, 0); // The per-band constants to multiply by.
-        pb.set(offset, 1); // The per-band offsets to be added.
-        pb.set(roi, 2); // ROI
-        pb.set(nodata, 3); // NoData range
+        ParameterBlockImageN pb = new ParameterBlockImageN("Rescale")
+                .addSource(image)
+                .setParameter("constants", scale)
+                .setParameter("offsets", offset)
+                .setParameter("ROI", roi)
+                .setParameter("noData", nodata);
 
         double destNodata = Double.NaN;
         if (isNoDataNeeded()) {
@@ -4754,7 +4696,7 @@ public class ImageWorker {
             }
         }
 
-        pb.set(destNodata, 5);
+        pb.setParameter("destNoData", destNodata);
         image = ImageN.create("Rescale", pb, getRenderingHints());
         if (!Double.isNaN(destNodata)) {
             setNoData(RangeFactory.create(destNodata, destNodata));
@@ -4765,14 +4707,14 @@ public class ImageWorker {
     /** Apply a rescale operation on the underlying image. */
     public ImageWorker bandCombine(double[][] coeff) {
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(coeff, 0);
-        pb.set(roi, 1);
-        pb.set(nodata, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("BandCombine")
+                .addSource(image)
+                .setParameter("matrix", coeff)
+                .setParameter("roi", roi)
+                .setParameter("nodata", nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 3);
+                pb.setParameter("destNoData", background[0]);
             }
         }
 
@@ -4784,13 +4726,13 @@ public class ImageWorker {
     /** Apply a rangeLookup operation on the underlying image. */
     public ImageWorker rangeLookup(Object rangeLookup) {
         // ParameterBlock definition
-        ParameterBlock pb = new ParameterBlock();
-        pb.setSource(image, 0);
-        pb.set(rangeLookup, 0);
-        pb.set(roi, 2);
+        ParameterBlockImageN pb = new ParameterBlockImageN("RLookup")
+                .addSource(image)
+                .setParameter("table", rangeLookup)
+                .setParameter("roi", roi);
         if (roi != null) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 1);
+                pb.setParameter("default", background[0]);
                 // We must set the new NoData value
                 setNoData(RangeFactory.create(background[0], background[0]));
             }
@@ -5275,14 +5217,14 @@ public class ImageWorker {
 
             // compute the target bbox the same way the affine would have to have a 1-1
             // match
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(op, 0);
-            pb.set(tx, 0);
-            pb.set(interpolation, 1);
-            pb.set(bgValues, 2);
-            pb.set(roi, 3);
-            pb.set(true, 5);
-            pb.set(nodata, 6);
+            ParameterBlockImageN pb = new ParameterBlockImageN("Affine")
+                    .addSource(op)
+                    .setParameter("transform", tx)
+                    .setParameter("interpolation", interpolation)
+                    .setParameter("backgroundValues", bgValues)
+                    .setParameter("roi", roi)
+                    .setParameter("setDestinationNoData", true)
+                    .setParameter("nodata", nodata);
             RenderedOp at = ImageN.create("Affine", pb, getRenderingHints());
             updateNoData(bgValues, image);
 
@@ -5317,7 +5259,7 @@ public class ImageWorker {
                     || tx.getScaleY() > 1) {
                 // and then the ImageN Operation
                 PlanarImage sourceImage = op.getSourceImage(0);
-                final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
+                final ParameterBlockImageN paramBlk = new ParameterBlockImageN("Warp").addSource(sourceImage);
                 Object property = sourceImage.getProperty("ROI");
                 // Boolean indicating if optional ROI may be reprojected back to the initial
                 // image
@@ -5329,9 +5271,11 @@ public class ImageWorker {
                 boolean hasSameNodata =
                         oldNoData == null && nodata == null || oldNoData != null && oldNoData.equals(nodata);
                 if (property == null || property.equals(Image.UndefinedProperty) || !(property instanceof ROI)) {
-                    paramBlk.add(warp).add(interpolation).add(bgValues);
+                    paramBlk.setParameter("warp", warp)
+                            .setParameter("interpolation", interpolation)
+                            .setParameter("backgroundValues", bgValues);
                     if (oldNoData != null) {
-                        paramBlk.set(oldNoData, 4);
+                        paramBlk.setParameter("nodata", oldNoData);
                     }
                     // Try to reproject ROI after Warp
                     ROI newROI = null;
@@ -5353,7 +5297,7 @@ public class ImageWorker {
 
                     if (newROI != null) {
                         setROI(newROI);
-                        paramBlk.set(newROI, 3);
+                        paramBlk.setParameter("roi", newROI);
                     }
                 } else {
                     // Intersect ROIs
@@ -5378,9 +5322,11 @@ public class ImageWorker {
                         newROI = (ROI) property;
                     }
                     setROI(newROI);
-                    paramBlk.add(warp).add(interpolation).add(newROI);
+                    paramBlk.setParameter("warp", warp)
+                            .setParameter("interpolation", interpolation)
+                            .setParameter("roi", newROI);
                     if (oldNoData != null) {
-                        paramBlk.set(oldNoData, 4);
+                        paramBlk.setParameter("nodata", oldNoData);
                     }
                 }
 
@@ -5389,7 +5335,7 @@ public class ImageWorker {
                     bgValues = (double[]) sourceParamBlock.getObjectParameter(2);
                 }
                 if (bgValues != null) {
-                    paramBlk.set(bgValues, 2);
+                    paramBlk.setParameter("backgroundValues", bgValues);
                 }
 
                 // Checks if ROI can be processed

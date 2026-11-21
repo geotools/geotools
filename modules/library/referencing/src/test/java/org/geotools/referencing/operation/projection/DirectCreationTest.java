@@ -258,6 +258,25 @@ public final class DirectCreationTest {
         assertNotEquals(transform, standard);
     }
 
+    /**
+     * Oblique Mercator with azimuth 90° (Swiss LV03/LV95). The central meridian constant must not lose precision when
+     * asin is evaluated next to 1, and points on the central meridian must not fall into a wrong special case. Expected
+     * values computed with PROJ "+proj=somerc +ellps=bessel".
+     */
+    @Test
+    public void testObliqueMercatorAzimuth90() throws FactoryException, TransformException {
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Oblique Mercator");
+        setObliqueMercatorParameter(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
+
+        doTransform(
+                new Position2D(7.439583333333333, 46.952405555555565), new Position2D(600000.0, 200000.0), transform);
+        doTransform(new Position2D(7.61787, 47.50416), new Position2D(613430.6704, 261350.8027), transform);
+        doTransform(new Position2D(9.37378, 47.42510), new Position2D(745908.9548, 254346.1447), transform);
+        doTransform(new Position2D(6.14295, 46.20601), new Position2D(499940.2048, 117863.1102), transform);
+        doTransform(new Position2D(7.439583333333333, 47.5), new Position2D(600000.0, 260873.0507), transform);
+    }
+
     /** For {@link #testObliqueMercator} internal use only. */
     private static void setObliqueMercatorParameter(ParameterValueGroup params) {
         params.parameter("semi_major").setValue(6377397.155);

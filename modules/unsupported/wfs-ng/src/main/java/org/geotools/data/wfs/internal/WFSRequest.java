@@ -205,12 +205,18 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
                 throw fnf;
             } catch (Exception ignore) {
                 throw fnf;
+            } finally {
+                response.dispose();
             }
         }
 
-        WFSResponse wfsResponse = responseFactory.createResponse(this, response);
-
-        return wfsResponse;
+        // a response that could not be turned into a WFSResponse has no other owner to release it
+        try {
+            return responseFactory.createResponse(this, response);
+        } catch (ServiceException | IOException | RuntimeException e) {
+            response.dispose();
+            throw e;
+        }
     }
 
     @Override

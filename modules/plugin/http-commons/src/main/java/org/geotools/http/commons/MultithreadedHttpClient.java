@@ -175,9 +175,11 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         } catch (HttpException | URISyntaxException e) {
             throw new IOException(e);
         }
-        if (200 != response.getStatusCode()) {
-            throw new IOException(
-                    "Server returned HTTP error code " + response.getStatusCode() + " for URL " + url.toExternalForm());
+        int statusCode = response.getStatusCode();
+        if (200 != statusCode) {
+            // the caller never gets this response, release its pooled connection here
+            response.dispose();
+            throw new IOException("Server returned HTTP error code " + statusCode + " for URL " + url.toExternalForm());
         }
 
         return response;
@@ -244,9 +246,11 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        if (200 != response.getStatusCode()) {
-            throw new IOException(
-                    "Server returned HTTP error code " + response.getStatusCode() + " for URL " + url.toExternalForm());
+        int statusCode = response.getStatusCode();
+        if (200 != statusCode) {
+            // the caller never gets this response, release its pooled connection here
+            response.dispose();
+            throw new IOException("Server returned HTTP error code " + statusCode + " for URL " + url.toExternalForm());
         }
         return response;
     }

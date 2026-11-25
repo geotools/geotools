@@ -209,6 +209,69 @@ public class MultithreadedHttpClientTest {
     }
 
     /**
+     * A non-200 response must release its pooled connection. Otherwise, after maxConnections error responses the pool
+     * is exhausted and every further request blocks until the connection request timeout (3 minutes by default).
+     */
+    @Test(timeout = 30000)
+    public void testErrorResponsesReleaseConnectionOnGet() throws IOException {
+        stubErrorAndOk();
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.setMaxConnections(2);
+            URL error = new URL("http://localhost:" + service.port() + "/error");
+            for (int i = 0; i < 5; i++) {
+                IOException e = Assert.assertThrows(IOException.class, () -> sut.get(error));
+                Assert.assertTrue(e.getMessage(), e.getMessage().contains("HTTP error code 500"));
+            }
+            assertOk(sut.get(new URL("http://localhost:" + service.port() + "/ok")));
+        }
+    }
+
+    /** Same as {@link #testErrorResponsesReleaseConnectionOnGet()} for POST requests. */
+    @Test(timeout = 30000)
+    public void testErrorResponsesReleaseConnectionOnPost() throws IOException {
+        stubErrorAndOk();
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.setMaxConnections(2);
+            URL error = new URL("http://localhost:" + service.port() + "/error");
+            for (int i = 0; i < 5; i++) {
+                IOException e = Assert.assertThrows(
+                        IOException.class,
+                        () -> sut.post(
+                                error, new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8)), "text/plain"));
+                Assert.assertTrue(e.getMessage(), e.getMessage().contains("HTTP error code 500"));
+            }
+            assertOk(sut.post(
+                    new URL("http://localhost:" + service.port() + "/ok"),
+                    new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8)),
+                    "text/plain"));
+        }
+    }
+
+    private void stubErrorAndOk() {
+        ResponseDefinitionBuilder error = aResponse()
+                .withStatus(500)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<ServiceExceptionReport><ServiceException>source error</ServiceException>"
+                        + "</ServiceExceptionReport>");
+        ResponseDefinitionBuilder ok = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain")
+                .withBody("ok");
+        service.stubFor(get(urlEqualTo("/error")).willReturn(error));
+        service.stubFor(post(urlEqualTo("/error")).willReturn(error));
+        service.stubFor(get(urlEqualTo("/ok")).willReturn(ok));
+        service.stubFor(post(urlEqualTo("/ok")).willReturn(ok));
+    }
+
+    private static void assertOk(HTTPResponse response) throws IOException {
+        try {
+            Assert.assertEquals("ok", IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8));
+        } finally {
+            response.dispose();
+        }
+    }
+
+    /**
      * Multi-byte (CJK) and astral (emoji, surrogate pair) characters must round-trip through UTF-8 percent-encoding.
      */
     @Test

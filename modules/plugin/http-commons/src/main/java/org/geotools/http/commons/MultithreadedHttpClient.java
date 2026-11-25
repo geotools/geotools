@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -171,25 +172,25 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
     }
 
     /** @return the http status code of the execution */
-    private HttpMethodResponse executeMethod(HttpRequestBase method) throws IOException, HttpException {
+    private HttpMethodResponse executeMethod(org.apache.hc.client5.http.classic.methods.HttpUriRequestBase method)
+            throws IOException, HttpException, URISyntaxException {
 
+        if (client == null) {
+            client = builder().build();
+        }
         HttpClientContext localContext = HttpClientContext.create();
-        HttpResponse resp;
         if (credsProvider != null) {
             localContext.setCredentialsProvider(credsProvider);
             // see https://stackoverflow.com/a/21592593
             AuthCache authCache = new BasicAuthCache();
-            URI target = method.getURI();
-            authCache.put(new HttpHost(target.getHost(), target.getPort(), target.getScheme()), new BasicScheme());
+            URI target = method.getUri();
+            BasicScheme basicScheme = new BasicScheme();
+            basicScheme.initPreemptive(credsProvider.getCredentials(authScope, localContext));
+            authCache.put(new HttpHost(target.getScheme(), target.getHost(), target.getPort()), basicScheme);
             localContext.setAuthCache(authCache);
-            resp = client.execute(method, localContext);
-        } else {
-            resp = client.execute(method);
         }
-
-        HttpMethodResponse response = new HttpMethodResponse(resp);
-
-        return response;
+        ClassicHttpResponse resp = client.executeOpen(RoutingSupport.determineHost(method), method, localContext);
+        return new HttpMethodResponse(resp);
     }
 
     @Override
@@ -214,8 +215,8 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             url = appendURL(url, extraParams);
         }
 
-        HttpGet getMethod = new HttpGet(url.toExternalForm());
-        getMethod.setConfig(connectionConfig);
+        HttpGet getMethod = new HttpGet(encodeURL(url).toExternalForm());
+        getMethod.setConfig(requestConfig);
 
         if (tryGzip) {
             headers.put("Accept-Encoding", "gzip");
@@ -228,6 +229,8 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             response = executeMethod(getMethod);
         } catch (HttpException e) {
             throw new IOException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
 
         if (200 != response.getStatusCode()) {
@@ -261,73 +264,75 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
 
     private void resetCredentials() {
         if (user != null && password != null) {
-            AuthScope authscope = ANY;
-            Credentials credentials = new UsernamePasswordCredentials(user, password);
+            authScope = new AuthScope(null, -1);
+            Credentials credentials = new UsernamePasswordCredentials(user, password.toCharArray());
             // TODO - check if this works for all types of auth or do we need to look it up?
             credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(authscope, credentials);
-            client = builder().build();
+            credsProvider.setCredentials(authScope, credentials);
         } else if (credsProvider != null) {
             credsProvider = null;
-            client = builder().build();
         }
+        client = null;
     }
 
     @Override
     public int getConnectTimeout() {
-        return connectionConfig.getConnectionRequestTimeout() / 1000;
+        return (int) connectionConfig.getConnectTimeout().toSeconds();
     }
 
     @Override
     public void setConnectTimeout(int connectTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig)
-                .setConnectionRequestTimeout(connectTimeout * 1000)
+        connectionConfig = ConnectionConfig.copy(connectionConfig)
+                .setConnectTimeout(Timeout.ofSeconds(connectTimeout))
                 .build();
+        connectionManager.setDefaultConnectionConfig(connectionConfig);
+        client = null;
     }
 
     @Override
     public int getReadTimeout() {
-        return connectionConfig.getSocketTimeout() / 1000;
+        return (int) requestConfig.getResponseTimeout().toSeconds();
     }
 
     @Override
     public void setReadTimeout(int readTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig)
-                .setSocketTimeout(readTimeout * 1000)
+        requestConfig = RequestConfig.copy(requestConfig)
+                .setResponseTimeout(Timeout.ofSeconds(readTimeout))
                 .build();
+        client = null;
     }
 
     @Override
     public int getMaxConnections() {
-        return connectionManager.getDefaultMaxPerRoute();
+        return connectionManager.getMaxTotal();
     }
 
     @Override
     public void setMaxConnections(final int maxConnections) {
-        connectionManager.setDefaultMaxPerRoute(maxConnections);
         connectionManager.setMaxTotal(maxConnections);
+        connectionManager.setDefaultMaxPerRoute(maxConnections);
+        client = null;
     }
 
     @Override
     public void close() {
-        this.connectionManager.shutdown();
+        this.connectionManager.close();
     }
 
     static class HttpMethodResponse implements HTTPResponse {
 
-        private org.apache.http.HttpResponse methodResponse;
+        private ClassicHttpResponse methodResponse;
 
         private InputStream responseBodyAsStream;
 
-        public HttpMethodResponse(final org.apache.http.HttpResponse methodResponse) {
+        public HttpMethodResponse(final ClassicHttpResponse methodResponse) {
             this.methodResponse = methodResponse;
         }
 
         /** @return */
         public int getStatusCode() {
             if (methodResponse != null) {
-                StatusLine statusLine = methodResponse.getStatusLine();
-                return statusLine.getStatusCode();
+                return methodResponse.getCode();
             } else {
                 return -1;
             }
@@ -344,6 +349,11 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             }
 
             if (methodResponse != null) {
+                try {
+                    methodResponse.close();
+                } catch (IOException e) {
+                    // ignore
+                }
                 methodResponse = null;
             }
         }
@@ -363,21 +373,15 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         public InputStream getResponseStream() throws IOException {
             if (responseBodyAsStream == null) {
                 responseBodyAsStream = methodResponse.getEntity().getContent();
-                // commons httpclient does not handle gzip encoding automatically, we have to check
-                // ourselves: https://issues.apache.org/jira/browse/HTTPCLIENT-816
-                Header header = methodResponse.getFirstHeader("Content-Encoding");
-                if (header != null && "gzip".equals(header.getValue())) {
-                    responseBodyAsStream = new GZIPInputStream(responseBodyAsStream);
-                }
             }
             return responseBodyAsStream;
         }
 
-        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
-            final Header encoding = methodResponse.getEntity().getContentEncoding();
-            return encoding == null ? null : encoding.getValue();
+            final Header encoding = new BasicHeader(
+                    HttpHeaders.CONTENT_ENCODING, methodResponse.getEntity().getContentEncoding());
+            return encoding.getValue();
         }
     }
 }

@@ -23,6 +23,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -30,6 +31,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -174,6 +176,116 @@ public class MultithreadedHttpClientTest {
         }
     }
 
+    /**
+     * HttpClient 5 sends the request line verbatim, unlike HttpClient 4 which percent-encoded it. A capabilities
+     * document exposing an online resource with raw non-ASCII characters must still produce a valid request.
+     */
+    @Test
+    public void testRawUnicodeQueryIsEncoded() throws IOException {
+        service.stubFor(get(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y");
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(url);
+        }
+        service.verify(getRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    @Test
+    public void testRawUnicodeQueryIsEncodedOnPost() throws IOException {
+        service.stubFor(post(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y");
+        ByteArrayInputStream body = new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8));
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.post(url, body, "text/plain");
+        }
+        service.verify(postRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    /**
+     * A non-200 response must release its pooled connection. Otherwise, after maxConnections error responses the pool
+     * is exhausted and every further request blocks until the connection request timeout (3 minutes by default).
+     */
+    @Test(timeout = 30000)
+    public void testErrorResponsesReleaseConnectionOnGet() throws IOException {
+        stubErrorAndOk();
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.setMaxConnections(2);
+            URL error = new URL("http://localhost:" + service.port() + "/error");
+            for (int i = 0; i < 5; i++) {
+                IOException e = Assert.assertThrows(IOException.class, () -> sut.get(error));
+                Assert.assertTrue(e.getMessage(), e.getMessage().contains("HTTP error code 500"));
+            }
+            assertOk(sut.get(new URL("http://localhost:" + service.port() + "/ok")));
+        }
+    }
+
+    /** Same as {@link #testErrorResponsesReleaseConnectionOnGet()} for POST requests. */
+    @Test(timeout = 30000)
+    public void testErrorResponsesReleaseConnectionOnPost() throws IOException {
+        stubErrorAndOk();
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.setMaxConnections(2);
+            URL error = new URL("http://localhost:" + service.port() + "/error");
+            for (int i = 0; i < 5; i++) {
+                IOException e = Assert.assertThrows(
+                        IOException.class,
+                        () -> sut.post(
+                                error, new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8)), "text/plain"));
+                Assert.assertTrue(e.getMessage(), e.getMessage().contains("HTTP error code 500"));
+            }
+            assertOk(sut.post(
+                    new URL("http://localhost:" + service.port() + "/ok"),
+                    new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8)),
+                    "text/plain"));
+        }
+    }
+
+    private void stubErrorAndOk() {
+        ResponseDefinitionBuilder error = aResponse()
+                .withStatus(500)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<ServiceExceptionReport><ServiceException>source error</ServiceException>"
+                        + "</ServiceExceptionReport>");
+        ResponseDefinitionBuilder ok = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain")
+                .withBody("ok");
+        service.stubFor(get(urlEqualTo("/error")).willReturn(error));
+        service.stubFor(post(urlEqualTo("/error")).willReturn(error));
+        service.stubFor(get(urlEqualTo("/ok")).willReturn(ok));
+        service.stubFor(post(urlEqualTo("/ok")).willReturn(ok));
+    }
+
+    private static void assertOk(HTTPResponse response) throws IOException {
+        try {
+            Assert.assertEquals("ok", IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8));
+        } finally {
+            response.dispose();
+        }
+    }
+
+    /**
+     * Multi-byte (CJK) and astral (emoji, surrogate pair) characters must round-trip through UTF-8 percent-encoding.
+     */
+    @Test
+    public void testMultiByteQueryIsEncoded() throws IOException {
+        service.stubFor(get(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=北京&emoji=😀");
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(url);
+        }
+        service.verify(getRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("北京"))
+                .withQueryParam("emoji", equalTo("😀")));
+    }
+
     @Test
     public void testBasicHeaderGET() throws IOException {
         String longPassword = "0123456789".repeat(10);
@@ -294,5 +406,81 @@ public class MultithreadedHttpClientTest {
                 response.dispose();
             }
         }
+    }
+
+    @Test
+    public void testGzipEncodedResponse() throws IOException {
+        String testContent =
+                """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <response>
+            <message>GZipped test content - this is some longer text to ensure proper compression</message>
+        </response>""";
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+            gzipOutputStream.write(testContent.getBytes(StandardCharsets.UTF_8));
+        }
+        byte[] gzipContent = byteArrayOutputStream.toByteArray();
+
+        service.stubFor(get(urlEqualTo("/gzip"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withHeader("Content-Encoding", "gzip")
+                        .withBody(gzipContent)));
+
+        HTTPResponse response = null;
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            response = client.get(new URL("http://localhost:" + service.port() + "/gzip"));
+            String result = IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
+            Assert.assertEquals(testContent, result);
+        } finally {
+            if (response != null) {
+                response.dispose();
+            }
+        }
+    }
+
+    /** Verifies that a response arriving slower than the configured readTimeout fails fast instead of hanging. */
+    @Test(timeout = 60000)
+    public void testReadTimeout() {
+        service.stubFor(get(urlEqualTo("/slow-response"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/plain")
+                        .withFixedDelay(3000)
+                        .withBody("too slow")));
+
+        long start = System.currentTimeMillis();
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            client.setReadTimeout(1);
+            try {
+                client.get(new URL("http://localhost:" + service.port() + "/slow-response"));
+            } catch (IOException e) {
+                Assert.assertEquals("Read timed out", e.getMessage());
+            }
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        Assert.assertTrue(
+                "Expected read timeout to fire around the configured 1s, but took " + elapsed + "ms", elapsed < 2000);
+    }
+
+    /**
+     * Verifies that a connection attempt taking longer than the configured connectTimeout fails fast instead of
+     * hanging. WireMock cannot delay the TCP handshake itself, so a non-routable address (RFC 5737 TEST-NET-1) is used
+     * to simulate a connection that never completes.
+     */
+    // Guards against the test hanging the build if connectTimeout isn't honored in some environment.
+    @Test(timeout = 60000)
+    public void testConnectTimeout() {
+        long start = System.currentTimeMillis();
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            client.setConnectTimeout(1);
+            Assert.assertThrows(IOException.class, () -> client.get(new URL("http://192.0.2.1:81/unreachable")));
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        Assert.assertTrue(
+                "Expected connect timeout to fire around the configured 1s, but took " + elapsed + "ms",
+                elapsed < 2000);
     }
 }

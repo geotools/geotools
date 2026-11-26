@@ -5,8 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -20,6 +23,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +33,10 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 
 public class SortedReaderTest {
+
+    private static final int MAX_MEMORY_SORT_10 = 10;
+
+    private static final int MAX_MEMORY_SORT_1000 = 1000;
 
     SimpleFeatureReader fr;
 
@@ -135,7 +143,7 @@ public class SortedReaderTest {
     @Test
     public void testMemorySort() throws IOException {
         // make it so that we are not going to hit the disk
-        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, peopleAsc, 1000)) {
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, peopleAsc, MAX_MEMORY_SORT_1000)) {
             assertSortedOnPeopleAsc(sr);
         }
     }
@@ -159,7 +167,8 @@ public class SortedReaderTest {
     @Test
     public void testIteratorSortReduce() throws IOException {
         // make it so that we are not going to hit the disk
-        try (SimpleFeatureIterator fi = new SortedFeatureIterator(fc.features(), schema, peopleAsc, 1000)) {
+        try (SimpleFeatureIterator fi =
+                new SortedFeatureIterator(fc.features(), schema, peopleAsc, MAX_MEMORY_SORT_1000)) {
             assertSortedOnPeopleAsc(fi);
         }
     }
@@ -167,7 +176,7 @@ public class SortedReaderTest {
     @Test
     public void testSortDescending() throws IOException {
         // make it so that we are not going to hit the disk
-        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, peopleDesc, 1000)) {
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, peopleDesc, MAX_MEMORY_SORT_1000)) {
             double prev = -1;
             while (sr.hasNext()) {
                 SimpleFeature f = sr.next();
@@ -183,7 +192,7 @@ public class SortedReaderTest {
     @Test
     public void testSortNatural() throws IOException {
         // make it so that we are not going to hit the disk
-        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, fidAsc, 1000)) {
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, fidAsc, MAX_MEMORY_SORT_1000)) {
             String prev = null;
             while (sr.hasNext()) {
                 SimpleFeature f = sr.next();
@@ -215,6 +224,82 @@ public class SortedReaderTest {
                 count++;
             }
             assertEquals(fc.size(), count);
+        }
+    }
+
+    private SortBy[] byteAsc() {
+        return new SortBy[] {ff.sort("byte", SortOrder.ASCENDING)};
+    }
+
+    private Query sortQuery(SortBy[] sortBy, int maxMemorySort) {
+        Query query = new Query(schema.getTypeName());
+        query.setSortBy(sortBy);
+        query.setHints(new Hints(Hints.MAX_MEMORY_SORT, maxMemorySort));
+        return query;
+    }
+
+    private List<String> readIds(SimpleFeatureReader reader) throws IOException {
+        List<String> ids = new ArrayList<>();
+        while (reader.hasNext()) {
+            ids.add(reader.next().getID());
+        }
+        return ids;
+    }
+
+    /** A limit within the memory sort size returns only the top features. */
+    @Test
+    public void testTopNSort() throws IOException {
+        Query query = sortQuery(peopleDesc, MAX_MEMORY_SORT_10);
+        query.setMaxFeatures(5);
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, query)) {
+            assertEquals(List.of("499", "498", "497", "496", "495"), readIds(sr));
+        }
+    }
+
+    /** Equal keys keep the read order, as in a stable sort. Pages then do not overlap or skip features. */
+    @Test
+    public void testTopNSortTies() throws IOException {
+        // The byte attribute holds (byte) i, so features 128 and 384 both hold -128, the smallest value.
+        // Feature 501 has a null byte, which sorts first.
+        Query query = sortQuery(byteAsc(), MAX_MEMORY_SORT_10);
+        query.setMaxFeatures(5);
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, query)) {
+            assertEquals(List.of("501", "128", "384", "129", "385"), readIds(sr));
+        }
+    }
+
+    /** The caller applies the offset. The reader returns startIndex + maxFeatures features. */
+    @Test
+    public void testTopNSortOffset() throws IOException {
+        Query query = sortQuery(byteAsc(), MAX_MEMORY_SORT_10);
+        query.setStartIndex(3);
+        query.setMaxFeatures(4);
+        // the first 3 + 4 features of the order in testTopNSortTies
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, query)) {
+            assertEquals(List.of("501", "128", "384", "129", "385", "130", "386"), readIds(sr));
+        }
+    }
+
+    /** A limit equal to the memory sort size still returns only the top features. */
+    @Test
+    public void testTopNAtMemoryLimit() throws IOException {
+        Query query = sortQuery(peopleDesc, MAX_MEMORY_SORT_10);
+        query.setMaxFeatures(10);
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, query)) {
+            List<String> expected = List.of("499", "498", "497", "496", "495", "494", "493", "492", "491", "490");
+            assertEquals(expected, readIds(sr));
+        }
+    }
+
+    /** A limit above the memory sort size uses the merge sort. The reader stops after the limit too. */
+    @Test
+    public void testTopNAboveMemoryLimit() throws IOException {
+        Query query = sortQuery(peopleDesc, MAX_MEMORY_SORT_10);
+        query.setMaxFeatures(11);
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, query)) {
+            List<String> expected =
+                    List.of("499", "498", "497", "496", "495", "494", "493", "492", "491", "490", "489");
+            assertEquals(expected, readIds(sr));
         }
     }
 

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -40,6 +41,7 @@ import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.data.Repository;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureSource;
@@ -233,7 +235,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
      *   <li>a sort on index attributes only: the index store sorts the granules;
      *   <li>any other sort: the index store sorts the granules on the leading index attributes, and
      *       {@link GroupSortingReader} sorts each group of granules on the full sort. Without leading index attributes
-     *       the whole mosaic is one group.
+     *       the whole mosaic is one group, and rejectFullScanSort rejects the query.
      * </ul>
      */
     @Override
@@ -243,6 +245,15 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         SortBy[] sortBy = query.getSortBy();
         List<SortBy> indexSort = getIndexSortPrefix(query);
         boolean groupSort = isSorted(query) && !isNaturalOrder(sortBy) && indexSort.size() < sortBy.length;
+        if (isSorted(query) && !isIndexedSort(query) && getStore().isRejectFullScanSort()) {
+            // NATURAL_ORDER and REVERSE_ORDER have no property name: they sort on the feature identifier
+            PropertyName firstKey = sortBy[0].getPropertyName();
+            String sortAttribute = firstKey == null ? "the feature identifier" : firstKey.getPropertyName();
+            throw new IOException("Cannot sort " + getSchema().getTypeName() + " on " + sortAttribute
+                    + ": the first sort attribute must be one of the index attributes "
+                    + new TreeSet<>(getIndexAttributeNames())
+                    + ", because parameter rejectFullScanSort is enabled");
+        }
         Query loadingQuery = groupSort ? addSortProperties(query) : query;
         if (groupSort && !SortedFeatureReader.canSort(getLoadedType(loadingQuery), query.getSortBy())) {
             List<String> keys = Arrays.stream(query.getSortBy())
@@ -277,6 +288,41 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean canSort(Query query) {
         return true;
+    }
+
+    /**
+     * Returns true if the mosaic sorts the query without reading every granule:
+     *
+     * <ul>
+     *   <li>a first sort key that is an index attribute. The index store sorts the granules on the leading index
+     *       attributes, so the reader opens them in order and stops once it has enough features. The keys after them
+     *       sort the features inside each group of granules, see {@link GroupSortingReader};
+     *   <li>a lone NATURAL_ORDER. The reader returns the index rows and the features of each granule in their natural
+     *       order, see {@link GranuleSourceProvider#getGranuleFeatures}.
+     * </ul>
+     */
+    private boolean isIndexedSort(Query query) {
+        return isNaturalOrder(query.getSortBy()) || !getIndexSortPrefix(query).isEmpty();
+    }
+
+    /** With rejectFullScanSort set, the capabilities report only the sorts the mosaic does itself */
+    @Override
+    public QueryCapabilities getQueryCapabilities() {
+        QueryCapabilities capabilities = super.getQueryCapabilities();
+        if (!getStore().isRejectFullScanSort()) {
+            return capabilities;
+        }
+        return new ContentQueryCapabilities() {
+            @Override
+            public boolean supportsSorting(SortBy... sortAttributes) {
+                if (sortAttributes == null || sortAttributes.length == 0) {
+                    return true;
+                }
+                Query query = new Query();
+                query.setSortBy(sortAttributes);
+                return isIndexedSort(query) && capabilities.supportsSorting(sortAttributes);
+            }
+        };
     }
 
     private static boolean isSorted(Query query) {

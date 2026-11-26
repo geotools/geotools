@@ -19,6 +19,7 @@ package org.geotools.vectormosaic;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
@@ -61,6 +63,7 @@ public class VectorMosaicSortTest {
     private static final SortBy ORBIT_DESC = FF.sort("orbit", SortOrder.DESCENDING);
 
     private static DataStore mosaicStore;
+    private static DataStore rejectingStore;
     private static SortingPropertyDataStore sortingIndex;
     private static SortingPropertyDataStore sortingGranules;
     private static DataStore sortingStore;
@@ -81,9 +84,12 @@ public class VectorMosaicSortTest {
                 VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI.getName(), PropertyDataStoreFactory.class.getName());
         VectorMosaicStoreFactory factory = new VectorMosaicStoreFactory();
         mosaicStore = factory.createDataStore(params);
+        params.put(VectorMosaicStoreFactory.REJECT_FULL_SCAN_SORT.getName(), true);
+        rejectingStore = factory.createDataStore(params);
 
         // The index and the granules sort the natural order natively, and the granules come from the repository by
         // name
+        params.remove(VectorMosaicStoreFactory.REJECT_FULL_SCAN_SORT.getName());
         DefaultRepository sortingRepository = new DefaultRepository();
         sortingIndex =
                 new SortingPropertyDataStore(new File("src/test/resources/org.geotools.vectormosaic.sortnative"));
@@ -105,6 +111,7 @@ public class VectorMosaicSortTest {
     @AfterClass
     public static void disposeStores() {
         mosaicStore.dispose();
+        rejectingStore.dispose();
         sortingStore.dispose();
         sortingIndex.dispose();
         sortingGranules.dispose();
@@ -362,6 +369,47 @@ public class VectorMosaicSortTest {
         assertEquals(List.of(List.of(VALUE_ASC)), sortingGranules.sorts);
     }
 
+    /** The store rejects the query before it opens any granule. */
+    @Test
+    public void testRejectFullScanSort() throws IOException {
+        useStore(rejectingStore);
+        Query query = sortQuery(VALUE_ASC, DAY_ASC);
+
+        IOException e = assertThrows(IOException.class, () -> source.getReader(query));
+        assertEquals(
+                "Cannot sort Sorted_mosaic on value: the first sort attribute must be one of the index attributes "
+                        + "[day, orbit], because parameter rejectFullScanSort is enabled",
+                e.getMessage());
+        assertEquals(0, tracker.getCount());
+    }
+
+    /** The index cannot sort the natural order followed by more keys. */
+    @Test
+    public void testRejectFullScanSortIdentifierFirst() throws IOException {
+        useStore(rejectingStore);
+        Query query = sortQuery(SortBy.NATURAL_ORDER, VALUE_ASC);
+
+        IOException e = assertThrows(IOException.class, () -> source.getReader(query));
+        assertEquals(
+                "Cannot sort Sorted_mosaic on the feature identifier: the first sort attribute must be one of the "
+                        + "index attributes [day, orbit], because parameter rejectFullScanSort is enabled",
+                e.getMessage());
+    }
+
+    /** The mosaic sorts the reverse order on the whole result, so the store rejects the query. */
+    @Test
+    public void testRejectFullScanSortReverseOrder() throws IOException {
+        useStore(rejectingStore);
+        Query query = sortQuery(SortBy.REVERSE_ORDER);
+
+        IOException e = assertThrows(IOException.class, () -> source.getReader(query));
+        assertEquals(
+                "Cannot sort Sorted_mosaic on the feature identifier: the first sort attribute must be one of the "
+                        + "index attributes [day, orbit], because parameter rejectFullScanSort is enabled",
+                e.getMessage());
+        assertEquals(0, tracker.getCount());
+    }
+
     /** Paging sends the natural order to the index and to each granule. */
     @Test
     public void testNaturalOrderPagingNative() throws IOException {
@@ -375,6 +423,46 @@ public class VectorMosaicSortTest {
         List<SortBy> natural = List.of(SortBy.NATURAL_ORDER);
         assertEquals(List.of(natural), sortingIndex.sorts);
         assertEquals(List.of(natural, natural, natural), sortingGranules.sorts);
+    }
+
+    /** The capabilities report only the sorts the store accepts with rejectFullScanSort. */
+    @Test
+    public void testRejectFullScanSortCapabilities() throws IOException {
+        useStore(rejectingStore);
+        QueryCapabilities capabilities = source.getQueryCapabilities();
+
+        assertTrue(capabilities.supportsSorting(DAY_ASC, VALUE_ASC));
+        assertTrue(capabilities.supportsSorting(SortBy.NATURAL_ORDER));
+        assertFalse(capabilities.supportsSorting(VALUE_ASC, DAY_ASC));
+        assertFalse(capabilities.supportsSorting(SortBy.REVERSE_ORDER));
+    }
+
+    /** Without rejectFullScanSort, the store sorts a granule attribute on the whole result. */
+    @Test
+    public void testFullScanSortCapabilities() throws IOException {
+        QueryCapabilities capabilities = source.getQueryCapabilities();
+
+        assertTrue(capabilities.supportsSorting(VALUE_ASC, DAY_ASC));
+        assertTrue(capabilities.supportsSorting(SortBy.REVERSE_ORDER));
+    }
+
+    @Test
+    public void testRejectFullScanSortIndexSort() throws IOException {
+        useStore(rejectingStore);
+        Query query = sortQuery(DAY_ASC, VALUE_ASC);
+        query.setMaxFeatures(3);
+
+        assertEquals(List.of("G4.3", "G2.3", "G2.1"), readIds(query));
+    }
+
+    @Test
+    public void testRejectFullScanSortNaturalOrderPaging() throws IOException {
+        useStore(rejectingStore);
+        Query query = new Query(TYPE_NAME);
+        query.setStartIndex(4);
+        query.setMaxFeatures(3);
+
+        assertEquals(List.of("G2.2", "G2.3", "G3.1"), readIds(query));
     }
 
     private static Query sortQuery(SortBy... sortBy) {

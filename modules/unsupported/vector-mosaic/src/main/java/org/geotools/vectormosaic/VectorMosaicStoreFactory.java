@@ -70,6 +70,15 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
             "The key to use for the connection parameter.  Default is 'url'",
             false);
 
+    public static final Param REJECT_FULL_SCAN_SORT = new Param(
+            "rejectFullScanSort",
+            Boolean.class,
+            "Reject the sorts the mosaic cannot do through its index, such as a first sort attribute that is not "
+                    + "an index attribute, instead of reading and sorting every granule",
+            false,
+            false,
+            new KVP(Param.LEVEL, "advanced"));
+
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         Repository repository = DataAccessFactory.lookup(REPOSITORY_PARAM, params);
@@ -85,6 +94,8 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
         if (connectionParameterKey != null) {
             vectorMosaicStore.setConnectionParameterKey(connectionParameterKey);
         }
+        vectorMosaicStore.setRejectFullScanSort(
+                Boolean.TRUE.equals(DataAccessFactory.lookup(REJECT_FULL_SCAN_SORT, params)));
         String commonParameters = DataAccessFactory.lookup(COMMON_PARAMETERS, params);
         if (commonParameters != null) {
             Properties props = new Properties();
@@ -114,7 +125,8 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
             DELEGATE_STORE_NAME,
             CONNECTION_PARAMETER_KEY,
             PREFERRED_DATASTORE_SPI,
-            COMMON_PARAMETERS
+            COMMON_PARAMETERS,
+            REJECT_FULL_SCAN_SORT
         };
     }
 

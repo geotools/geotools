@@ -48,6 +48,8 @@ public class VectorMosaicStore extends ContentDataStore {
 
     private String preferredSPI;
 
+    private boolean rejectFullScanSort;
+
     public static final String CONNECTION_PARAMETER_KEY_URL = "url";
 
     public static final String CONNECTION_PARAMETER_KEY_FILE = "file";
@@ -151,6 +153,16 @@ public class VectorMosaicStore extends ContentDataStore {
         }
 
         return true;
+    }
+
+    /** Returns true if the store rejects the sorts the mosaic cannot do through its index */
+    public boolean isRejectFullScanSort() {
+        return rejectFullScanSort;
+    }
+
+    /** Sets whether the store rejects the sorts the mosaic cannot do through its index */
+    public void setRejectFullScanSort(boolean rejectFullScanSort) {
+        this.rejectFullScanSort = rejectFullScanSort;
     }
 
     public Properties getCommonParameters() {

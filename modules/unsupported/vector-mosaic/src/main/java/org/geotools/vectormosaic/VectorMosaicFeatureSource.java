@@ -22,6 +22,7 @@ import static org.geotools.vectormosaic.VectorMosaicStore.buildName;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Repository;
+import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -48,12 +50,16 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureSource.ContentQueryCapabilities;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
@@ -194,7 +200,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         // ContentFeatureSource.getCount subtracts the offset afterwards, so count up to startIndex + maxFeatures
         long limit = SortedFeatureReader.getTopN(query);
         boolean applyLimit = limit != Long.MAX_VALUE;
-        SimpleFeatureCollection features = getDelegateFeatures(query);
+        SimpleFeatureCollection features = getDelegateFeatures(query, List.of());
         try (GranuleSourceProvider provider = new GranuleSourceProvider(this, features, query)) {
             SimpleFeatureSource source;
             while ((source = provider.getNextGranuleSource()) != null) {
@@ -219,27 +225,157 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return count;
     }
 
+    /**
+     * Reads the features of the mosaic in the order of the query:
+     *
+     * <ul>
+     *   <li>no sort, or a lone NATURAL_ORDER: the index order, then the order of each granule;
+     *   <li>a sort on index attributes only: the index store sorts the granules;
+     *   <li>any other sort: the index store sorts the granules on the leading index attributes, and
+     *       {@link GroupSortingReader} sorts each group of granules on the full sort. Without leading index attributes
+     *       the whole mosaic is one group.
+     * </ul>
+     */
     @Override
     // original instance is null, no need to clase at reassignment
     @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
-        SimpleFeatureCollection features = getDelegateFeatures(query);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        SortBy[] sortBy = query.getSortBy();
+        List<SortBy> indexSort = getIndexSortPrefix(query);
+        boolean groupSort = isSorted(query) && !isNaturalOrder(sortBy) && indexSort.size() < sortBy.length;
+        Query loadingQuery = groupSort ? addSortProperties(query) : query;
+        if (groupSort && !SortedFeatureReader.canSort(getLoadedType(loadingQuery), query.getSortBy())) {
+            List<String> keys = Arrays.stream(query.getSortBy())
+                    .map(sb -> sb.getPropertyName() == null
+                            ? sb.toString()
+                            : sb.getPropertyName().getPropertyName())
+                    .toList();
+            throw new IllegalArgumentException("Cannot sort " + getSchema().getTypeName() + " on " + keys
+                    + ": the sort attributes must be comparable and the loaded attributes serializable");
+        }
+        SimpleFeatureCollection features = getDelegateFeatures(loadingQuery, indexSort);
 
         // The reader merges the features from delegate and granule, filters contents, and
         // retypes to the target feature type
-        GranuleSourceProvider granuleSources = new GranuleSourceProvider(this, features, query);
-        reader = new VectorMosaicFeatureReader(granuleSources, this);
+        GranuleSourceProvider granuleSources =
+                new GranuleSourceProvider(this, features, loadingQuery, groupSort ? indexSort : List.of());
+        SimpleFeatureReader reader = new VectorMosaicFeatureReader(granuleSources, this);
+        if (groupSort) {
+            reader = new GroupSortingReader(reader, loadingQuery, granuleSources);
+        }
 
+        // drop the attributes loaded only for sorting
+        if (loadingQuery != query) {
+            SimpleFeatureType target =
+                    SimpleFeatureTypeBuilder.retype(reader.getFeatureType(), query.getPropertyNames());
+            return new ReTypeFeatureReader(reader, target, false);
+        }
         return reader;
     }
 
-    private SimpleFeatureCollection getDelegateFeatures(Query query) throws IOException {
+    /** The mosaic sorts every query itself, see {@link #getReaderInternal} */
+    @Override
+    protected boolean canSort(Query query) {
+        return true;
+    }
+
+    private static boolean isSorted(Query query) {
+        return query.getSortBy() != null && query.getSortBy().length > 0;
+    }
+
+    /** Returns the leading sort keys the index can sort on */
+    private List<SortBy> getIndexSortPrefix(Query query) {
+        if (!isSorted(query)) {
+            return List.of();
+        }
+        SortBy[] sortBy = query.getSortBy();
+        if (isNaturalOrder(sortBy)) {
+            // without native support the index store returns its own order
+            return isNativeIndexSort(sortBy) ? List.of(sortBy) : List.of();
+        }
+        Set<String> indexAttributes = getIndexAttributeNames();
+        return Arrays.stream(sortBy)
+                .takeWhile(sb -> isIndexAttribute(sb, indexAttributes))
+                .toList();
+    }
+
+    /** Returns true for a lone NATURAL_ORDER */
+    static boolean isNaturalOrder(SortBy[] sortBy) {
+        return sortBy != null && sortBy.length == 1 && sortBy[0] == SortBy.NATURAL_ORDER;
+    }
+
+    /**
+     * Returns true if the source sorts on the given keys itself. JDBC stores accept every sort, but throw on the
+     * natural order for a table without a primary key.
+     */
+    static boolean isNativeSort(SimpleFeatureSource source, SortBy... sortBy) {
+        return source.getQueryCapabilities() instanceof ContentQueryCapabilities capabilities
+                && capabilities.getStoreCapabilities().supportsSorting(sortBy);
+    }
+
+    private boolean isNativeIndexSort(SortBy... sortBy) {
+        try {
+            return isNativeSort(getDataStoreByName(delegateStoreName).getFeatureSource(delegateStoreTypeName), sortBy);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Could not get the index source " + delegateStoreTypeName, e);
+        }
+    }
+
+    private static boolean isIndexAttribute(SortBy sortBy, Set<String> indexAttributes) {
+        PropertyName property = sortBy.getPropertyName();
+        return property != null && indexAttributes.contains(property.getPropertyName());
+    }
+
+    /** Returns the index attributes the mosaic exposes */
+    Set<String> getIndexAttributeNames() {
+        try {
+            SimpleFeatureType indexType = getDataStoreByName(delegateStoreName).getSchema(delegateStoreTypeName);
+            return indexType.getAttributeDescriptors().stream()
+                    .filter(this::isNotMandatoryIndexType)
+                    .map(AttributeDescriptor::getLocalName)
+                    .collect(Collectors.toSet());
+        } catch (IOException e) {
+            throw new UncheckedIOException("Could not get schema for " + delegateStoreTypeName, e);
+        }
+    }
+
+    /** Returns the type of the features the reader loads for the query */
+    private SimpleFeatureType getLoadedType(Query query) throws IOException {
+        if (query.getPropertyNames() == Query.ALL_NAMES) {
+            return getSchema();
+        }
+        return SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
+    }
+
+    /** Adds the sort attributes to the selected properties. The reader needs them to sort. */
+    private static Query addSortProperties(Query query) {
+        if (query.getPropertyNames() == Query.ALL_NAMES) {
+            return query;
+        }
+        Set<String> properties = new LinkedHashSet<>(Arrays.asList(query.getPropertyNames()));
+        for (SortBy sb : query.getSortBy()) {
+            if (sb.getPropertyName() != null) {
+                properties.add(sb.getPropertyName().getPropertyName());
+            }
+        }
+        if (properties.size() == query.getPropertyNames().length) {
+            return query;
+        }
+        Query loadingQuery = new Query(query);
+        loadingQuery.setPropertyNames(properties.toArray(String[]::new));
+        return loadingQuery;
+    }
+
+    private SimpleFeatureCollection getDelegateFeatures(Query query, List<SortBy> indexSort) throws IOException {
         Name dsname = buildName(delegateStoreName);
         DataStore delegateDataStore = repository.dataStore(dsname);
         Filter splitFilterIndex = getSplitFilter(query, delegateDataStore, delegateStoreTypeName, true);
         SimpleFeatureSource delegateFeatureSource = delegateDataStore.getFeatureSource(delegateStoreTypeName);
         Query delegateQuery = new Query(delegateStoreTypeName, splitFilterIndex);
+        // Granules with equal index values come in the order the index store returns them. A database can change
+        // that order between requests, so pages of a sorted result can repeat or skip features.
+        // Do not add NATURAL_ORDER as a tie-breaker: JDBC stores throw on index tables without a primary key.
+        delegateQuery.setSortBy(indexSort.toArray(SortBy[]::new));
         if (query.getPropertyNames() != Query.ALL_NAMES) {
             String[] filteredArray =
                     getOnlyTypeMatchingAttributes(delegateDataStore, delegateStoreTypeName, query, true);

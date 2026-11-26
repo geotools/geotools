@@ -29,6 +29,7 @@ import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -118,10 +119,10 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
         SimpleFeatureSource granuleSource = null;
         while ((granuleSource = granuleSourceProvider.getNextGranuleSource()) != null) {
             delegateFeature = granuleSourceProvider.getDelegateFeature();
-            Query granuleQuery = granuleSourceProvider.getGranuleQuery();
 
             // gran the next granule iterator and look for the next granule
-            granuleIterator = granuleSource.getFeatures(granuleQuery).features();
+            SimpleFeatureCollection granuleFeatures = granuleSourceProvider.getGranuleFeatures(granuleSource);
+            granuleIterator = granuleFeatures.features();
             while (granuleIterator.hasNext()) {
                 nextGranule = readNext();
                 if (nextGranule != null) return true;

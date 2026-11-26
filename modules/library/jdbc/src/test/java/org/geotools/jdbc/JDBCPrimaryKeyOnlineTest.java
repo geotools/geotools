@@ -27,12 +27,14 @@ import java.util.Collections;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureStore;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -67,6 +69,14 @@ public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
         assertPrimaryKeyValues(features, 3);
         addFeature(fs.getSchema(), fs);
         assertPrimaryKeyValues(features, 4);
+    }
+
+    /** The feature store returns the capabilities of its feature source. */
+    @Test
+    public void testNativeSorting() throws Exception {
+        QueryCapabilities store = getStoreCapabilities(dataStore.getFeatureSource(tname("auto")));
+        assertTrue(store.supportsSorting(SortBy.NATURAL_ORDER));
+        assertTrue(store.supportsSorting(SortBy.REVERSE_ORDER));
     }
 
     @Test

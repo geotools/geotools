@@ -34,6 +34,8 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -43,6 +45,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.data.store.ContentFeatureSource.ContentQueryCapabilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
@@ -199,6 +202,11 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
      * Returns the table name as the datastore understands it (some datastore are incapable of supporting mixed case
      * names for example)
      */
+    /** Returns the capabilities of the store behind the source, without the sorts the source adds in memory */
+    protected QueryCapabilities getStoreCapabilities(SimpleFeatureSource source) {
+        return ((ContentQueryCapabilities) source.getQueryCapabilities()).getStoreCapabilities();
+    }
+
     protected String tname(String raw) {
         return setup.typeName(raw);
     }

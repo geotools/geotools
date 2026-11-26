@@ -52,6 +52,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     private SimpleFeatureBuilder retypeBuilder;
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
+    private boolean closed;
 
     protected SimpleFeature nextGranule = null;
     protected SimpleFeature delegateFeature = null;
@@ -98,6 +99,10 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     @Override
     // Should only close the store when it is exhausted or when the reader is closed
     public boolean hasNext() throws IOException {
+        // callers may call hasNext again after the end, when the iterators are already closed
+        if (closed) {
+            return false;
+        }
         if (nextGranule != null) {
             return true;
         }
@@ -106,6 +111,8 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
                 nextGranule = readNext();
                 if (nextGranule != null) return true;
             }
+            granuleIterator.close();
+            granuleIterator = null;
         }
 
         SimpleFeatureSource granuleSource = null;
@@ -204,6 +211,11 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
     @Override
     public void close() throws IOException {
+        // hasNext closes the reader at the end of the data, and the caller closes it again
+        if (closed) {
+            return;
+        }
+        closed = true;
         try {
             if (granuleIterator != null) {
                 granuleIterator.close();

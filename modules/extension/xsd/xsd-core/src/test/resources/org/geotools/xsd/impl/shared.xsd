@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:shared="http://geotools.org/test/shared"
+    targetNamespace="http://geotools.org/test/shared" elementFormDefault="qualified">
+    <element name="Feature" type="shared:FeatureType" abstract="true"/>
+    <complexType name="FeatureType">
+        <sequence>
+            <element name="name" type="string"/>
+        </sequence>
+    </complexType>
+</schema>

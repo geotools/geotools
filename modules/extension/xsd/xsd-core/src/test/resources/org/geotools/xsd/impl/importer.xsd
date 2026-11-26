@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:shared="http://geotools.org/test/shared"
+    xmlns:importer="http://geotools.org/test/importer" targetNamespace="http://geotools.org/test/importer"
+    elementFormDefault="qualified">
+    <import namespace="http://geotools.org/test/shared" schemaLocation="shared.xsd"/>
+    <element name="Road" type="importer:RoadType" substitutionGroup="shared:Feature"/>
+    <complexType name="RoadType">
+        <complexContent>
+            <extension base="shared:FeatureType">
+                <sequence>
+                    <element name="lanes" type="int"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

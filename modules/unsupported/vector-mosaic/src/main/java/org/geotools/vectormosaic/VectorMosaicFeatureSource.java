@@ -51,6 +51,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
@@ -190,15 +191,16 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     @Override
     protected int getCountInternal(Query query) throws IOException {
         int count = 0;
-        int maxFeatures = query.getMaxFeatures();
-        boolean applyMaxFeatures = maxFeatures != Query.DEFAULT_MAX;
+        // ContentFeatureSource.getCount subtracts the offset afterwards, so count up to startIndex + maxFeatures
+        long limit = SortedFeatureReader.getTopN(query);
+        boolean applyLimit = limit != Long.MAX_VALUE;
         SimpleFeatureCollection features = getDelegateFeatures(query);
         try (GranuleSourceProvider provider = new GranuleSourceProvider(this, features, query)) {
             SimpleFeatureSource source;
             while ((source = provider.getNextGranuleSource()) != null) {
                 // get the query, set it to count at most the leftover to the max
                 Query granuleQuery = provider.getGranuleQuery();
-                if (applyMaxFeatures) granuleQuery.setMaxFeatures(maxFeatures - count);
+                if (applyLimit) granuleQuery.setMaxFeatures((int) Math.min(limit - count, Integer.MAX_VALUE));
 
                 // actual count
                 int granuleCount = source.getCount(granuleQuery);
@@ -207,8 +209,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
                 count += granuleCount;
 
                 // early bail out, and for extra measure, we don't want to count more than the max
-                if (applyMaxFeatures && count >= maxFeatures) {
-                    count = maxFeatures;
+                if (applyLimit && count >= limit) {
+                    count = (int) limit;
                     break;
                 }
             }

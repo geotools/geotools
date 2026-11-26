@@ -16,6 +16,7 @@
  */
 package org.geotools.vectormosaic;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -24,13 +25,16 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.property.PropertyDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -71,6 +75,16 @@ public class VectorMosaicSortTest {
         source = (VectorMosaicFeatureSource) mosaicStore.getFeatureSource(TYPE_NAME);
     }
 
+    /** The count stops at startIndex + maxFeatures, before ContentFeatureSource subtracts the offset. */
+    @Test
+    public void testCountPage() throws IOException {
+        Query query = new Query(TYPE_NAME);
+        query.setStartIndex(5);
+        query.setMaxFeatures(3);
+
+        assertEquals(3, source.getCount(query));
+    }
+
     /** Closing the reader again after the end of the data closes the granule provider once. */
     @Test
     public void testCloseTwice() throws IOException {
@@ -80,5 +94,25 @@ public class VectorMosaicSortTest {
             assertFalse(reader.hasNext());
         }
         verify(provider, times(1)).close();
+    }
+
+    /** The offset and the limit both fall inside the first granule. */
+    @Test
+    public void testNaturalOrderPagingInsideGranule() throws IOException {
+        Query query = new Query(TYPE_NAME);
+        query.setStartIndex(1);
+        query.setMaxFeatures(1);
+
+        assertEquals(List.of("G1.2"), readIds(query));
+    }
+
+    private List<String> readIds(Query query) throws IOException {
+        List<String> ids = new ArrayList<>();
+        try (SimpleFeatureIterator it = source.getFeatures(query).features()) {
+            while (it.hasNext()) {
+                ids.add(it.next().getID());
+            }
+        }
+        return ids;
     }
 }

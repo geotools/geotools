@@ -1124,38 +1124,45 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             Object value,
             StepList xpath,
             AttributeType targetNodeType) {
+        Collection<?> values = (Collection<?>) value;
+        if (values.isEmpty()) {
+            return;
+        }
         Expression linkExpression = clientPropsMappings.get(XLINK_HREF_NAME);
 
-        for (Object singleVal : (Collection) value) {
-            // Make sure the same value isn't already set
-            // in case it comes from a denormalized view for many-to-many relationship.
-            // (1) Get the first existing value
-            Collection<Property> existingAttributes = getProperties((ComplexAttribute) target, xpath);
-            boolean exists = false;
-
-            if (existingAttributes != null) {
-                for (Property existingAttribute : existingAttributes) {
-                    Object existingValue = existingAttribute.getUserData().get(Attributes.class);
-                    if (existingValue != null) {
-                        assert existingValue instanceof HashMap;
-                        existingValue = ((Map) existingValue).get(XLINK_HREF_NAME);
-                    }
-                    if (existingValue != null) {
-                        Object hrefValue = linkExpression.evaluate(singleVal);
-                        if (hrefValue != null && hrefValue.equals(existingValue)) {
-                            // (2) if one of the new values matches the first existing value,
-                            // that means this comes from a denormalized view,
-                            // and this set has already been set
-                            exists = true;
-                            // stop looking once found
-                            break;
-                        }
-                    }
-                }
+        // Make sure the same value isn't already set
+        // in case it comes from a denormalized view for many-to-many relationship.
+        // (1) Collect the hrefs already set under xpath once, instead of rescanning
+        // them for every value.
+        Set<Object> existingHrefs = new HashSet<>();
+        Collection<Property> existingAttributes = getProperties((ComplexAttribute) target, xpath);
+        if (existingAttributes != null) {
+            for (Property existingAttribute : existingAttributes) {
+                addXlinkHref(existingHrefs, existingAttribute);
             }
-            if (!exists) {
+        }
+
+        for (Object singleVal : values) {
+            // (2) If one of the new values matches an existing href, that means this comes
+            // from a denormalized view and this set has already been set, so skip it.
+            // A null href cannot match an existing one, so it is always added.
+            Object hrefValue = linkExpression.evaluate(singleVal);
+            if (hrefValue == null || !existingHrefs.contains(hrefValue)) {
                 Attribute instance = xpathAttributeBuilder.set(target, xpath, null, null, targetNodeType, true, null);
                 setClientProperties(instance, singleVal, clientPropsMappings);
+                addXlinkHref(existingHrefs, instance);
+            }
+        }
+    }
+
+    /** Adds the xlink:href client property stored on the attribute, if any, to the set. */
+    private static void addXlinkHref(Set<Object> hrefs, Property attribute) {
+        Object clientProperties = attribute.getUserData().get(Attributes.class);
+        if (clientProperties != null) {
+            assert clientProperties instanceof HashMap;
+            Object href = ((Map) clientProperties).get(XLINK_HREF_NAME);
+            if (href != null) {
+                hrefs.add(href);
             }
         }
     }

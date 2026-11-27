@@ -25,6 +25,7 @@ import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.beanutils.BeanUtils;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.SourceSPIProviderFactory;
@@ -57,6 +58,8 @@ public class CatalogConfigurationBean {
     private boolean heterogeneous;
 
     private boolean heterogeneousCRS;
+
+    private CoordinateReferenceSystem crs;
 
     private SourceSPIProviderFactory urlSourceSPIProvider;
 
@@ -165,6 +168,16 @@ public class CatalogConfigurationBean {
 
     public void setHeterogeneousCRS(boolean heterogeneousCRS) {
         this.heterogeneousCRS = heterogeneousCRS;
+    }
+
+    /** CRS the catalog exposes granules in, reprojected from/to the index CRS if different; null uses the index CRS. */
+    public CoordinateReferenceSystem getCrs() {
+        return crs;
+    }
+
+    /** Sets the mosaic CRS, see {@link #getCrs()}. */
+    public void setCrs(CoordinateReferenceSystem crs) {
+        this.crs = crs;
     }
 
     public PathType getPathType() {

@@ -76,6 +76,7 @@ import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
@@ -83,6 +84,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -98,6 +100,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.RenamingGranuleSource;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -105,6 +108,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.GeneralBounds;
@@ -127,6 +131,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
 /** Testing whether a simple mosaic correctly has its elements reprojected */
@@ -374,6 +379,174 @@ public class HeterogenousCRSTest {
         }
 
         imReader.dispose();
+    }
+
+    @Test
+    public void testIndexInGeographicMosaicInUTM() throws Exception {
+        File dir = createUTMMosaicOnGeographicIndex("hetero_utm_index", "utm32n.tiff", "utm33n.tiff");
+        ImageMosaicReader reader = new ImageMosaicReader(dir, null);
+        try {
+            // granules, native envelope and grid are all exposed in the mosaic CRS
+            CoordinateReferenceSystem utm32 = CRS.decode("EPSG:32632");
+            GranuleSource source = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            SimpleFeatureCollection granules = source.getGranules(Query.ALL);
+            assertTrue(CRS.equalsIgnoreMetadata(utm32, granules.getSchema().getCoordinateReferenceSystem()));
+            assertTrue(CRS.equalsIgnoreMetadata(utm32, source.getSchema().getCoordinateReferenceSystem()));
+            // coverage views rename the source, retyping its granules to the source schema
+            GranuleSource renamed = new RenamingGranuleSource("renamed", source);
+            assertEquals(2, DataUtilities.list(renamed.getGranules(Query.ALL)).size());
+            ReferencedEnvelope envelope = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+            assertTrue(CRS.equalsIgnoreMetadata(utm32, envelope.getCoordinateReferenceSystem()));
+            GridEnvelope range = reader.getOriginalGridRange();
+            assertEquals((int) (envelope.getWidth() / 1000), range.getSpan(0));
+            assertEquals((int) (envelope.getHeight() / 1000), range.getSpan(1));
+
+            // native read as done by GetFeatureInfo, web mercator one as done by GetMap, both find the granules
+            ReferencedEnvelope red = new ReferencedEnvelope(11.25, 11.75, 0.25, 0.75, WGS84);
+            assertCenterPixel(reader, red.transform(utm32, true), 255, 0, 0);
+            assertCenterPixel(reader, red.transform(CRS.decode("EPSG:3857"), true), 255, 0, 0);
+
+            // aggregated bounds come out in the mosaic CRS too
+            GranuleCatalog catalog =
+                    reader.getRasterManager(reader.getGridCoverageNames()[0]).getGranuleCatalog();
+            String typeName = source.getSchema().getTypeName();
+            BoundsVisitor bounds = new BoundsVisitor();
+            catalog.computeAggregateFunction(new Query(typeName), bounds);
+            // tif envelopes densified to EPSG:4326 at harvest, then moved back to EPSG:32632 vertex by vertex
+            assertEnvelope(bounds.getBounds(), 1, 722561.736, -325.903, 945088.633, 110886.104);
+
+            // a caller asking for its own CRS gets it
+            Query reprojected = new Query(typeName);
+            reprojected.setCoordinateSystemReproject(WGS84);
+            ReferencedEnvelope geographic = catalog.getGranules(reprojected).getBounds();
+            assertEnvelope(geographic, 1e-6, 10.9996973, -0.0029414, 12.9966323, 1.0007673);
+
+            // filters without a CRS are expressed in the mosaic CRS
+            ReferencedEnvelope redUTM = red.transform(utm32, true);
+            String geometry = source.getSchema().getGeometryDescriptor().getLocalName();
+            Filter noCRS = CommonFactoryFinder.getFilterFactory()
+                    .bbox(geometry, redUTM.getMinX(), redUTM.getMinY(), redUTM.getMaxX(), redUTM.getMaxY(), null);
+            assertEquals(1, source.getCount(new Query(typeName, noCRS)));
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testRemoveGranulesInMosaicCRS() throws Exception {
+        File dir = createUTMMosaicOnGeographicIndex("hetero_utm_remove", "utm32n.tiff", "utm33n.tiff");
+        ImageMosaicReader reader = new ImageMosaicReader(dir, null);
+        try {
+            GranuleCatalog catalog =
+                    reader.getRasterManager(reader.getGridCoverageNames()[0]).getGranuleCatalog();
+            String typeName = catalog.getTypeNames()[0];
+            // a filter without a CRS is in the mosaic CRS, the index is in EPSG:4326
+            ReferencedEnvelope red = new ReferencedEnvelope(11.25, 11.75, 0.25, 0.75, WGS84);
+            ReferencedEnvelope redUTM = red.transform(CRS.decode("EPSG:32632"), true);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+            Filter noCRS = ff.bbox(ff.property("the_geom"), new ReferencedEnvelope(redUTM, null));
+            assertEquals(1, catalog.removeGranules(new Query(typeName, noCRS), Transaction.AUTO_COMMIT));
+
+            SimpleFeatureCollection left = catalog.getGranules(new Query(typeName));
+            assertEquals(1, left.size());
+            assertThat((String) DataUtilities.first(left).getAttribute("location"), containsString("utm33n"));
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestIntoGeographicIndexMosaicInUTM() throws Exception {
+        File dir = createUTMMosaicOnGeographicIndex("hetero_utm_harvest", "utm32n.tiff");
+        ImageMosaicReader reader = new ImageMosaicReader(dir, null);
+        try {
+            assertEquals(
+                    1,
+                    reader.harvest(null, TestData.file(this, "hetero_utm/utm33n.tiff"), null)
+                            .size());
+            ReferencedEnvelope green = new ReferencedEnvelope(12.25, 12.75, 0.25, 0.75, WGS84);
+            assertCenterPixel(reader, green.transform(CRS.decode("EPSG:32632"), true), 0, 255, 0);
+        } finally {
+            reader.dispose();
+        }
+
+        // the harvested footprint is stored in the index CRS, not in the mosaic one
+        ShapefileDataStore index = new ShapefileDataStore(
+                new File(dir, "hetero_utm_harvest.shp").toURI().toURL());
+        try {
+            SimpleFeatureCollection harvested =
+                    index.getFeatureSource().getFeatures(CQL.toFilter("location LIKE '%utm33n%'"));
+            assertEquals(1, harvested.size());
+            assertEnvelope(harvested.getBounds(), 1e-6, 11.9995457, -0.0029413, 12.9966323, 1.0007651);
+        } finally {
+            index.dispose();
+        }
+    }
+
+    @Test
+    public void testIndexInLatLonOrderNotSwapped() throws Exception {
+        File dir = crsMosaicFolder.newFolder("hetero_utm_latlon");
+        File hetero = TestData.file(this, "hetero_utm");
+        FileUtils.copyFileToDirectory(new File(hetero, "indexer.properties"), dir);
+        FileUtils.copyFileToDirectory(new File(hetero, "utm32n.tiff"), dir);
+        new ImageMosaicReader(dir, null).dispose();
+        // same CRS as MosaicCRS=EPSG:4326 but latitude first, as JDBC indexes report it without forced XY
+        FileUtils.writeStringToFile(new File(dir, "hetero_utm_latlon.prj"), LAT_LON_WGS84, StandardCharsets.UTF_8);
+
+        ImageMosaicReader reader = new ImageMosaicReader(dir, null);
+        try {
+            GranuleSource granules = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            // footprints are returned as stored, longitude still on the first axis
+            ReferencedEnvelope bounds = granules.getGranules(Query.ALL).getBounds();
+            assertEnvelope(bounds, 1e-6, 10.9996973, -0.0029414, 11.9967863, 1.0007673);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    private static void assertEnvelope(Envelope actual, double delta, double... expected) {
+        double[] corners = {actual.getMinX(), actual.getMinY(), actual.getMaxX(), actual.getMaxY()};
+        assertArrayEquals(expected, corners, delta);
+    }
+
+    private static final String LAT_LON_WGS84 =
+            "GEOGCS[\"WGS 84\", DATUM[\"WGS_1984\", SPHEROID[\"WGS 84\", 6378137, 298.257223563]],"
+                    + " PRIMEM[\"Greenwich\", 0], UNIT[\"degree\", 0.017453292519943295],"
+                    + " AXIS[\"Latitude\", NORTH], AXIS[\"Longitude\", EAST], AUTHORITY[\"EPSG\", \"4326\"]]";
+
+    /** Builds a mosaic indexed in 4326 out of hetero_utm granules, then switches its CRS and resolution to UTM 32N. */
+    private File createUTMMosaicOnGeographicIndex(String name, String... granules) throws Exception {
+        File dir = crsMosaicFolder.newFolder(name);
+        File source = TestData.file(this, "hetero_utm");
+        FileUtils.copyFileToDirectory(new File(source, "indexer.properties"), dir);
+        for (String granule : granules) {
+            FileUtils.copyFileToDirectory(new File(source, granule), dir);
+        }
+        new ImageMosaicReader(dir, null).dispose();
+        for (String config : List.of(name + ".properties", "indexer.properties")) {
+            File file = new File(dir, config);
+            String properties = FileUtils.readFileToString(file, StandardCharsets.UTF_8)
+                    .replace("MosaicCRS=EPSG\\:4326", "MosaicCRS=EPSG\\:32632")
+                    .replaceAll("(?m)^Levels=.*$", "Levels=1000,1000");
+            FileUtils.writeStringToFile(file, properties, StandardCharsets.UTF_8);
+        }
+        return dir;
+    }
+
+    private static void assertCenterPixel(GridCoverage2DReader reader, ReferencedEnvelope area, int... expected)
+            throws IOException {
+        ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 16, 16), area));
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        assertNotNull(coverage);
+        try {
+            Position center = new Position2D(area.getCoordinateReferenceSystem(), area.getMedian(0), area.getMedian(1));
+            int[] pixel = coverage.evaluate(center, (int[]) null);
+            // reprojected outputs may carry an extra alpha band
+            assertArrayEquals(expected, Arrays.copyOf(pixel, expected.length));
+        } finally {
+            coverage.dispose(true);
+        }
     }
 
     @Test

@@ -1094,6 +1094,7 @@ public class Utils {
         if (crsCode != null && !crsCode.isEmpty()) {
             try {
                 retValue.setCrs(decodeSrs(crsCode));
+                retValue.getCatalogConfigurationBean().setCrs(retValue.getCrs());
             } catch (FactoryException e) {
                 LOGGER.log(
                         Level.FINE,

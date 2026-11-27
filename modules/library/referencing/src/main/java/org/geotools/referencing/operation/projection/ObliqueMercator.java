@@ -234,10 +234,8 @@ public class ObliqueMercator extends MapProjection {
     /** Constants used in the transformation. */
     private final double B, A, E;
 
-    /**
-     * Convenience values equal to {@link #A} / {@link #B}, {@link #A}&times;{@link #B}, and {@link #B} / {@link #A}.
-     */
-    private final double ArB, AB, BrA;
+    /** Convenience values equal to {@link #A} / {@link #B} and {@link #B} / {@link #A}. */
+    private final double ArB, BrA;
 
     /** <var>v</var> values when the input latitude is a pole. */
     private final double v_pole_n, v_pole_s;
@@ -424,10 +422,11 @@ public class ObliqueMercator extends MapProjection {
             gamma0 = asin(sin(azimuth) / D);
             // Check for asin(+-1.00000001)
             temp = 0.5 * (F - 1.0 / F) * tan(gamma0);
-            if (abs(temp) > 1.0) {
-                if (abs(abs(temp) - 1.0) > EPSILON) {
-                    throw new IllegalArgumentException(ErrorKeys.TOLERANCE_ERROR);
-                }
+            if (abs(temp) > 1.0 && abs(abs(temp) - 1.0) > EPSILON) {
+                throw new IllegalArgumentException(ErrorKeys.TOLERANCE_ERROR);
+            }
+            // asin is ill-conditioned at +-1: one ULP below 1 already costs 1.5E-8 rad (~1 cm)
+            if (abs(abs(temp) - 1.0) < EPSILON) {
                 temp = temp > 0 ? 1.0 : -1.0;
             }
             centralMeridian = longitudeOfCentre - asin(temp) / B;
@@ -440,7 +439,6 @@ public class ObliqueMercator extends MapProjection {
         sinrot = sin(rectifiedGridAngle);
         cosrot = cos(rectifiedGridAngle);
         ArB = A / B;
-        AB = A * B;
         BrA = B / A;
         v_pole_n = ArB * log(tan(0.5 * (PI / 2.0 - gamma0)));
         v_pole_s = ArB * log(tan(0.5 * (PI / 2.0 + gamma0)));
@@ -506,7 +504,8 @@ public class ObliqueMercator extends MapProjection {
             v = 0.5 * ArB * log((1.0 - U) / (1.0 + U));
             temp = cos(B * x);
             if (abs(temp) < EPSILON_LATITUDE) {
-                u = AB * x;
+                // limit of ArB * atan2(..., cos(B * x)) as cos(B * x) -> 0
+                u = A * x;
             } else {
                 u = ArB * atan2(S * cosgamma0 + V * singamma0, temp);
             }

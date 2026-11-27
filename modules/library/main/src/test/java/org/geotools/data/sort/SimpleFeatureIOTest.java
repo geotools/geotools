@@ -18,12 +18,17 @@ package org.geotools.data.sort;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.FactoryException;
@@ -35,6 +40,7 @@ import org.geotools.referencing.CRS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
 /** Testing class for {@link SimpleFeatureIO} util type */
@@ -150,6 +156,74 @@ public class SimpleFeatureIOTest {
             }
         } finally {
             sfio2.close(true);
+        }
+    }
+
+    /**
+     * Round trips features holding a value of every supported type, with a geometry above the size the feature buffers
+     * keep, then all values null, then a small geometry.
+     */
+    @Test
+    public void testRoundTripAllTypes() throws Exception {
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+        typeBuilder.setName("allTypes");
+        typeBuilder.add("boolean", Boolean.class);
+        typeBuilder.add("byte", Byte.class);
+        typeBuilder.add("short", Short.class);
+        typeBuilder.add("int", Integer.class);
+        typeBuilder.add("long", Long.class);
+        typeBuilder.add("float", Float.class);
+        typeBuilder.add("double", Double.class);
+        typeBuilder.add("string", String.class);
+        typeBuilder.add(NAME_FIELD, String.class);
+        typeBuilder.add("sqlDate", java.sql.Date.class);
+        typeBuilder.add("time", Time.class);
+        typeBuilder.add("timestamp", Timestamp.class);
+        typeBuilder.add("date", Date.class);
+        typeBuilder.add("uri", URI.class);
+        typeBuilder.add("geom", Geometry.class);
+        SimpleFeatureType type = typeBuilder.buildFeatureType();
+        type.getDescriptor(NAME_FIELD).getUserData().put(SimpleFeatureIO.BIG_STRING, Boolean.TRUE);
+        Object[] values = {
+            true,
+            (byte) 1,
+            (short) 2,
+            3,
+            4L,
+            5.5f,
+            6.5d,
+            "small",
+            bigString(),
+            new java.sql.Date(1000),
+            new Time(2000),
+            new Timestamp(3000),
+            new Date(4000),
+            URI.create("http://localhost/"),
+            // a circle of 100000 points has a WKB of about 1.6MB
+            new GeometryBuilder().circle(0, 0, 10, 100000)
+        };
+        Object[] smallGeometry = values.clone();
+        smallGeometry[values.length - 1] = new GeometryBuilder().point(1, 2);
+        List<SimpleFeature> features = List.of(
+                SimpleFeatureBuilder.build(type, values, "f0"),
+                SimpleFeatureBuilder.build(type, new Object[values.length], "f1"),
+                SimpleFeatureBuilder.build(type, smallGeometry, "f2"));
+
+        File file = File.createTempFile("allTypes", ".features");
+        SimpleFeatureIO io = new SimpleFeatureIO(file, type);
+        try {
+            for (SimpleFeature feature : features) {
+                io.write(feature);
+            }
+            io.seek(0);
+            for (SimpleFeature feature : features) {
+                SimpleFeature read = io.read();
+                assertEquals(feature.getID(), read.getID());
+                assertEquals(feature.getAttributes(), read.getAttributes());
+            }
+            assertTrue(io.endOfFile());
+        } finally {
+            io.close(true);
         }
     }
 }

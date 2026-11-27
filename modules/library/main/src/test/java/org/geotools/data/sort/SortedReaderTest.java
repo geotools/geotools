@@ -5,7 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -13,6 +15,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -154,6 +157,35 @@ public class SortedReaderTest {
         try (SimpleFeatureReader sr = new SortedFeatureReader(fr, peopleAsc, 5)) {
             assertSortedOnPeopleAsc(sr);
         }
+    }
+
+    /** Features with equal sort keys come out of a disk sort in the order they went in. */
+    @Test
+    public void testFileSortEqualKeys() throws IOException {
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+        typeBuilder.setName("keys");
+        typeBuilder.add("key", Integer.class);
+        SimpleFeatureType keysSchema = typeBuilder.buildFeatureType();
+        ListFeatureCollection keys = new ListFeatureCollection(keysSchema);
+        for (int i = 0; i < 100; i++) {
+            keys.add(SimpleFeatureBuilder.build(keysSchema, new Object[] {i % 3}, "f" + i));
+        }
+        List<String> expected = new ArrayList<>();
+        for (int key = 0; key < 3; key++) {
+            for (int i = key; i < 100; i += 3) {
+                expected.add("f" + i);
+            }
+        }
+
+        SortBy[] keyAsc = {ff.sort("key", SortOrder.ASCENDING)};
+        List<String> sorted = new ArrayList<>();
+        try (SimpleFeatureReader sr =
+                new SortedFeatureReader(new DelegateSimpleFeatureReader(keysSchema, keys.features()), keyAsc, 7)) {
+            while (sr.hasNext()) {
+                sorted.add(sr.next().getID());
+            }
+        }
+        assertEquals(expected, sorted);
     }
 
     @Test

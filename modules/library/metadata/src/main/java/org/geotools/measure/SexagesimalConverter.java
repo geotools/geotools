@@ -175,14 +175,11 @@ class SexagesimalConverter extends AbstractConverter {
         UnitConverter candidate = INTEGER;
         for (int i = 0; i <= 3; i++) {
             switch (i) {
-                case 0:
-                    break; // Do nothing since candidate is already set to INTEGER/
-                case 2:
-                    candidate = FRACTIONAL;
-                    break;
-                default:
-                    candidate = candidate.inverse();
-                    break;
+                case 0 -> {
+                    // Do nothing since candidate is already set to INTEGER/
+                }
+                case 2 -> candidate = FRACTIONAL;
+                default -> candidate = candidate.inverse();
             }
             if (equals(candidate)) {
                 return candidate;
@@ -192,6 +189,7 @@ class SexagesimalConverter extends AbstractConverter {
     }
 
     /** The inverse of {@link SexagesimalConverter}. */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class Inverse extends SexagesimalConverter {
         /** Serial number for compatibility with different versions. */
         @Serial

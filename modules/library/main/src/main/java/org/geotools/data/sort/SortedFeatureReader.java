@@ -54,12 +54,19 @@ public class SortedFeatureReader implements SimpleFeatureReader {
         return MergeSortDumper.getMaxFeatures(q);
     }
 
+    /** Returns the number of sorted features the query consumes: startIndex + maxFeatures, or Long.MAX_VALUE */
+    public static long getTopN(Query q) {
+        return MergeSortDumper.getTopN(q);
+    }
+
     /**
-     * Builds a new sorting feature reader
+     * Builds a new sorting feature reader. It returns at most {@link #getTopN(Query)} features, and the caller skips
+     * the offset. When {@link #getTopN(Query)} is at most the max features in memory, the reader keeps only those
+     * features in memory, never more than one block of the merge sort.
      *
      * @param reader The reader to be sorted
-     * @param query The query holding the SortBy directives, and the eventual max features in memory hint
-     *     {@link Hints#MAX_MEMORY_SORT}
+     * @param query The query holding the SortBy directives, the offset and limit, and the optional max features in
+     *     memory hint {@link Hints#MAX_MEMORY_SORT}
      */
     public SortedFeatureReader(SimpleFeatureReader reader, Query query) throws IOException {
         this.delegate = MergeSortDumper.getDelegateReader(reader, query);

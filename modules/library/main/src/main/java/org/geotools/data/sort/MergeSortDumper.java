@@ -24,12 +24,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -71,9 +74,62 @@ class MergeSortDumper {
 
     static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, Query query) throws IOException {
         int maxFeatures = getMaxFeatures(query);
+        long topN = getTopN(query);
+        if (topN == Long.MAX_VALUE) {
+            return getDelegateReader(reader, query.getSortBy(), maxFeatures);
+        }
 
-        return getDelegateReader(reader, query.getSortBy(), maxFeatures);
+        // the reader stops after topN features. With topN 0 it reads nothing, so the input stays unsorted.
+        SimpleFeatureReader sorted;
+        if (topN > maxFeatures) {
+            sorted = getDelegateReader(reader, query.getSortBy(), maxFeatures);
+        } else if (topN > 0) {
+            sorted = getTopNReader(reader, query.getSortBy(), (int) topN);
+        } else {
+            sorted = reader;
+        }
+        return DataUtilities.simple(new MaxFeatureReader<>(sorted, (int) Math.min(topN, Integer.MAX_VALUE)));
     }
+
+    /** Returns the number of sorted features the query consumes: startIndex + maxFeatures, or Long.MAX_VALUE */
+    static long getTopN(Query query) {
+        if (query.isMaxFeaturesUnlimited()) {
+            return Long.MAX_VALUE;
+        }
+        int offset = query.getStartIndex() == null ? 0 : query.getStartIndex();
+        return (long) offset + query.getMaxFeatures();
+    }
+
+    /** Keeps the best n features in a bounded heap. The result is the same as the first n of a stable sort. */
+    private static SimpleFeatureReader getTopNReader(SimpleFeatureReader reader, SortBy[] sortBy, int n)
+            throws IOException {
+        Comparator<SimpleFeature> comparator = getSortComparator(reader, sortBy);
+        if (comparator == null) {
+            return reader;
+        }
+
+        // PriorityQueue returns its smallest element first. The reversed order puts the worst kept feature at the
+        // head, so poll() drops it. On equal keys the worst is the one read last.
+        Comparator<RankedFeature> bestFirst =
+                Comparator.comparing(RankedFeature::feature, comparator).thenComparingLong(RankedFeature::sequence);
+        PriorityQueue<RankedFeature> heap = new PriorityQueue<>(bestFirst.reversed());
+        SimpleFeatureType schema = reader.getFeatureType();
+        long sequence = 0;
+        try (reader) {
+            while (reader.hasNext()) {
+                heap.add(new RankedFeature(reader.next(), sequence++));
+                if (heap.size() > n) {
+                    heap.poll();
+                }
+            }
+        }
+
+        List<SimpleFeature> features =
+                heap.stream().sorted(bestFirst).map(RankedFeature::feature).toList();
+        return new DelegateSimpleFeatureReader(schema, new ListFeatureCollection(schema, features).features());
+    }
+
+    private record RankedFeature(SimpleFeature feature, long sequence) {}
 
     /** Gets the max amount amount of features to keep in memory from the query and system hints */
     static int getMaxFeatures(Query query) {
@@ -90,27 +146,33 @@ class MergeSortDumper {
         return maxFeatures;
     }
 
+    /** Returns the comparator for the sort, or null if there is nothing to sort */
+    private static Comparator<SimpleFeature> getSortComparator(SimpleFeatureReader reader, SortBy[] sortBy) {
+        SimpleFeatureType schema = reader.getFeatureType();
+        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy, schema);
+        if (comparator != null && !canSort(schema, sortBy)) {
+            throw new IllegalArgumentException("The specified reader cannot be sorted, either the "
+                    + "sorting properties are not comparable or the attributes are not serializable: "
+                    + schema.getTypeName()
+                    + "\n "
+                    + Arrays.toString(sortBy));
+        }
+        return comparator;
+    }
+
     static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures)
             throws IOException {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
-        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy, reader.getFeatureType());
+        Comparator<SimpleFeature> comparator = getSortComparator(reader, sortBy);
 
         // easy case, no sorting needed
         if (comparator == null) {
             return reader;
         }
 
-        // double check
         SimpleFeatureType schema = reader.getFeatureType();
-        if (!canSort(schema, sortBy)) {
-            throw new IllegalArgumentException("The specified reader cannot be sorted, either the "
-                    + "sorting properties are not comparable or the attributes are not serializable: "
-                    + reader.getFeatureType().getTypeName()
-                    + "\n "
-                    + Arrays.toString(sortBy));
-        }
 
         int count = 0;
         File file = null;

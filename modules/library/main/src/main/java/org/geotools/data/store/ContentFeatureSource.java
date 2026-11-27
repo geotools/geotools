@@ -1171,34 +1171,46 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // we have to glaze the subclass query capabilities since we always support offset
         // and we support more sorting cases using the sorting wrappers
-        return new QueryCapabilities() {
-            @Override
-            public boolean isOffsetSupported() {
-                // we always support offset since we support sorting
+        return new ContentQueryCapabilities();
+    }
+
+    /**
+     * The query capabilities of the store, plus the offset and the sorts this class does in memory or on disk. Stores
+     * that wrap a content feature source return these capabilities unchanged.
+     */
+    public class ContentQueryCapabilities extends QueryCapabilities {
+
+        /** Returns the capabilities of the store alone. They list the sorts the store does natively. */
+        public QueryCapabilities getStoreCapabilities() {
+            return queryCapabilities;
+        }
+
+        @Override
+        public boolean isOffsetSupported() {
+            // we always support offset since we support sorting
+            return true;
+        }
+
+        @Override
+        public boolean supportsSorting(SortBy... sortAttributes) {
+            if (queryCapabilities.supportsSorting(sortAttributes)) {
+                // natively supported
                 return true;
+            } else {
+                // check if we can use the merge-sort support
+                return SortedFeatureReader.canSort(getSchema(), sortAttributes);
             }
+        }
 
-            @Override
-            public boolean supportsSorting(SortBy... sortAttributes) {
-                if (queryCapabilities.supportsSorting(sortAttributes)) {
-                    // natively supported
-                    return true;
-                } else {
-                    // check if we can use the merge-sort support
-                    return SortedFeatureReader.canSort(getSchema(), sortAttributes);
-                }
-            }
+        @Override
+        public boolean isReliableFIDSupported() {
+            return queryCapabilities.isReliableFIDSupported();
+        }
 
-            @Override
-            public boolean isReliableFIDSupported() {
-                return queryCapabilities.isReliableFIDSupported();
-            }
-
-            @Override
-            public boolean isUseProvidedFIDSupported() {
-                return queryCapabilities.isUseProvidedFIDSupported();
-            }
-        };
+        @Override
+        public boolean isUseProvidedFIDSupported() {
+            return queryCapabilities.isUseProvidedFIDSupported();
+        }
     }
 
     // -----------------------------------------------------

@@ -29,6 +29,7 @@ import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -52,6 +53,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     private SimpleFeatureBuilder retypeBuilder;
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
+    private boolean closed;
 
     protected SimpleFeature nextGranule = null;
     protected SimpleFeature delegateFeature = null;
@@ -98,6 +100,10 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     @Override
     // Should only close the store when it is exhausted or when the reader is closed
     public boolean hasNext() throws IOException {
+        // callers may call hasNext again after the end, when the iterators are already closed
+        if (closed) {
+            return false;
+        }
         if (nextGranule != null) {
             return true;
         }
@@ -106,15 +112,17 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
                 nextGranule = readNext();
                 if (nextGranule != null) return true;
             }
+            granuleIterator.close();
+            granuleIterator = null;
         }
 
         SimpleFeatureSource granuleSource = null;
         while ((granuleSource = granuleSourceProvider.getNextGranuleSource()) != null) {
             delegateFeature = granuleSourceProvider.getDelegateFeature();
-            Query granuleQuery = granuleSourceProvider.getGranuleQuery();
 
             // gran the next granule iterator and look for the next granule
-            granuleIterator = granuleSource.getFeatures(granuleQuery).features();
+            SimpleFeatureCollection granuleFeatures = granuleSourceProvider.getGranuleFeatures(granuleSource);
+            granuleIterator = granuleFeatures.features();
             while (granuleIterator.hasNext()) {
                 nextGranule = readNext();
                 if (nextGranule != null) return true;
@@ -204,6 +212,11 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
     @Override
     public void close() throws IOException {
+        // hasNext closes the reader at the end of the data, and the caller closes it again
+        if (closed) {
+            return;
+        }
+        closed = true;
         try {
             if (granuleIterator != null) {
                 granuleIterator.close();

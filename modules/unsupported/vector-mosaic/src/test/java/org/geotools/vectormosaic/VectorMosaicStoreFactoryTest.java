@@ -42,7 +42,8 @@ public class VectorMosaicStoreFactoryTest extends VectorMosaicTest {
                         VectorMosaicStoreFactory.REPOSITORY_PARAM,
                         VectorMosaicStoreFactory.CONNECTION_PARAMETER_KEY,
                         VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI,
-                        VectorMosaicStoreFactory.COMMON_PARAMETERS));
+                        VectorMosaicStoreFactory.COMMON_PARAMETERS,
+                        VectorMosaicStoreFactory.REJECT_FULL_SCAN_SORT));
     }
 
     @Test

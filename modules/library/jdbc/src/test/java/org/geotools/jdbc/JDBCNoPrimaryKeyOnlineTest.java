@@ -22,9 +22,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.geotools.api.data.FeatureStore;
+import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -92,5 +94,12 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
         }
 
         assertFalse(dataStore.getFeatureSource(tname(LAKE)) instanceof FeatureStore);
+    }
+
+    @Test
+    public void testNativeSorting() throws Exception {
+        QueryCapabilities store = getStoreCapabilities(dataStore.getFeatureSource(tname(LAKE)));
+        assertFalse(store.supportsSorting(SortBy.NATURAL_ORDER));
+        assertFalse(store.supportsSorting(SortBy.REVERSE_ORDER));
     }
 }

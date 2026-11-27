@@ -156,9 +156,10 @@ class MergeSortDumper {
                 SimpleFeatureIterator fi = new ListFeatureCollection(schema, features).features();
                 return new DelegateSimpleFeatureReader(schema, fi);
             } else {
-                // go merge-sort
+                // go merge-sort, the reader owns the file once it is built
+                MergeSortReader merged = new MergeSortReader(schema, io, readers, comparator);
                 cleanFile = false;
-                return new MergeSortReader(schema, io, readers, comparator);
+                return merged;
             }
 
         } finally {

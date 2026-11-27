@@ -18,12 +18,15 @@ package org.geotools.data.sort;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +57,10 @@ public class SimpleFeatureIO {
 
     public static final String ENABLE_DESERIALIZATION = "geotools.simplefeatureio.deserialization";
 
+    // a feature buffer that grew past this size is dropped before the next feature, so one large feature
+    // does not keep its memory until the file is closed
+    private static final int MAX_KEPT_BUFFER_SIZE = 1024 * 1024;
+
     RandomAccessFile raf;
 
     SimpleFeatureType schema;
@@ -67,6 +74,12 @@ public class SimpleFeatureIO {
     ByteArrayInStream bis;
     ByteArrayOutStream bos;
     byte[] buffer = new byte[8192]; // reusable buffer for small geometries
+
+    // Byte array streams holding one feature, so the file sees one call per feature instead of one per value
+    FeatureOutputBuffer outBuffer = new FeatureOutputBuffer();
+    DataOutputStream out = new DataOutputStream(outBuffer);
+    FeatureInputBuffer inBuffer = new FeatureInputBuffer();
+    DataInputStream in = new DataInputStream(inBuffer);
 
     private final boolean initialFileEmpty;
     private final String enableDeserialization;
@@ -82,21 +95,22 @@ public class SimpleFeatureIO {
 
     /** Writes the feature to the file */
     public void write(SimpleFeature sf) throws IOException {
-        // write each attribute in the random access file
         List<AttributeDescriptor> attributes = schema.getAttributeDescriptors();
+        outBuffer.startFeature();
         // write feature id
-        raf.writeUTF(sf.getID());
+        out.writeUTF(sf.getID());
         // write the attributes
         for (AttributeDescriptor ad : attributes) {
             Object value = sf.getAttribute(ad.getLocalName());
             writeAttribute(ad, value);
         }
+        outBuffer.writeFeature(raf);
     }
 
     void writeAttribute(AttributeDescriptor ad, Object value) throws IOException {
         if (value == null) {
             // null marker
-            raf.writeBoolean(true);
+            out.writeBoolean(true);
         } else {
             // not null, write the contents. This one requires some explanation. We are not
             // writing any type metadata in the stream for the types we can optimize (primitives,
@@ -105,22 +119,22 @@ public class SimpleFeatureIO {
             // actually the one we can optimize for, and not some subclass. Thus, we are authorized
             // to use identity comparison instead of isAssignableFrom or equality, when we read back
             // it must be as if we did not serialize stuff at all
-            raf.writeBoolean(false);
+            out.writeBoolean(false);
             Class<?> binding = ad.getType().getBinding();
             if (binding == Boolean.class) {
-                raf.writeBoolean((Boolean) value);
+                out.writeBoolean((Boolean) value);
             } else if (binding == Byte.class || binding == byte.class) {
-                raf.writeByte((Byte) value);
+                out.writeByte((Byte) value);
             } else if (binding == Short.class || binding == short.class) {
-                raf.writeShort((Short) value);
+                out.writeShort((Short) value);
             } else if (binding == Integer.class || binding == int.class) {
-                raf.writeInt((Integer) value);
+                out.writeInt((Integer) value);
             } else if (binding == Long.class || binding == long.class) {
-                raf.writeLong((Long) value);
+                out.writeLong((Long) value);
             } else if (binding == Float.class || binding == float.class) {
-                raf.writeFloat((Float) value);
+                out.writeFloat((Float) value);
             } else if (binding == Double.class || binding == double.class) {
-                raf.writeDouble((Double) value);
+                out.writeDouble((Double) value);
             } else if (binding == String.class) {
                 if (isBigString(ad)) {
                     // if attribute descriptor marked as Big String
@@ -133,26 +147,26 @@ public class SimpleFeatureIO {
                         values.add(strVal);
                     }
                     // write total parts
-                    raf.writeInt(values.size());
+                    out.writeInt(values.size());
                     // write every string chunk
                     for (String evalue : values) {
-                        raf.writeUTF(evalue);
+                        out.writeUTF(evalue);
                     }
                 } else {
                     // normal string encoding
-                    raf.writeUTF((String) value);
+                    out.writeUTF((String) value);
                 }
             } else if (binding == java.sql.Date.class
                     || binding == java.sql.Time.class
                     || binding == java.sql.Timestamp.class
                     || binding == java.util.Date.class) {
-                raf.writeLong(((Date) value).getTime());
+                out.writeLong(((Date) value).getTime());
             } else if (Geometry.class.isAssignableFrom(binding)) {
                 ByteArrayOutStream os = getOutStream(this.buffer);
                 writer.write((Geometry) value, os);
                 int len = os.getPosition();
-                raf.writeInt(len);
-                raf.write(os.getBuffer(), 0, len);
+                out.writeInt(len);
+                out.write(os.getBuffer(), 0, len);
             } else {
                 // can't optimize, in this case we use an ObjectOutputStream to write out
                 // full metadata
@@ -161,8 +175,8 @@ public class SimpleFeatureIO {
                 oos.writeObject(value);
                 oos.flush();
                 byte[] bytes = bos.toByteArray();
-                raf.writeInt(bytes.length);
-                raf.write(bytes);
+                out.writeInt(bytes.length);
+                out.write(bytes);
             }
         }
     }
@@ -177,7 +191,8 @@ public class SimpleFeatureIO {
     /** Reads the next feature form the file */
     public SimpleFeature read() throws IOException {
         // read the fid, check for file end
-        String fid = raf.readUTF();
+        inBuffer.readFeature(raf);
+        String fid = in.readUTF();
         // read the other attributes, build the feature
         for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
             Object att = readAttribute(ad);
@@ -192,50 +207,50 @@ public class SimpleFeatureIO {
     Object readAttribute(AttributeDescriptor ad) throws IOException {
         // See the comments in {@link MergeSortDumper#writeAttribute(RandomAccessFile,
         // AttributeDescriptor, Object)} to get an insight on why the method is built like this
-        boolean isNull = raf.readBoolean();
+        boolean isNull = in.readBoolean();
         if (isNull) {
             return null;
         } else {
             Class<?> binding = ad.getType().getBinding();
             if (binding == Boolean.class) {
-                return raf.readBoolean();
+                return in.readBoolean();
             } else if (binding == Byte.class || binding == byte.class) {
-                return raf.readByte();
+                return in.readByte();
             } else if (binding == Short.class || binding == short.class) {
-                return raf.readShort();
+                return in.readShort();
             } else if (binding == Integer.class || binding == int.class) {
-                return raf.readInt();
+                return in.readInt();
             } else if (binding == Long.class || binding == long.class) {
-                return raf.readLong();
+                return in.readLong();
             } else if (binding == Float.class || binding == float.class) {
-                return raf.readFloat();
+                return in.readFloat();
             } else if (binding == Double.class || binding == double.class) {
-                return raf.readDouble();
+                return in.readDouble();
             } else if (binding == String.class) {
                 if (isBigString(ad)) {
                     // read total parts
-                    int parts = raf.readInt();
+                    int parts = in.readInt();
                     // read every part
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < parts; i++) {
-                        sb.append(raf.readUTF());
+                        sb.append(in.readUTF());
                     }
                     return sb.toString();
                 } else {
-                    return raf.readUTF();
+                    return in.readUTF();
                 }
             } else if (binding == java.sql.Date.class) {
-                return new java.sql.Date(raf.readLong());
+                return new java.sql.Date(in.readLong());
             } else if (binding == java.sql.Time.class) {
-                return new java.sql.Time(raf.readLong());
+                return new java.sql.Time(in.readLong());
             } else if (binding == java.sql.Timestamp.class) {
-                return new java.sql.Timestamp(raf.readLong());
+                return new java.sql.Timestamp(in.readLong());
             } else if (binding == java.util.Date.class) {
-                return new java.util.Date(raf.readLong());
+                return new java.util.Date(in.readLong());
             } else if (Geometry.class.isAssignableFrom(binding)) {
-                int length = raf.readInt();
+                int length = in.readInt();
                 byte[] buffer = getByteBuffer(length);
-                raf.read(buffer, 0, length);
+                in.readFully(buffer, 0, length);
                 try {
                     return reader.read(getInStream(buffer));
                 } catch (ParseException e) {
@@ -282,9 +297,9 @@ public class SimpleFeatureIO {
         } else if (!this.initialFileEmpty && !"true".equalsIgnoreCase(this.enableDeserialization)) {
             throw new IllegalStateException("Object deserialization is only allowed when created with an empty file");
         }
-        int length = raf.readInt();
+        int length = in.readInt();
         byte[] buffer = new byte[length];
-        raf.read(buffer);
+        in.readFully(buffer);
         ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
         ObjectInputStream ois = new ObjectInputStream(bis);
         try {
@@ -382,6 +397,46 @@ public class SimpleFeatureIO {
 
         public byte[] getBuffer() {
             return buffer;
+        }
+    }
+
+    /** Byte array output stream for one feature, with its length in front */
+    private static class FeatureOutputBuffer extends ByteArrayOutputStream {
+
+        void startFeature() {
+            if (buf.length > MAX_KEPT_BUFFER_SIZE) {
+                buf = new byte[Integer.BYTES];
+            }
+            reset();
+            count = Integer.BYTES;
+        }
+
+        void writeFeature(RandomAccessFile raf) throws IOException {
+            ByteBuffer.wrap(buf).putInt(0, count - Integer.BYTES);
+            raf.write(buf, 0, count);
+        }
+    }
+
+    /** Byte array input stream for one feature read from the file */
+    private static class FeatureInputBuffer extends ByteArrayInputStream {
+
+        FeatureInputBuffer() {
+            super(new byte[Integer.BYTES]);
+        }
+
+        void readFeature(RandomAccessFile raf) throws IOException {
+            if (buf.length > MAX_KEPT_BUFFER_SIZE) {
+                buf = new byte[Integer.BYTES];
+            }
+            raf.readFully(buf, 0, Integer.BYTES);
+            int length = ByteBuffer.wrap(buf).getInt(0);
+            if (buf.length < length) {
+                buf = new byte[length];
+            }
+            raf.readFully(buf, 0, length);
+            pos = 0;
+            count = length;
+            mark = 0;
         }
     }
 }

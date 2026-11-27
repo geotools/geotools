@@ -21,6 +21,7 @@ import java.io.RandomAccessFile;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -33,23 +34,29 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  */
 class MergeSortReader implements SimpleFeatureReader {
 
-    List<FeatureBlockReader> readers;
+    // block readers ordered by their current feature. Blocks sit in the file in input order, and the
+    // offset of a reader stays inside its block, so the offset breaks ties in input order
+    PriorityQueue<FeatureBlockReader> readers;
 
     SimpleFeatureIO io;
 
     SimpleFeatureType schema;
 
-    Comparator<SimpleFeature> comparator;
-
     public MergeSortReader(
             SimpleFeatureType schema,
             SimpleFeatureIO io,
-            List<FeatureBlockReader> readers,
-            Comparator<SimpleFeature> comparator) {
+            List<FeatureBlockReader> blocks,
+            Comparator<SimpleFeature> comparator)
+            throws IOException {
         this.schema = schema;
-        this.comparator = comparator;
-        this.readers = readers;
         this.io = io;
+        Comparator<FeatureBlockReader> byFeature = (a, b) -> comparator.compare(a.curr, b.curr);
+        this.readers = new PriorityQueue<>(blocks.size(), byFeature.thenComparingLong(r -> r.offset));
+        for (FeatureBlockReader block : blocks) {
+            if (block.feature() != null) {
+                readers.add(block);
+            }
+        }
     }
 
     @Override
@@ -59,28 +66,16 @@ class MergeSortReader implements SimpleFeatureReader {
 
     @Override
     public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
-        if (readers.isEmpty()) {
+        FeatureBlockReader reader = readers.poll();
+        if (reader == null) {
             throw new NoSuchElementException();
         }
 
-        // find the smallest feature
-        int selected = 0;
-        for (int i = 1; i < readers.size(); i++) {
-            SimpleFeature sf = readers.get(selected).feature();
-            SimpleFeature cf = readers.get(i).feature();
-            if (comparator.compare(sf, cf) > 0) {
-                selected = i;
-            }
+        // return the smallest feature, put its block back with the next one
+        SimpleFeature sf = reader.curr;
+        if (reader.next() != null) {
+            readers.add(reader);
         }
-
-        // move on the reader of the selected feature
-        FeatureBlockReader reader = readers.get(selected);
-        SimpleFeature sf = reader.feature();
-        if (reader.next() == null) {
-            readers.remove(selected);
-        }
-
-        // return the selected feature
         return sf;
     }
 

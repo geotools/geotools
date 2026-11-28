@@ -48,21 +48,15 @@ Maven tracks the following information:
 * `module/*/pom.xml` - id is used to generate the name of the jar (and track dependency)
 * `module/*/pom.xml` - groupId is used to name the target maven repository folder dependency
 
-The module version number is set in the <version> element in::
-   
-   <module>/pom.xml
+The GeoTools version is defined once, as the ``revision`` property in the root :file:`pom.xml`. Modules refer to it as ``${revision}`` in their ``<parent>`` section, and the `flatten-maven-plugin <https://www.mojohaus.org/flatten-maven-plugin/>`__ writes the actual version into installed and deployed :file:`pom.xml` files (see `Maven CI Friendly Versions <https://maven.apache.org/guides/mini/guide-maven-ci-friendly.html>`__).
 
-Maven uses this value during the build process to figure out what to call generated jars.
+.. code-block:: xml
 
-* Name: GeoTools
-* ID: gt-geotools
-* groupId: org.geotools
-* CurrentVersion = 2.4-SNAPSHOT
-
-* Name: Main Module
-* ID: gt-main
-* GroupId: org.geotools
-* CurrentVersion: 2.4-SNAPSHOT
+   <parent>
+     <groupId>org.geotools</groupId>
+     <artifactId>library</artifactId>
+     <version>${revision}</version>
+   </parent>
 
 Tagging Releases
 ^^^^^^^^^^^^^^^^^

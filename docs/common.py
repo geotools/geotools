@@ -73,7 +73,7 @@ pompath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "pom.xml")
 print("Reading version from ",pompath)
 pomtree = ET.parse(pompath)
 
-version = pomtree.getroot().find("{http://maven.apache.org/POM/4.0.0}version").text
+version = pomtree.getroot().find("{http://maven.apache.org/POM/4.0.0}properties/{http://maven.apache.org/POM/4.0.0}revision").text
 snapshot = version.find('SNAPSHOT') != -1
 if snapshot:
     print("Building snapshot docs version", version)

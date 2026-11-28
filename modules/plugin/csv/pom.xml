@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>36-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <!-- =========================================================== -->

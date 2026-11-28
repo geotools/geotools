@@ -23,27 +23,6 @@
        ant archive
   </description>
   
-  <macrodef name="pom-version">
-    <attribute name="property"/>
-    <attribute name="pom.dir" default=".."/>
-    <sequential>
-      <loadfile
-        encoding="UTF-8"
-        property="@{property}"
-        srcFile="@{pom.dir}/pom.xml" >
-        <filterchain>
-          <tokenfilter>
-            <containsregex pattern="^\s*&lt;version&gt;(\S*)&lt;/version&gt;$" replace="\1" />
-          </tokenfilter>
-          <filterreader classname="org.apache.tools.ant.filters.HeadFilter">
-            <param name="lines" value="1"/>
-          </filterreader>
-          <striplinebreaks/>
-        </filterchain>
-      </loadfile>
-    </sequential>
-  </macrodef>
-  
   <macrodef name="pom-property">
     <attribute name="property"/>
     <attribute name="pom.dir" default=".."/>
@@ -86,7 +65,8 @@
   
   <!-- extract build environment details -->
   <tstamp/>
-  <pom-version property="version"/>
+  <pom-property property="revision"/>
+  <property name="version" value="${revision}"/>
   <property name="date" value="${TODAY}"/>
   <pom-property property="series"/>
   <!-- master_doc = 'index' -->

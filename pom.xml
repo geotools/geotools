@@ -15,7 +15,7 @@
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
-  <version>36-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
   <name>GeoTools</name>
 
@@ -471,6 +471,7 @@
     <javac.version>9+181-r4173-1</javac.version>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <revision>36-SNAPSHOT</revision>
     <series>latest</series>
     <!-- test dependency management. For compile dependency management look at platform-dependencies/pom.xml -->
     <hamcrest.version>3.0</hamcrest.version>
@@ -1340,6 +1341,31 @@
               <goal>${spotless.action}</goal>
             </goals>
             <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <configuration>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <updatePomFile>true</updatePomFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+            <phase>process-resources</phase>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>clean</phase>
           </execution>
         </executions>
       </plugin>

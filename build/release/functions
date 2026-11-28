@@ -90,10 +90,14 @@ function is_version_num() {
 }
 
 # get_pom_version <pom>
-# gets the version declared in a pom file
+# gets the version declared in a pom file, using the <revision> property when present
 function get_pom_version() {
   local pom=$1
-  echo `grep "<version>" $pom | head -n 1 | sed 's/<.*>\(.*\)<\/.*>/\1/g' | sed 's/ //g'`
+  local element=version
+  if grep -q "<revision>" $pom; then
+    element=revision
+  fi
+  echo `grep "<$element>" $pom | head -n 1 | sed 's/<.*>\(.*\)<\/.*>/\1/g' | sed 's/ //g'`
 }
 
 # get_jira_id <tag>

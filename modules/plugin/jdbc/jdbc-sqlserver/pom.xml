@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>36-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <!-- =========================================================== -->
